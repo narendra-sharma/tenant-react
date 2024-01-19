@@ -105,7 +105,7 @@ export function SignInForm() {
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className='authform'>
       <Stack spacing={3}>
         <Stack spacing={2}>
           {oAuthProviders.map((provider) => (
@@ -119,13 +119,13 @@ export function SignInForm() {
                   // noop
                 });
               }}
-              variant="outlined"
+              variant="outlined" style={ {borderColor: '#EAEEF6' , boxShadow: 'unset'}}
             >
               Continue with {provider.name}
             </Button>
           ))}
         </Stack>
-        <Divider>or</Divider>
+        <Divider style={{color:'#32383E'}}>or</Divider>
         <Stack spacing={2}>
           <FormControl color={errors.email ? 'danger' : undefined}>
             <FormLabel>Email Address</FormLabel>
@@ -159,11 +159,11 @@ export function SignInForm() {
             </Link>
           </div>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
-          <Button disabled={isPending} fullWidth type="submit">
+          <Button disabled={isPending} fullWidth type="submit" style={{padding: '10px 10px'}}>
             Sign In
           </Button>
         </Stack>
-        <Alert color="warning" variant="soft">
+        <Alert color="warning" variant="soft" style={{display: 'none'}}>
           <Typography fontSize="sm">
             Use <Typography fontWeight="lg">rene@devias.io</Typography> with password{' '}
             <Typography fontWeight="lg">Secret1</Typography>

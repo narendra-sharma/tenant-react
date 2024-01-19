@@ -26,17 +26,17 @@ export function Page() {
       <SplitLayout>
         <Stack spacing={3}>
           <Stack direction="row" sx={{ justifyContent: 'center' }}>
-            <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block', fontSize: 0 }}>
+            <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block' , display:'none' , fontSize: 0 }}>
               <DynamicLogo colorDark="light" colorLight="dark" height={32} width={154} />
             </Box>
           </Stack>
-          <Tabs value="sign-in" variant="custom">
-            <TabList>
+          <Tabs value="sign-in" variant="custom"> 
+            <TabList className="auth-tab-list" style={{ background: '#eaeef6' }}>
               <Tab component={RouterLink} href={paths['auth.custom.sign-in']} value="sign-in">
                 Sign In
               </Tab>
               <Tab component={RouterLink} href={paths['auth.custom.sign-up']} value="sign-up">
-                Create Account
+                Create Accounts
               </Tab>
             </TabList>
           </Tabs>
