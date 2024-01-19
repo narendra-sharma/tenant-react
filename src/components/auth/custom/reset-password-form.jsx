@@ -57,7 +57,7 @@ export function ResetPasswordForm() {
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className='authform'>
       <Stack spacing={3}>
         <Stack spacing={2}>
           <FormControl color={errors.email ? 'danger' : undefined}>

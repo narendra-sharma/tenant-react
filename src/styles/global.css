@@ -66,3 +66,27 @@
 :focus-visible {
   outline: var(--joy-palette-primary-600) solid 2px;
 }
+.auth-logo{
+  display: none;
+}
+.auth-tab-list{
+  background:#eaeef6
+}
+.auth-tab-list .MuiTab-root {
+  color: #636B74;
+}
+.auth-tab-list .MuiTab-root.Mui-selected{
+  color: #1A1A20;
+}
+.authform .MuiInput-root {
+  box-shadow: none;
+
+  font-size: 14px;
+}
+.authform .MuiInput-root input:-webkit-autofill, .authform .MuiInput-root input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+  padding: 6px 15px;
+}
+.MuiBox-root.css-a64ljl{
+  display: none;
+}

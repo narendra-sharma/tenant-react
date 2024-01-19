@@ -102,7 +102,7 @@ export function SignUpForm() {
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className='authform'>
       <Stack spacing={3}>
         <Stack spacing={2}>
           {oAuthProviders.map((provider) => (
@@ -116,13 +116,13 @@ export function SignUpForm() {
                   // noop
                 });
               }}
-              variant="outlined"
+              variant="outlined" style={ {borderColor: '#EAEEF6' , boxShadow: 'unset'}}
             >
-              Continue with {provider.name}
+              Continue with {provider.name} 
             </Button>
           ))}
         </Stack>
-        <Divider>or</Divider>
+        <Divider style={{color:'#32383E'}}>or</Divider>
         <Stack spacing={2}>
           <FormControl color={errors.firstName ? 'danger' : undefined}>
             <FormLabel>First Name</FormLabel>
@@ -145,11 +145,11 @@ export function SignUpForm() {
             {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
           </FormControl>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
-          <Button disabled={isPending} fullWidth type="submit">
+          <Button disabled={isPending} fullWidth type="submit"  style={{padding: '10px 10px'}}>
             Create Account
           </Button>
         </Stack>
-        <Alert color="warning" variant="soft">
+        <Alert color="warning" variant="soft" style={{display: 'none'}}>
           <Typography fontSize="sm">Created users are not persisted</Typography>
         </Alert>
       </Stack>
