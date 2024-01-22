@@ -108,25 +108,9 @@ export function SignInForm() {
     <form onSubmit={handleSubmit(onSubmit)} className='authform'>
       <Stack spacing={3}>
         <Stack spacing={2}>
-          {oAuthProviders.map((provider) => (
-            <Button
-              color="neutral"
-              disabled={isPending}
-              endDecorator={<Image alt="" height={24} src={provider.logo} width={24} />}
-              key={provider.id}
-              onClick={() => {
-                onAuth(provider.id).catch(() => {
-                  // noop
-                });
-              }}
-              variant="outlined" style={ {borderColor: '#EAEEF6' , boxShadow: 'unset'}}
-            >
-              Continue with {provider.name}
-            </Button>
-          ))}
-        </Stack>
-        <Divider style={{color:'#32383E'}}>or</Divider>
-        <Stack spacing={2}>
+        <Typography level="h3" textAlign="center">
+              Sign In
+            </Typography>
           <FormControl color={errors.email ? 'danger' : undefined}>
             <FormLabel>Email Address</FormLabel>
             <Input type="email" {...register('email')} />
@@ -159,7 +143,7 @@ export function SignInForm() {
             </Link>
           </div>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
-          <Button disabled={isPending} fullWidth type="submit" style={{padding: '10px 10px'}}>
+          <Button disabled={isPending} fullWidth type="submit" style={{padding: '10px 10px' , background:'#0074be'}}>
             Sign In
           </Button>
         </Stack>

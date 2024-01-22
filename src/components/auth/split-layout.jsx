@@ -60,22 +60,7 @@ export function SplitLayout({ children, strategy }) {
           >
             <Box sx={{ maxWidth: '420px', width: '100%' }}>{children}</Box>
           </Box>
-          {strategy ? (
-            <Box sx={{ p: 3 }}>
-              {strategy === AuthStrategy.SUPABASE ? (
-                <Tooltip color="neutral" placement="right-start" title="Authenticating with Supabase" variant="solid">
-                  <Box
-                    component="a"
-                    href="https://supabase.com"
-                    sx={{ display: 'inline-block', fontSize: 0 }}
-                    target="_blank"
-                  >
-                    <Image alt="Supabase" height={40} src="/assets/logo-supabase.svg" width={40} />
-                  </Box>
-                </Tooltip>
-              ) : null}
-            </Box>
-          ) : null}
+          
         </Box>
         <Box
           sx={{
@@ -90,88 +75,16 @@ export function SplitLayout({ children, strategy }) {
           }}
         >
           <Stack spacing={{ xs: '48px', sm: '64px', lg: '96px' }} sx={{ maxWidth: 'sm', mx: 'auto' }}>
-            <Stack spacing={3}>
-              <Typography fontSize="38px" fontWeight="xl" lineHeight="48px" textAlign="center" textColor="inherit">
-                Save Time and Simply Build Better with {config.site.name}
-              </Typography>
-              <Typography textAlign="center" textColor="neutral.400">
-                Experience A Game-Changing Transformation With Our Powerful Template Designed To Revolutionize Your SaaS
-                Application.
-              </Typography>
-            </Stack>
-            <Box
-              sx={{
-                display: {
-                  xs: 'none',
-                  md: 'block',
-                },
-                width: '70%',
-                mx: 'auto',
-                position: 'relative',
-              }}
-            >
-              <Box
-                sx={{
-                  borderRadius: 'var(--joy-radius-lg)',
-                  height: 0,
-                  overflow: 'hidden',
-                  position: 'relative',
-                  pt: 'calc(500 / 400 * 100%)',
-                }}
-              >
+              <Box>
                 <Image
                   alt="photo"
-                  fill
                   priority
-                  quality={100}
-                  sizes="400px"
-                  src="/assets/auth-photo.png"
-                  style={{ objectFit: 'cover' }}
+                  quality={100} 
+                  src="/assets/logo.svg"
+
+                  style={{ objectFit: 'cover' , maxWidth: '100%' , width:'100%'}}
                 />
               </Box>
-              <Box
-                sx={{
-                  borderRadius: 'var(--joy-radius-sm)',
-                  boxShadow: 'var(--joy-shadow-lg)',
-                  left: '-100px',
-                  overflow: 'hidden',
-                  position: 'absolute',
-                  top: '-60px',
-                  fontSize: 0,
-                  zIndex: 1,
-                }}
-              >
-                <Image alt="floating" height={122} quality={100} src="/assets/auth-floating-image-1.png" width={246} />
-              </Box>
-              <Box
-                sx={{
-                  borderRadius: 'var(--joy-radius-sm)',
-                  top: '200px',
-                  boxShadow: 'var(--joy-shadow-lg)',
-                  fontSize: 0,
-                  overflow: 'hidden',
-                  position: 'absolute',
-                  left: '-100px',
-                  zIndex: 2,
-                }}
-              >
-                <Image alt="floating" height={82} quality={100} src="/assets/auth-floating-image-2.png" width={256} />
-              </Box>
-              <Box
-                sx={{
-                  borderRadius: 'var(--joy-radius-sm)',
-                  bottom: '-20px',
-                  boxShadow: 'var(--joy-shadow-lg)',
-                  fontSize: 0,
-                  overflow: 'hidden',
-                  position: 'absolute',
-                  right: '-100px',
-                  zIndex: 3,
-                }}
-              >
-                <Image alt="floating" height={190} quality={100} src="/assets/auth-floating-image-3.png" width={240} />
-              </Box>
-            </Box>
           </Stack>
         </Box>
       </Box>

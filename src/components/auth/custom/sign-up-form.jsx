@@ -104,7 +104,7 @@ export function SignUpForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='authform'>
       <Stack spacing={3}>
-        <Stack spacing={2}>
+        {/* <Stack spacing={2}>
           {oAuthProviders.map((provider) => (
             <Button
               color="neutral"
@@ -122,7 +122,7 @@ export function SignUpForm() {
             </Button>
           ))}
         </Stack>
-        <Divider style={{color:'#32383E'}}>or</Divider>
+        <Divider style={{color:'#32383E'}}>or</Divider> */}
         <Stack spacing={2}>
           <FormControl color={errors.firstName ? 'danger' : undefined}>
             <FormLabel>First Name</FormLabel>

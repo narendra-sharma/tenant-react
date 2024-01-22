@@ -30,16 +30,16 @@ export function Page() {
           <Stack spacing={3} sx={{ maxWidth: 'sm' }}>
             <FormControl>
               <FormLabel>Current password</FormLabel>
-              <Input defaultValue="" name="password" type="password" />
+              <Input defaultValue="" name="password" type="password" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
             </FormControl>
             <FormControl>
               <FormLabel>New password</FormLabel>
-              <Input defaultValue="" name="newPassword" type="password" />
+              <Input defaultValue="" name="newPassword" type="password" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
               <FormHelperText>Your new password must be more than 8 characters.</FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel>Confirm new password</FormLabel>
-              <Input defaultValue="" name="passwordConfirm" type="password" />
+              <Input defaultValue="" name="passwordConfirm" type="password" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
             </FormControl>
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>

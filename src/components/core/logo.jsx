@@ -10,7 +10,7 @@ const HEIGHT = 60;
 const WIDTH = 60;
 
 export function Logo({ color = 'dark', height = HEIGHT, width = WIDTH }) {
-  const url = color === 'light' ? '/assets/logo.svg' : '/assets/logo--dark.svg';
+  const url = color === 'light' ? '/assets/logo.svg' : '/assets/logo.svg';
 
   return <img alt="logo" height={height} src={url} width={width} />;
 }

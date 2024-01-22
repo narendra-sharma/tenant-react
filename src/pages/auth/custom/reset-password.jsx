@@ -23,11 +23,7 @@ export function Page() {
       </Helmet>
       <SplitLayout>
         <Stack spacing={3}>
-          <Stack direction="row" sx={{ justifyContent: 'center' }}>
-            <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block', fontSize: 0 }}>
-              <DynamicLogo colorDark="light" colorLight="dark" height={32} width={154} />
-            </Box>
-          </Stack>
+          
           <Typography level="h3" textAlign="center">
             Reset Password
           </Typography>
