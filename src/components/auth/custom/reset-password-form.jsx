@@ -66,7 +66,7 @@ export function ResetPasswordForm() {
             {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
           </FormControl>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
-          <Button disabled={isPending} fullWidth type="submit">
+          <Button disabled={isPending} fullWidth type="submit" style={{padding: '10px 10px' , background: '#0074be'}}>
             Send Recover Link
           </Button>
         </Stack>

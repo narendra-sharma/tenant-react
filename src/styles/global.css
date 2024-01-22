@@ -70,7 +70,7 @@
   display: none;
 }
 .auth-tab-list{
-  background:#eaeef6
+  background:#EAEEF6;
 }
 .auth-tab-list .MuiTab-root {
   color: #636B74;
@@ -80,7 +80,7 @@
 }
 .authform .MuiInput-root {
   box-shadow: none;
-
+  border-color: #5556;
   font-size: 14px;
 }
 .authform .MuiInput-root input:-webkit-autofill, .authform .MuiInput-root input:-webkit-autofill:focus {

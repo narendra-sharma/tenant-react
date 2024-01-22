@@ -28,6 +28,7 @@ const user = {
   firstName: 'Rene',
   lastName: 'Wells',
   email: 'rene@devias.io',
+  number: '+323388393',
   bio: "Hi there! I'm Rene, a seasoned developer with a heart that belongs to both the digital realm and the breathtaking mountains. Let's connect and code the future together!",
   website: 'devias.io',
   country: 'us',
@@ -35,6 +36,11 @@ const user = {
   city: 'Denver',
   zip: '80218',
   street: 'Street Roy Alley 1155, house 1B',
+  companyName:'Company',
+  tenantName: 'wells',
+  comapnyEmail:'info@company.com',
+  companyNumber:'+323388393',
+  vatNumber:'BE045182565734',
 };
 
 export function Page() {
@@ -77,45 +83,89 @@ export function Page() {
           </div>
         </Stack>
         <Stack spacing={3}>
-          <Typography level="h4">Basic details</Typography>
+          <Typography level="h4">My details</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>First Name</FormLabel>
-                  <Input defaultValue={user.firstName} name="firstName" />
+                  <Input defaultValue={user.firstName} name="firstName"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Last Name</FormLabel>
-                  <Input defaultValue={user.lastName} name="lastName" />
+                  <Input defaultValue={user.lastName} name="lastName"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>  
+                <FormControl>
+                  <FormLabel>Email</FormLabel>
+                  <Input defaultValue={user.email} name="email" type="email"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+              
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>My Phone Number</FormLabel>
+                  <Input  defaultValue={user.companyNumber} name="companyNumber" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+              </Grid>
+           
+            </Grid>
+          </Box>
+        </Stack>
+        <Stack spacing={3}>
+          <Typography level="h4">Company details</Typography>
+          <Box sx={{ maxWidth: 'lg' }}>
+            <Grid container spacing={3}>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>First Name</FormLabel>
+                  <Input defaultValue={user.companyName} name="companyName"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <Stack spacing={3}>
-                  <FormControl>
-                    <FormLabel>Email</FormLabel>
-                    <Input defaultValue={user.email} name="email" type="email" />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Bio</FormLabel>
-                    <Textarea defaultValue={user.bio} maxRows={5} minRows={3} name="bio" />
-                  </FormControl>
-                  <FormControl>
-                    <FormLabel>Website</FormLabel>
-                    <Input
-                      defaultValue={user.website}
-                      name="website"
-                      startDecorator={
-                        <Chip size="sm" variant="soft">
-                          www.
-                        </Chip>
-                      }
-                    />
-                  </FormControl>
-                </Stack>
+                <FormControl>
+                  <FormLabel>Last Name</FormLabel>
+                  <Input defaultValue={user.tenantName} name="tenantName"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
               </Grid>
+              <Grid md={6} xs={12}>  
+                <FormControl>
+                  <FormLabel>Email</FormLabel>
+                  <Input defaultValue={user.comapnyEmail} name="comapnyEmail" type="email"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+              
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>My Phone Number</FormLabel>
+                  <Input  defaultValue={user.number} name="number" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>VAT Number</FormLabel>
+                  <Input  defaultValue={user.vatNumber} name="vatNumber" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Website</FormLabel>
+                  <Input
+                    defaultValue={user.website}
+                    name="website"
+                    startDecorator={
+                      <Chip size="sm" variant="soft">
+                        www.
+                      </Chip>
+                    }
+                    style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                </FormControl>
+                
+              </Grid>
+           
             </Grid>
           </Box>
         </Stack>
@@ -127,7 +177,7 @@ export function Page() {
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>Country</FormLabel>
-                    <Select defaultValue={user.country} name="country">
+                    <Select defaultValue={user.country} name="country" style={{borderColor:'#EAEEF6' , fontSize:'14px'}} >
                       <Option value="">Choose a country</Option>
                       <Option value="ca">Canada</Option>
                       <Option value="uk">United Kingdom</Option>
@@ -138,36 +188,37 @@ export function Page() {
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>State</FormLabel>
-                    <Input defaultValue={user.state} name="state" />
+                    <Input defaultValue={user.state} name="state" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>City</FormLabel>
-                    <Input defaultValue={user.city} name="city" />
+                    <Input defaultValue={user.city} name="city" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>Zip Code</FormLabel>
-                    <Input defaultValue={user.zip} name="zip" />
+                    <Input defaultValue={user.zip} name="zip" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>Address</FormLabel>
-                    <Textarea defaultValue={user.street} maxRows={3} minRows={2} name="street" />
+                    <Textarea defaultValue={user.street} maxRows={3} minRows={2} name="street" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                   </FormControl>
                 </Grid>
               </Grid>
             </Box>
           </Stack>
         </Stack>
+        
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Button color="neutral" variant="outlined">
-            Discard
-          </Button>
-          <Button>Save Changes</Button>
+        <Button color="neutral" variant="outlined">
+              Discard
+            </Button>
+            <Button>Save Changes</Button>
         </Stack>
       </Stack>
     </React.Fragment>

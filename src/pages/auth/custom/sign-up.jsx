@@ -30,7 +30,7 @@ export function Page() {
               <DynamicLogo colorDark="light" colorLight="dark" height={32} width={154}  />
             </Box>
           </Stack>
-          <Tabs value="sign-up" variant="custom">
+          {/* <Tabs value="sign-up" variant="custom">
             <TabList className='auth-tab-list' style={{ background: '#eaeef6' }}>
               <Tab component={RouterLink} href={paths['auth.custom.sign-in']} value="sign-in">
                 Sign In
@@ -39,7 +39,7 @@ export function Page() {
                 Create Account
               </Tab>
             </TabList>
-          </Tabs>
+          </Tabs> */}
           <SignUpForm />
         </Stack>
       </SplitLayout>
