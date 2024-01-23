@@ -58,9 +58,9 @@ export function SideNav({ items }) {
       <Box
         sx={{
           height: '100%',
-          pb: '197px', // footer height
+          pb: '100px', // footer height
           position: 'relative',
-          pt: '152px', // header height
+          pt: '100px', // header height
         }}
       >
         <Stack spacing={3} sx={{ left: 0, position: 'absolute', py: '16px', top: 0, width: '100%', zIndex: 2 }}>

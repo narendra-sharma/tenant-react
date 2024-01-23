@@ -10,67 +10,79 @@ const metadata = {
 
 const groups = [
   {
-    name: 'Messaging Management',
+    name: 'Tenant Management',
     permissions: [
       {
-        name: 'Can view message',
+        name: 'Can view devices',
         readOnly: true,
+        manager: true,
+        admin: true,
+      },
+      {
+        name: 'Can view device details ',
+        readOnly: true,
+        manager: true,
+        admin: true,
+      },
+      {
+        name: 'Can change own details',
+        readOnly: true,
+        manager: true,
+        admin: true,
+      },
+      {
+        name: 'Can change device details (except serial number)',
         member: true,
         manager: true,
         admin: true,
       },
       {
-        name: 'Can send message',
+        name: 'Can change device rename password',
         member: true,
         manager: true,
         admin: true,
       },
       {
-        name: 'Can attach files',
+        name: 'Can change company details',
         member: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can share embedded links',
-        member: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can use @everyone to notify all members',
         manager: true,
         admin: true,
       },
     ],
   },
   {
-    name: 'Channel Management',
+    name: 'ADMIN Management',
     permissions: [
       {
-        name: 'Can create private channels',
-        manager: true,
+        name: 'Can create tenants',
         admin: true,
       },
       {
-        name: 'Can create public channels',
-        manager: true,
+        name: 'Can create new users',
         admin: true,
       },
       {
-        name: 'Can delete private channels',
+        name: 'Can create new devices',
         admin: true,
       },
       {
-        name: 'Can delete public channels',
+        name: 'Can assign devices to tenants',
         admin: true,
       },
       {
-        name: 'Can archive channels',
+        name: 'Can delete tenants',
         admin: true,
       },
       {
-        name: 'Can manage posting permissions in channels',
+        name: 'Can delete users',
+        admin: true,
+      },
+      {
+        name: 'Can delete devices',
+        admin: true,
+      },
+      {
+        name: 'Can change serial number of devices',
         admin: true,
       },
     ],
