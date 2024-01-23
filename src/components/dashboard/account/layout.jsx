@@ -7,7 +7,7 @@ import { AccountTabs } from '@/components/dashboard/account/account-tabs';
 
 export function Layout({ children }) {
   return (
-    <Container maxWidth={false} sx={{ py: 3 }} style= {{backgroundColor:'#f5f5f5'}}>
+    <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={5}>
         <Stack spacing={3}>
           <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">

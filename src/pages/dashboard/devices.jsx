@@ -1,11 +1,10 @@
 import React from 'react';
-
-import { CustomersTable } from '@/components/dashboard/customer/customers-table';
+import Card from '@mui/joy/Card';
+import { DeviceTable } from '@/components/dashboard/customer/device-table';
 
 const customers = [
   {
-    id: 'CUS-005',
-    avatar: '/assets/avatar-5.png',
+    id: 'CUS-009',
     name: 'Olly Schroeder',
     email: 'olly.schroeder@domain.com',
     phoneNumber: '(269) 278-4358',
@@ -18,7 +17,6 @@ const customers = [
   },
   {
     id: 'CUS-004',
-    avatar: '/assets/avatar-4.png',
     name: 'Pippa Wilkinson',
     email: 'pippa.wilkinson@domain.com',
     phoneNumber: null,
@@ -31,7 +29,6 @@ const customers = [
   },
   {
     id: 'CUS-003',
-    avatar: '/assets/avatar-3.png',
     name: 'Ammar Foley',
     email: 'ammar.foley@domain.com',
     phoneNumber: '(787) 992-6937',
@@ -44,7 +41,6 @@ const customers = [
   },
   {
     id: 'CUS-002',
-    avatar: '/assets/avatar-2.png',
     name: 'Sienna Hewitt',
     email: 'sienna.hewitt@domain.com',
     phoneNumber: '(907) 555-0101',
@@ -57,7 +53,7 @@ const customers = [
   },
   {
     id: 'CUS-001',
-    avatar: '/assets/avatar-1.png',
+
     name: 'Zaid Schwartz',
     email: 'zaid.schwartz@domain.com',
     phoneNumber: '(801) 301-7140',
@@ -73,7 +69,9 @@ const customers = [
 export default function Devices() {
   return (
     <React.Fragment>
-      <CustomersTable rows={customers} />
+        <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
+         <DeviceTable rows={customers} />
+        </Card>
     </React.Fragment>
   );
 }

@@ -26,7 +26,7 @@ export function Page() {
       <SplitLayout>
         <Stack spacing={3}>
           <Stack direction="row" sx={{ justifyContent: 'center' }}>
-            <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block', display:'none' , fontSize: 0 }}>
+            <Box component={RouterLink} href={paths['home']} sx={{ display:'none' , fontSize: 0 }}>
               <DynamicLogo colorDark="light" colorLight="dark" height={32} width={154}  />
             </Box>
           </Stack>
