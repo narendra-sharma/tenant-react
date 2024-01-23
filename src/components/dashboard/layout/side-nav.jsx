@@ -90,7 +90,7 @@ export function SideNav({ items }) {
             bottom: 0,
             display: 'flex',
             flexDirection: 'column',
-            gap: 3,
+            gap: 2,
             left: 0,
             position: 'absolute',
             width: '100%',
@@ -110,7 +110,7 @@ export function SideNav({ items }) {
           <NoSSR>
             <ColorSchemeSwitch />
           </NoSSR>
-          <CurrentUser />
+          {/* <CurrentUser /> */}
         </Box>
       </Box>
     </Box>

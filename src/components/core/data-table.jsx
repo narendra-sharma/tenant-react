@@ -14,7 +14,7 @@ export function DataTable({ columns, onSelectOne, onSelectAll, rows, selectable,
               <Checkbox onChange={onSelectAll} sx={{ verticalAlign: 'sub' }} />
             </th>
           ) : null}
-          {columns.map((column) => (
+          {columns?.map((column) => (
             <th
               key={column.name}
               style={{
@@ -32,7 +32,7 @@ export function DataTable({ columns, onSelectOne, onSelectAll, rows, selectable,
         </tr>
       </thead>
       <tbody>
-        {rows.map((row, index) => (
+        {rows?.map((row, index) => (
           <tr key={row.id ? row.id : uniqueRowId?.(row) ?? index}>
             {selectable ? (
               <td>

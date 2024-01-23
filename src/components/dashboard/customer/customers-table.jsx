@@ -27,7 +27,7 @@ const columns = [
         {row.id}
       </Link>
     ),
-    name: 'Customer ID',
+    name: 'Device ID',
     width: '150px',
   },
   {

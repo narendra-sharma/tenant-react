@@ -21,6 +21,7 @@ const AccountSecurityPage = React.lazy(() =>
 // Dashboard pages
 
 const OverviewPage = React.lazy(() => import('@/pages/dashboard/overview').then((m) => ({ default: m.Page })));
+const DevicesPage = React.lazy(() => import('@/pages/dashboard/devices'));
 const SmartHomePage = React.lazy(() => import('@/pages/dashboard/smart-home').then((m) => ({ default: m.Page })));
 const LogisticsPage = React.lazy(() => import('@/pages/dashboard/logistics').then((m) => ({ default: m.Page })));
 const AnalyticsPage = React.lazy(() => import('@/pages/dashboard/analytics').then((m) => ({ default: m.Page })));
@@ -119,10 +120,28 @@ export const routes = [
             element: <AccountSecurityPage />,
           },
         ],
+        children: [
+          {
+            index: true,
+            element: <AccountProfilePage />,
+          },
+          {
+            path: 'billing',
+            element: <AccountBillingPage />,
+          },
+          {
+            path: 'security',
+            element: <AccountSecurityPage />,
+          },
+        ],
       },
       {
         path: 'analytics',
         element: <AnalyticsPage />,
+      },
+      {
+        path: 'devices',
+        element: <DevicesPage />,
       },
       {
         path: 'blank',
