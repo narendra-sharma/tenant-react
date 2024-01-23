@@ -20,7 +20,8 @@ export const paths = {
   'dashboard.crypto': '/dashboard/crypto',
   'dashboard.logistics': '/dashboard/logistics',
   'dashboard.smart-home': '/dashboard/smart-home',
-
+  'dashboard.devices': '/dashboard/devices',
+  'dashboard.settings': '/dashboard/settings',
   'dashboard.customers': '/dashboard/customers',
   'dashboard.customers.create': '/dashboard/customers/create',
   'dashboard.customers.details': (customerId) => `/dashboard/customers/${customerId}`,
@@ -49,4 +50,9 @@ export const paths = {
   'dashboard.account': '/dashboard/account',
   'dashboard.account.billing': '/dashboard/account/billing',
   'dashboard.account.security': '/dashboard/account/security',
+  admin: '/admin',
+  'admin.tennats': '/admin/tennats',
+  'admin.users': '/admin/users',
+  'admin.devices': '/admin/devices',
+  'admin.permissions': '/admin/permissions',
 };

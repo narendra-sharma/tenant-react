@@ -24,18 +24,10 @@ export function Stats({ color, diff, icon: Icon, label, trend, value }) {
         </Avatar>
         <Typography level="body-sm">{label}</Typography>
       </Stack>
-      <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-        <Typography level="h2">{value}</Typography>
-        <div>
-          <Typography
-            color="success"
-            level="body-xs"
-            startDecorator={<TrendIcon style={{ fontSize: 'var(--joy-fontSize-md)' }} weight="bold" />}
-          >
-            {diff}%
-          </Typography>
-          <Typography level="body-xs">vs last 7 days</Typography>
-        </div>
+      <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-start' }}>
+        <Typography level="h2" marginLeft={'6vh'}>
+          {value}
+        </Typography>
       </Stack>
     </Card>
   );

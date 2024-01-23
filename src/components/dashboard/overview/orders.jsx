@@ -12,12 +12,12 @@ import { NoSSR } from '@/components/core/no-ssr';
 
 const bars = [
   {
-    name: 'This Year',
+    name: 'Water',
     dataKey: 'v1',
     color: 'var(--joy-palette-primary-solidBg)',
   },
   {
-    name: 'Last Year',
+    name: 'Electricity',
     dataKey: 'v2',
     color: 'var(--joy-palette-primary-200)',
   },
@@ -28,7 +28,7 @@ export function Orders({ data = [] }) {
 
   return (
     <Card>
-      <Typography level="h4">Orders</Typography>
+      <Typography level="h4">Current Week Usage</Typography>
       <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', justifyContent: 'flex-end' }}>
         {bars.map((bar) => (
           <Stack direction="row" key={bar.name} spacing={1} sx={{ alignItems: 'center' }}>
