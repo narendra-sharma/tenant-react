@@ -26,9 +26,7 @@ const SmartHomePage = React.lazy(() => import('@/pages/dashboard/smart-home').th
 const LogisticsPage = React.lazy(() => import('@/pages/dashboard/logistics').then((m) => ({ default: m.Page })));
 const AnalyticsPage = React.lazy(() => import('@/pages/dashboard/analytics').then((m) => ({ default: m.Page })));
 const CryptoPage = React.lazy(() => import('@/pages/dashboard/crypto').then((m) => ({ default: m.Page })));
-
 // Customer pages
-
 const CustomerCreatePage = React.lazy(() =>
   import('@/pages/dashboard/customers/create').then((m) => ({ default: m.Page }))
 );
@@ -38,6 +36,12 @@ const CustomerDetailsPage = React.lazy(() =>
 const CustomerListPage = React.lazy(() =>
   import('@/pages/dashboard/customers/list').then((m) => ({ default: m.Page }))
 );
+
+// admin pages
+const PermissionsPage = React.lazy(() => import('@/pages/admin/permissions'));
+const TennatsPages = React.lazy(() => import('@/pages/admin/tennats'));
+const UserPages = React.lazy(() => import('@/pages/admin/user'));
+const DevicesPages = React.lazy(() => import('@/pages/admin/devices'));
 
 // Invoice pages
 
@@ -248,6 +252,22 @@ export const routes = [
             element: <TeamPermissionsPage />,
           },
         ],
+      },
+      {
+        path: 'permissions',
+        element: <PermissionsPage />,
+      },
+      {
+        path: 'tennats',
+        element: <TennatsPages />,
+      },
+      {
+        path: 'users',
+        element: <UserPages />,
+      },
+      {
+        path: 'devices',
+        element: <DevicesPages />,
       },
     ],
   },
