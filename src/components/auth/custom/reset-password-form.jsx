@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
@@ -9,64 +10,53 @@ import FormHelperText from '@mui/joy/FormHelperText';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
-import { useForm } from 'react-hook-form';
-import { z as zod } from 'zod';
-
-import { authClient } from '@/lib/auth/custom/client';
-
-const schema = zod.object({
-  email: zod.string().min(1, { message: 'Email is required' }).email(),
-});
-
-const defaultValues = {
-  email: '',
-};
 
 export function ResetPasswordForm() {
-  const [isPending, setIsPending] = React.useState(false);
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-    resolver: zodResolver(schema),
-  });
+  const [emailAdd, setemailAdd] = useState('');
+  const [emailError, setemailError] = useState(null);
 
-  const onSubmit = React.useCallback(
-    async (values) => {
-      setIsPending(true);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    if (emailAdd == '') {
+      setemailError('Email is Required');
+    } else if (!exptest.test(emailAdd)) {
+      setemailError('Email is Invalid');
+    } else {
+      setemailError(null);
+    }
+    if (emailAdd !== '' || emailAdd !== null) {
+      alert('Api called');
+    }
+  };
 
-      const { error } = await authClient.resetPassword(values);
-
-      if (error) {
-        setError('root', {
-          type: 'server',
-          message: error,
-        });
-        setIsPending(false);
-        return;
-      }
-
-      setIsPending(false);
-
-      // Redirect to confirm password reset
-    },
-    [setError]
-  );
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setemailAdd(value);
+    switch (name) {
+      case 'email':
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        setemailError(value === '' ? 'Email is Required' : !emailRegex.test(value) ? 'Email is Invalid' : null);
+        break;
+      default:
+        break;
+    }
+  };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='authform'>
+    <form className="authform">
       <Stack spacing={3}>
         <Stack spacing={2}>
-          <FormControl color={errors.email ? 'danger' : undefined}>
+          <FormControl>
             <FormLabel>Email Address</FormLabel>
-            <Input type="email" {...register('email')} />
-            {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
+            <Input type="email" name="email" onChange={(e) => handleInputChange(e)} />
           </FormControl>
-          {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
-          <Button disabled={isPending} fullWidth type="submit" style={{padding: '10px 10px' , background: '#0074be'}}>
+          {emailError && <FormHelperText style={{ color: 'red' }}>{emailError}</FormHelperText>}
+          <Button
+            onClick={(e) => handleSubmit(e)}
+            fullWidth
+            type="submit"
+            style={{ padding: '10px 10px', background: '#0074be' }}
+          >
             Send Recover Link
           </Button>
         </Stack>
