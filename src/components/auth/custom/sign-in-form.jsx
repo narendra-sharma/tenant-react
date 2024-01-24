@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
@@ -16,6 +17,7 @@ import Typography from '@mui/joy/Typography';
 import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
 
@@ -26,97 +28,82 @@ import { Image } from '@/components/core/image';
 import { RouterLink } from '@/components/core/link';
 import { toast } from '@/components/core/toaster';
 
-const oAuthProviders = [
-  {
-    id: 'google',
-    name: 'Google',
-    logo: '/assets/logo-google.svg',
-  },
-  {
-    id: 'discord',
-    name: 'Discord',
-    logo: '/assets/logo-discord.svg',
-  },
-];
+import { login } from '../../../reduxData/user/userAction';
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
   password: zod.string().min(1, { message: 'Password is required' }),
 });
 
-const defaultValues = {
-  email: '',
-  password: '',
-};
-
 export function SignInForm() {
   const navigate = useNavigate();
-  const { checkSession } = useUser();
-  const [showPassword, setShowPassword] = React.useState();
-  const [isPending, setIsPending] = React.useState(false);
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-    resolver: zodResolver(schema),
+  const dispatch = useDispatch();
+  const [emailerror, setEmailerror] = useState(null);
+  const [passworderror, setPassworderror] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
   });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const onAuth = React.useCallback(async (provider) => {
-    setIsPending(true);
-
-    const { error } = await authClient.signInWithOAuth({ provider });
-
-    if (error) {
-      setIsPending(false);
-      toast.error(error);
-      return;
+    const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    if (formData.email === '') {
+      setEmailerror('Email is Required');
+    } else if (!exptest.test(formData.email)) {
+      setEmailerror('Email is Invalid');
+    } else {
+      setEmailerror(null);
     }
 
-    setIsPending(false);
+    if (formData.password === '') {
+      setPassworderror('Password is Required');
+    } else {
+      setPassworderror(null);
+    }
 
-    // Redirect to OAuth provider
-  }, []);
+    if (formData.email !== '' && formData.password !== '') {
+      await login(formData, 'admin', dispatch);
+    }
+  };
 
-  const onSubmit = React.useCallback(
-    async (values) => {
-      setIsPending(true);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
 
-      const { error } = await authClient.signInWithPassword(values);
-
-      if (error) {
-        setError('root', {
-          type: 'server',
-          message: error,
-        });
-        setIsPending(false);
-        return;
-      }
-
-      // Update the user context state
-      await checkSession();
-
-      // The page guard will redirect to the dashboard if the user is authenticated.
-      navigate(0);
-    },
-    [navigate, setError, checkSession]
-  );
+    switch (name) {
+      case 'email':
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+        setEmailerror(value === '' ? 'Email is Required' : !emailRegex.test(value) ? 'Email is Invalid' : null);
+        break;
+      case 'password':
+        setPassworderror(
+          value === ''
+            ? 'Password is Required'
+            : value.length < 5
+              ? 'Password length should be more than 5 characters'
+              : null
+        );
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='authform'>
+    <form className="authform">
       <Stack spacing={3}>
         <Stack spacing={2}>
-        <Typography level="h3" textAlign="center">
-              Sign In
-            </Typography>
-          <FormControl color={errors.email ? 'danger' : undefined}>
+          <Typography level="h3" textAlign="center">
+            Sign In
+          </Typography>
+          <FormControl>
             <FormLabel>Email Address</FormLabel>
-            <Input type="email" {...register('email')} />
-            {errors.email ? <FormHelperText>{errors.email.message}</FormHelperText> : null}
+            <Input type="email" name="email" onChange={(e) => handleInputChange(e)} />
+            {emailerror && <FormHelperText style={{ color: 'red' }}>{emailerror}</FormHelperText>}
           </FormControl>
-          <FormControl color={errors.password ? 'danger' : undefined}>
+          <FormControl>
             <FormLabel>Password</FormLabel>
             <Input
               endDecorator={
@@ -132,22 +119,27 @@ export function SignInForm() {
                   )}
                 </IconButton>
               }
+              name="password"
               type={showPassword ? 'text' : 'password'}
-              {...register('password')}
+              onChange={(e) => handleInputChange(e)}
             />
-            {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
+            {passworderror && <FormHelperText style={{ color: 'red' }}>{passworderror}</FormHelperText>}
           </FormControl>
           <div>
             <Link component={RouterLink} href={paths['auth.custom.reset-password']}>
               Fogot password?
             </Link>
           </div>
-          {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
-          <Button disabled={isPending} fullWidth type="submit" style={{padding: '10px 10px' , background:'#0074be'}}>
+          <Button
+            fullWidth
+            type="submit"
+            style={{ padding: '10px 10px', background: '#0074be' }}
+            onClick={(e) => handleSubmit(e)}
+          >
             Sign In
           </Button>
         </Stack>
-        <Alert color="warning" variant="soft" style={{display: 'none'}}>
+        <Alert color="warning" variant="soft" style={{ display: 'none' }}>
           <Typography fontSize="sm">
             Use <Typography fontWeight="lg">rene@devias.io</Typography> with password{' '}
             <Typography fontWeight="lg">Secret1</Typography>
