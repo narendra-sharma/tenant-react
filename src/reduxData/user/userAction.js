@@ -18,6 +18,7 @@ export const catchErrors = (error, dispatch) => {
 
 export const Signup = async (user, role, navigate, dispatch) => {
   // start loading dispatch
+  console.log('Started diapatch');
   try {
     const url = 'dummyurl.com';
     const Headers = {
