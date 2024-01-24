@@ -1,77 +1,100 @@
 import React from 'react';
 import Card from '@mui/joy/Card';
+import Container from '@mui/joy/Container';
+import Breadcrumbs from '@mui/joy/Breadcrumbs';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Input from '@mui/joy/Input';
+import Option from '@mui/joy/Option';
+import Select from '@mui/joy/Select';
+import Stack from '@mui/joy/Stack';
+import dayjs from 'dayjs';
+import Typography from '@mui/joy/Typography';
+import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
+import { paths } from '@/paths';
+import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
 
 const customers = [
   {
-    id: 'CUS-009',
-    name: 'Olly Schroeder',
-    email: 'olly.schroeder@domain.com',
-    phoneNumber: '(269) 278-4358',
-    country: 'United States',
-    state: 'Michigan',
-    city: 'Three Rivers',
-    zip: '49093',
-    orders: 0,
-    paid: '$0.00',
+    id: 'k5',
+    createdAt: dayjs().subtract(1, 'day').valueOf(), 
+    customerName: 'Chris Glasser',
+    reading: '25,40',
+    items: '13,04', 
+    reading: '1',
+    status: 'online',
   },
   {
-    id: 'CUS-004',
-    name: 'Pippa Wilkinson',
-    email: 'pippa.wilkinson@domain.com',
-    phoneNumber: null,
-    country: 'United States',
-    state: 'Connecticut',
-    city: 'Bridgeport',
-    zip: '06604',
-    orders: 3,
-    paid: '$154.00',
+    id: 'k4',
+    createdAt: dayjs().subtract(1, 'day').valueOf(),
+    customerName: 'Iva Ryan',
+    reading:'25,40',
+    items: '13,04',
+    status: 'online',
   },
   {
-    id: 'CUS-003',
-    name: 'Ammar Foley',
-    email: 'ammar.foley@domain.com',
-    phoneNumber: '(787) 992-6937',
-    country: 'United States',
-    state: 'Michigan',
-    city: 'Watton',
-    zip: '49970',
-    orders: 1,
-    paid: '$75.25',
+    id: 'k2',
+    createdAt: dayjs().subtract(3, 'day').subtract(3, 'hour').valueOf(),
+    customerName: 'Ricky Smith',
+    reading: '25,40',
+    items: '13,04',
+    status: 'offline',
   },
   {
-    id: 'CUS-002',
-    name: 'Sienna Hewitt',
-    email: 'sienna.hewitt@domain.com',
-    phoneNumber: '(907) 555-0101',
-    country: 'United States',
-    state: 'Nebraska',
-    city: 'Omaha',
-    zip: '68164',
-    orders: 8,
-    paid: '$432.09',
+    id: 'k3',
+    createdAt: dayjs().subtract(3, 'day').valueOf(),
+    customerName: 'Kenneth Allen',
+    reading: '25,40',
+    items: '13,04',
+    status: 'online',
   },
   {
-    id: 'CUS-001',
-
-    name: 'Zaid Schwartz',
-    email: 'zaid.schwartz@domain.com',
-    phoneNumber: '(801) 301-7140',
-    country: 'United States',
-    city: 'Louisville',
-    state: 'Kentucky',
-    zip: '40202',
-    orders: 1,
-    paid: '$600.00',
+    id: 'k1',
+    createdAt: dayjs().subtract(2, 'day').valueOf(),
+    customerName: 'Mary Freund',
+    reading: '25,40',
+    items: '13,04',
+    status: 'offline',
   },
 ];
 
-export default function Devices() {
-  return (
-    <React.Fragment>
-        <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-         <DeviceTable rows={customers} />
-        </Card>
-    </React.Fragment>
+const devices = () => {
+  return (  
+      <Container maxWidth={false} sx={{ py: 3 }}>
+      <Stack spacing={3}>
+        <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
+          Devices
+        </Typography>
+        <Breadcrumbs separator={<BreadcrumbsSeparator />}>
+          <BreadcrumbsItem href={paths['dashboard']} type="start" />
+          <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
+        </Breadcrumbs>
+        <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            <FormControl sx={{ maxWidth: '240px', mr: 'auto', width: '100%' }}>
+              <FormLabel>Device Name</FormLabel>
+              <Input defaultValue="" name="orderId" />
+            </FormControl>
+            <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
+              <FormLabel>Client Name</FormLabel>
+              <Input defaultValue="" name="customer" />
+            </FormControl>
+            <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
+              <FormLabel>Status</FormLabel>
+              <Select defaultValue="all" name="status">
+                <Option value="all">All</Option>
+                <Option value="active">Online</Option>
+                <Option value="canceled">Offline</Option>
+                
+              </Select>
+            </FormControl>
+           
+          </Stack>
+          <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
+          <DeviceTable rows={customers} />
+          </Card>
+       </Stack>
+      </Container>
   );
 }
+export default devices;
