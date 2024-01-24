@@ -58,7 +58,7 @@ const groups = [
         admin: true,
       },
       {
-        name: 'Can create new users',
+        name: 'Can create new users', 
         admin: true,
       },
       {

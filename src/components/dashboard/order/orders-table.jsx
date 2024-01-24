@@ -8,7 +8,6 @@ import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import dayjs from 'dayjs';
-
 import { paths } from '@/paths';
 import { getInitials } from '@/lib/get-initials';
 import { DataTable } from '@/components/core/data-table';
