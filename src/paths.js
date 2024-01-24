@@ -25,7 +25,10 @@ export const paths = {
   'dashboard.customers': '/dashboard/customers',
   'dashboard.customers.create': '/dashboard/customers/create',
   'dashboard.customers.details': (customerId) => `/dashboard/customers/${customerId}`,
-
+  'dashbaord.tennats': '/dashbaord/tennats',
+  'dashbaord.users': '/dashbaord/users',
+  'dashbaord.devices': '/dashbaord/devices',
+  'dashbaord.permissions': '/dashbaord/permissions',
   'dashboard.invoices': '/dashboard/invoices',
   'dashboard.invoices.create': '/dashboard/invoices/create',
   'dashboard.invoices.details': (invoiceId) => `/dashboard/invoices/${invoiceId}`,
@@ -50,9 +53,4 @@ export const paths = {
   'dashboard.account': '/dashboard/account',
   'dashboard.account.billing': '/dashboard/account/billing',
   'dashboard.account.security': '/dashboard/account/security',
-  admin: '/admin',
-  'admin.tennats': '/admin/tennats',
-  'admin.users': '/admin/users',
-  'admin.devices': '/admin/devices',
-  'admin.permissions': '/admin/permissions',
 };
