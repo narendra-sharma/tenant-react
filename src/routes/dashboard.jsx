@@ -38,10 +38,10 @@ const CustomerListPage = React.lazy(() =>
 );
 
 // admin pages
-const PermissionsPage = React.lazy(() => import('@/pages/admin/permissions'));
-const TennatsPages = React.lazy(() => import('@/pages/admin/tennats'));
-const UserPages = React.lazy(() => import('@/pages/admin/user'));
-const DevicesPages = React.lazy(() => import('@/pages/admin/devices'));
+const PermissionsPage = React.lazy(() => import('@/pages/dashboard/admin/permissions'));
+const TennatsPages = React.lazy(() => import('@/pages/dashboard/admin/tennats'));
+const UserPages = React.lazy(() => import('@/pages/dashboard/admin/user'));
+const DevicesPages = React.lazy(() => import('@/pages/dashboard/admin/devices'));
 
 // Invoice pages
 
@@ -88,7 +88,7 @@ const BlankPage = React.lazy(() => import('@/pages/dashboard/blank').then((m) =>
 
 export const routes = [
   {
-    path: 'dashboard',
+    path: '/',
     element: (
       <AuthGuard>
         <DashboardLayout>
@@ -100,6 +100,7 @@ export const routes = [
     ),
     children: [
       {
+        path:'dashboard',
         index: true,
         element: <OverviewPage />,
       },
@@ -110,20 +111,6 @@ export const routes = [
             <Outlet />
           </AccountLayout>
         ),
-        children: [
-          {
-            index: true,
-            element: <AccountProfilePage />,
-          },
-          {
-            path: 'billing',
-            element: <AccountBillingPage />,
-          },
-          {
-            path: 'security',
-            element: <AccountSecurityPage />,
-          },
-        ],
         children: [
           {
             index: true,
@@ -254,21 +241,30 @@ export const routes = [
         ],
       },
       {
-        path: 'permissions',
-        element: <PermissionsPage />,
-      },
-      {
-        path: 'tennats',
-        element: <TennatsPages />,
-      },
-      {
-        path: 'users',
-        element: <UserPages />,
-      },
-      {
-        path: 'devices',
-        element: <DevicesPages />,
-      },
+        path:'admin',
+        children:[
+          {
+            index:true,
+            element: <PermissionsPage />,
+          },
+          {
+            path: 'permissions',
+            element: <PermissionsPage />,
+          },
+          {
+            path: 'tennats',
+            element: <TennatsPages />,
+          },
+          {
+            path: 'users',
+            element: <UserPages />,
+          },
+          {
+            path: 'devices',
+            element: <DevicesPages />,
+          },
+        ]
+      }
     ],
   },
 ];

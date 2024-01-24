@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { Page as CustomAuthResetPasswordPage } from '@/pages/auth/custom/reset-password';
 import { Page as CustomAuthSignInPage } from '@/pages/auth/custom/sign-in';
 import { Page as CustomAuthSignUpPage } from '@/pages/auth/custom/sign-up';
+import { Page as CustomAuthUpdatePasswordPage } from '@/pages/auth/custom/update-password';
 import { Page as SupabaseAuthCallbackPage } from '@/pages/auth/supabase/callback';
 import { Page as SupabaseAuthResetPasswordSentPage } from '@/pages/auth/supabase/recover-link-sent';
 import { Page as SupabaseAuthResetPasswordPage } from '@/pages/auth/supabase/reset-password';
@@ -18,7 +19,7 @@ import { StrategyGuard } from '@/components/auth/strategy-guard';
 
 export const routes = [
   {
-    path: 'auth/custom',
+    path: '/',
     element: (
       <StrategyGuard expected={AuthStrategy.CUSTOM}>
         <Outlet />
@@ -26,18 +27,19 @@ export const routes = [
     ),
     children: [
       {
-        path: 'reset-password',
+        path: '/',
+        index: true,
         element: (
           <GuestGuard>
-            <CustomAuthResetPasswordPage />
+            <CustomAuthSignInPage />
           </GuestGuard>
         ),
       },
       {
-        path: 'sign-in',
+        path: 'reset-password',
         element: (
           <GuestGuard>
-            <CustomAuthSignInPage />
+            <CustomAuthResetPasswordPage />
           </GuestGuard>
         ),
       },
@@ -49,68 +51,76 @@ export const routes = [
           </GuestGuard>
         ),
       },
-    ],
-  },
-  {
-    path: 'auth/supabase',
-    element: (
-      <StrategyGuard expected={AuthStrategy.SUPABASE}>
-        <Outlet />
-      </StrategyGuard>
-    ),
-    children: [
-      {
-        path: 'callback',
-        element: <SupabaseAuthCallbackPage />,
-      },
-      {
-        path: 'reset-password',
-        element: (
-          <GuestGuard>
-            <SupabaseAuthResetPasswordPage />
-          </GuestGuard>
-        ),
-      },
-      {
-        path: 'recover-link-sent',
-        element: (
-          <GuestGuard>
-            <SupabaseAuthResetPasswordSentPage />
-          </GuestGuard>
-        ),
-      },
-      {
-        path: 'sign-in',
-        element: (
-          <GuestGuard>
-            <SupabaseAuthSignInPage />
-          </GuestGuard>
-        ),
-      },
-      {
-        path: 'sign-up',
-        element: (
-          <GuestGuard>
-            <SupabaseAuthSignUpPage />
-          </GuestGuard>
-        ),
-      },
-      {
-        path: 'sign-up-confirm',
-        element: (
-          <GuestGuard>
-            <SupabaseAuthSignUpConfirmPage />
-          </GuestGuard>
-        ),
-      },
       {
         path: 'update-password',
         element: (
-          <AuthGuard>
-            <SupabaseAuthUpdatePasswordPage />
-          </AuthGuard>
+          <GuestGuard>
+            <CustomAuthUpdatePasswordPage />
+          </GuestGuard>
         ),
       },
     ],
   },
+  // {
+  //   path: 'auth/supabase',
+  //   element: (
+  //     <StrategyGuard expected={AuthStrategy.SUPABASE}>
+  //       <Outlet />
+  //     </StrategyGuard>
+  //   ),
+  //   children: [
+  //     {
+  //       path: 'callback',
+  //       element: <SupabaseAuthCallbackPage />,
+  //     },
+  //     {
+  //       path: 'reset-password',
+  //       element: (
+  //         <GuestGuard>
+  //           <SupabaseAuthResetPasswordPage />
+  //         </GuestGuard>
+  //       ),
+  //     },
+  //     {
+  //       path: 'recover-link-sent',
+  //       element: (
+  //         <GuestGuard>
+  //           <SupabaseAuthResetPasswordSentPage />
+  //         </GuestGuard>
+  //       ),
+  //     },
+  //     {
+  //       path: 'sign-in',
+  //       element: (
+  //         <GuestGuard>
+  //           <SupabaseAuthSignInPage />
+  //         </GuestGuard>
+  //       ),
+  //     },
+  //     {
+  //       path: 'sign-up',
+  //       element: (
+  //         <GuestGuard>
+  //           <SupabaseAuthSignUpPage />
+  //         </GuestGuard>
+  //       ),
+  //     },
+  //     {
+  //       path: 'sign-up-confirm',
+  //       element: (
+  //         <GuestGuard>
+  //           <SupabaseAuthSignUpConfirmPage />
+  //         </GuestGuard>
+  //       ),
+  //     },
+  //     {
+  //       path: 'update-password',
+  //       element: (
+  //         <AuthGuard>
+  //           <SupabaseAuthUpdatePasswordPage />
+  //         </AuthGuard>
+  //       ),
+  //     },
+  //   ],
+  // },
 ];
