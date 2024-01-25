@@ -8,87 +8,9 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import { paths } from '@/paths';
 import Container from '@mui/joy/Container';
-const groups = [
-  {
-    name: 'Tenant Management',
-    permissions: [
-      {
-        name: 'Can view devices',
-        readOnly: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can view device details ',
-        readOnly: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can change own details',
-        readOnly: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can change device details (except serial number)',
-        member: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can change device rename password',
-        member: true,
-        manager: true,
-        admin: true,
-      },
-      {
-        name: 'Can change company details',
-        member: true,
-        manager: true,
-        admin: true,
-      },
-    ],
-  },
-  {
-    name: 'ADMIN Management',
-    permissions: [
-      {
-        name: 'Can create tenants',
-        admin: true,
-      },
-      {
-        name: 'Can create new users', 
-        admin: true,
-      },
-      {
-        name: 'Can create new devices',
-        admin: true,
-      },
-      {
-        name: 'Can assign devices to tenants',
-        admin: true,
-      },
-      {
-        name: 'Can delete tenants',
-        admin: true,
-      },
-      {
-        name: 'Can delete users',
-        admin: true,
-      },
-      {
-        name: 'Can delete devices',
-        admin: true,
-      },
-      {
-        name: 'Can change serial number of devices',
-        admin: true,
-      },
-    ],
-  },
-];
+import { useSelector } from 'react-redux';
 const permissions = () => {
+  const groups = useSelector((state) => state.user.permissions);
   return (
     <main>
       <Container maxWidth={false} sx={{ py: 3 }}>

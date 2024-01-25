@@ -5,6 +5,8 @@ import Checkbox from '@mui/joy/Checkbox';
 import Stack from '@mui/joy/Stack';
 import Table from '@mui/joy/Table';
 import Typography from '@mui/joy/Typography';
+import { update_permissions } from '@/reduxData/user/userAction';
+import { useDispatch } from 'react-redux';
 
 const columns = [
   { name: 'Action', width: '300px' },
@@ -15,6 +17,16 @@ const columns = [
 ];
 
 export function Permissions({ groups = [] }) {
+  const dispatch=useDispatch();
+  const [permissions,setPermissions]=React.useState(groups);
+  const saveCahnges=()=>{
+    update_permissions(permissions,dispatch);
+  }
+  const changeCheck=(gindex,pindex,role)=>{
+    let allPermissions=[...permissions];
+    allPermissions[gindex].permissions[pindex][role.id]=!role.value;
+    setPermissions([...permissions])
+  }
   return (
    
     <Stack spacing={3}>
@@ -41,14 +53,14 @@ export function Permissions({ groups = [] }) {
             </tr>
           </thead>
           <tbody>
-            {groups.map((group) => (
+            {groups.map((group,gindex) => (
               <React.Fragment key={group.name}>
                 <tr>
                   <td colSpan={5}>
                     <Typography level="title-sm">{group.name}</Typography>
                   </td>
                 </tr>
-                {group.permissions.map((permission) => (
+                {group.permissions.map((permission,pindex) => (
                   <tr key={permission.name}>
                     <td>{permission.name}</td>
                     {[
@@ -58,7 +70,7 @@ export function Permissions({ groups = [] }) {
                       { id: 'admin', value: permission.admin },
                     ].map((role) => (
                       <td key={role.id}>
-                        <Checkbox color="neutral" defaultChecked={role.value} readOnly variant="outlined" className='checkboxs' />
+                        <Checkbox color="neutral" defaultChecked={role.value} readOnly variant="outlined" className='checkboxs' onChange={()=>changeCheck(gindex,pindex,role)}/>
                       </td>
                     ))}
                   </tr>
@@ -72,7 +84,7 @@ export function Permissions({ groups = [] }) {
         <Button color="neutral" variant="outlined">
           Discard
         </Button>
-        <Button>Save Changes</Button>
+        <Button onClick={()=>saveCahnges()}>Save Changes</Button>
       </Stack>
     </Stack>
   
