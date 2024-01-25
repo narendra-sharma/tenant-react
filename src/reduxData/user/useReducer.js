@@ -1,7 +1,9 @@
-import { LOG_OUT, USER_UPDATE } from './userTypes';
+import { LOG_OUT, UPDATE_PASSWORD, USER_UPDATE } from './userTypes';
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem('authUser'))
+  user: JSON.parse(localStorage.getItem('authUser')),
+  password: null,
+  token: null,
 };
 
 export const userReducer = (state, action) => {
@@ -9,13 +11,18 @@ export const userReducer = (state, action) => {
     case LOG_OUT:
       return {
         ...state,
-        user: null
+        user: null,
       };
-      case USER_UPDATE:
-        return {
-          ...state,
-          user: action.payload
-        }
+    case USER_UPDATE:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case UPDATE_PASSWORD:
+      return {
+        ...state,
+        token: action.payload,
+      };
     default:
       return initialState;
   }
