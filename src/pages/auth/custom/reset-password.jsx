@@ -12,7 +12,7 @@ import { RouterLink } from '@/components/core/link';
 import { DynamicLogo } from '@/components/core/logo';
 
 const metadata = {
-  title: `Reset Password | Custom Auth | ${config.site.name}`,
+  title: `Reset Password | ${config.site.name}`,
 };
 
 export function Page() {
@@ -23,7 +23,6 @@ export function Page() {
       </Helmet>
       <SplitLayout>
         <Stack spacing={3}>
-          
           <Typography level="h3" textAlign="center">
             Reset Password
           </Typography>

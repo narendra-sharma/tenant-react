@@ -4,14 +4,8 @@ export const paths = {
   'auth.custom.sign-in': '/',
   'auth.custom.sign-up': '/sign-up',
   'auth.custom.reset-password': '/reset-password',
-
-  'auth.supabase.callback': '/callback',
-  'auth.supabase.sign-in': '/sign-in',
-  'auth.supabase.sign-up': '/sign-up',
-  'auth.supabase.sign-up-confirm': '/sign-up-confirm',
-  'auth.supabase.reset-password': '/reset-password',
-  'auth.supabase.recover-link-sent': '/recover-link-sent',
-  'auth.supabase.update-password': '/update-password',
+  'auth.custom.reset-password-sent': '/reset-password-sent',
+  'auth.custom.update-password': '/update-password',
 
   dashboard: '/dashboard',
 
@@ -53,7 +47,6 @@ export const paths = {
   'dashboard.account': '/account',
   'dashboard.account.billing': '/account/billing',
   'dashboard.account.security': '/account/security',
-
 
   'dashboard.admin': '/admin',
   'dashboard.admin.devices': '/admin/devices',

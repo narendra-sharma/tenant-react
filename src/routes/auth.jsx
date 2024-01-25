@@ -2,16 +2,10 @@ import * as React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Page as CustomAuthResetPasswordPage } from '@/pages/auth/custom/reset-password';
+import { Page as CustomAuthResetPasswordSentPage } from '@/pages/auth/custom/reset-password-sent';
 import { Page as CustomAuthSignInPage } from '@/pages/auth/custom/sign-in';
 import { Page as CustomAuthSignUpPage } from '@/pages/auth/custom/sign-up';
 import { Page as CustomAuthUpdatePasswordPage } from '@/pages/auth/custom/update-password';
-import { Page as SupabaseAuthCallbackPage } from '@/pages/auth/supabase/callback';
-import { Page as SupabaseAuthResetPasswordSentPage } from '@/pages/auth/supabase/recover-link-sent';
-import { Page as SupabaseAuthResetPasswordPage } from '@/pages/auth/supabase/reset-password';
-import { Page as SupabaseAuthSignInPage } from '@/pages/auth/supabase/sign-in';
-import { Page as SupabaseAuthSignUpPage } from '@/pages/auth/supabase/sign-up';
-import { Page as SupabaseAuthSignUpConfirmPage } from '@/pages/auth/supabase/sign-up-confirm';
-import { Page as SupabaseAuthUpdatePasswordPage } from '@/pages/auth/supabase/update-password';
 import { AuthStrategy } from '@/lib/auth/strategy';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { GuestGuard } from '@/components/auth/guest-guard';
@@ -32,6 +26,14 @@ export const routes = [
         element: (
           <GuestGuard>
             <CustomAuthSignInPage />
+          </GuestGuard>
+        ),
+      },
+      {
+        path: 'reset-password-sent',
+        element: (
+          <GuestGuard>
+            <CustomAuthResetPasswordSentPage />
           </GuestGuard>
         ),
       },

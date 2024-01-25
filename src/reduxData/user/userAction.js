@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import { USER_PERMISSIONS, USER_UPDATE } from './userTypes';
 import { start_loading, stop_loading } from '../rootAction';
 import { toast } from '@/components/core/toaster';
@@ -14,7 +13,7 @@ export const catch_errors_handle = (error,dispatch) => {
   if (error.response) {
     toast.error(error.response.data.message);
     if (error.response.status === 401) {
-      localStorage.removeItem("authUser");
+      localStorage.removeItem('authUser');
       localStorage.removeItem('custom-auth-token');
       dispatch(set_update_user(''));
     }
@@ -29,16 +28,16 @@ export const login = async (user, dispatch,navigate) => {
     const res = await axios.post(url+'auth/login', user, headers);
     console.log(res);
     if (res?.data?.token && res?.data?.data) {
-      toast.success("Successfully user logged-in!");
+      toast.success('Successfully user logged-in!');
       localStorage.setItem('custom-auth-token', res?.data?.token);
-      dispatch(set_update_user({...res?.data?.data,token:res?.data?.token}));
-      navigate('/dashboard')
+      dispatch(set_update_user({ ...res?.data?.data, token: res?.data?.token }));
+      navigate('/dashboard');
     } else {
       toast.error(res.data.message);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error,dispatch));
-  }finally {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
     dispatch(stop_loading());
   }
 };
@@ -61,15 +60,45 @@ export const update_profile_detail = async (data,dispatch) => {
   }
 };
 export const set_update_user = (user) => {
-  localStorage.setItem("authUser", JSON.stringify(user));
+  localStorage.setItem('authUser', JSON.stringify(user));
   return {
     type: USER_UPDATE,
     payload: user,
   };
 };
+export const update_password = async (token, dispatch, newPassword) => {
+  dispatch(start_loading());
+  try {
+    const res = await axios.post(`${url}auth/reset-password/:token=${token}`, { password: newPassword }, Headers);
+    if (res?.data?.status) {
+      toast.success('password updated succesfully!');
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+} finally {
+    dispatch(stop_loading());
+  }
+};
 
-
-export const get_permissions = async (dispatch) => {
+export const forgot_password = async (userEmail, dispatch, navigate, redirect) => {
+  dispatch(start_loading());
+  try {
+    const res = await axios.post(`${url}auth/forgot-password`, { email: userEmail }, Headers);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      redirect && navigate('/reset-password-sent', { state: { email: userEmail } });
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error,dispatch))
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+ export const get_permissions = async (dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] = token;
