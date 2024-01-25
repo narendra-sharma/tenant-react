@@ -1,9 +1,7 @@
-import { LOG_IN, LOG_OUT, SET_USER_TYPE } from './userTypes';
+import { LOG_OUT, USER_UPDATE } from './userTypes';
 
 const initialState = {
-  user: JSON.parse(localStorage.getItem('userDetails')),
-  role: JSON.parse(localStorage.getItem('user-type')),
-  token: null,
+  user: JSON.parse(localStorage.getItem('authUser'))
 };
 
 export const userReducer = (state, action) => {
@@ -11,15 +9,13 @@ export const userReducer = (state, action) => {
     case LOG_OUT:
       return {
         ...state,
-        user: null,
-        role: null,
-        token: null,
+        user: null
       };
-    case SET_USER_TYPE:
-      return {
-        ...state,
-        role: action.payload,
-      };
+      case USER_UPDATE:
+        return {
+          ...state,
+          user: action.payload
+        }
     default:
       return initialState;
   }

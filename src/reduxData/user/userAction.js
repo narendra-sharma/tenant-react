@@ -1,22 +1,34 @@
 import axios from 'axios';
 
-import { LOG_OUT, SET_USER_TYPE } from './userTypes';
-
-export const Logout = () => {
+import { LOG_OUT, USER_UPDATE } from './userTypes';
+import { start_loading, stop_loading } from '../rootAction';
+import { toast } from '@/components/core/toaster';
+const url = import.meta.env.VITE_API_URL;
+const Headers = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+export const logout = () => {
   return {
     type: LOG_OUT,
   };
 };
 
-export const catchErrors = (error, dispatch) => {
+export const catch_errors_handle = (error,dispatch) => {
   if (error.response) {
-    // add the toast with error message here
+    toast.error(error.response.data.message);
+    if (error.response.status === 401) {
+      localStorage.removeItem("authUser");
+      localStorage.removeItem('custom-auth-token');
+      dispatch(set_update_user(''));
+    }
   } else {
-    // add toast with error message
+    toast.error(error.message);
   }
 };
 
-export const Signup = async (user, role, navigate, dispatch) => {
+export const signup = async (user, role, navigate, dispatch) => {
   // start loading dispatch
   console.log('Started diapatch');
   try {
@@ -35,27 +47,29 @@ export const Signup = async (user, role, navigate, dispatch) => {
   } catch (error) {}
 };
 
-export const login = async (user, role, dispatch) => {
-  role = role.toLowerCase();
-  role = role.replace(' ', '');
+export const login = async (user, dispatch,navigate) => {
+  dispatch(start_loading());
   try {
-    const url = 'dummyUrl';
-    const Headers = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    const res = await axios.post(url, user, Headers);
-    if (res?.data?.status) {
-      // show success toast message
+    const res = await axios.post(url+'auth/login', user, Headers);
+    console.log(res);
+    if (res?.data?.token && res?.data?.data) {
+      toast.success("Successfully user logged-in!");
+      localStorage.setItem('custom-auth-token', res?.data?.token);
+      dispatch(set_update_user({...res?.data?.data,token:res?.data?.token}));
+      navigate('/dashboard')
     } else {
-      // show error message
+      toast.error(res.data.message);
     }
-  } catch (error) {}
+  } catch (error) {
+    dispatch(catch_errors_handle(error,dispatch));
+  }finally {
+    dispatch(stop_loading());
+  }
 };
-export const set_user_type = (usertype) => {
+export const set_update_user = (user) => {
+  localStorage.setItem("authUser", JSON.stringify(user));
   return {
-    type: SET_USER_TYPE,
-    payload: usertype,
+    type: USER_UPDATE,
+    payload: user,
   };
 };

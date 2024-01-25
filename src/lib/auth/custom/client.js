@@ -4,17 +4,10 @@ function generateToken() {
   return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
 }
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Rene',
-  lastName: 'Wells',
-  email: 'rene@devias.io',
-};
+const user = localStorage.getItem('authUser');
 
 class AuthClient {
-  async signUp(_) {
-    const token = generateToken();
+  async signUp(token) {
     localStorage.setItem('custom-auth-token', token);
 
     return {};
@@ -55,17 +48,17 @@ class AuthClient {
 
   async getUser() {
     const token = localStorage.getItem('custom-auth-token');
-
+    
     if (!token) {
       return { data: null };
     }
 
-    return { data: user };
+    return { data: user?JSON.parse(user):null };
   }
 
   async signOut() {
     localStorage.removeItem('custom-auth-token');
-
+    localStorage.removeItem("authUser");
     return {};
   }
 }
