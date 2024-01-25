@@ -16,6 +16,7 @@ import { NProgress } from '@/components/core/nprogress';
 import { SettingsButton } from '@/components/core/settings-button';
 import { ThemeRegistry } from '@/components/core/theme-registry';
 import { Toaster } from '@/components/core/toaster';
+import LoadingSpinner from './LoadingSpinner';
 
 const metadata = {
   title: config.site.name,
@@ -42,8 +43,9 @@ export function App() {
                   </Helmet>
                   {element}
                   <SettingsButton />
-                  <Toaster position="bottom-right" />
+                  <Toaster position="top-right" />
                   <NProgress />
+                  <LoadingSpinner/>
                 </ThemeRegistry>
               )}
             </SettingsConsumer>

@@ -9,10 +9,12 @@ import { paths } from '@/paths';
 import { AuthStrategy } from '@/lib/auth/strategy';
 import { logger } from '@/lib/default-logger';
 import { useUser } from '@/hooks/use-user';
+import { useSelector } from 'react-redux';
 
 export function AuthGuard({ children }) {
   const navigate = useNavigate();
-  const { user, error, isLoading } = useUser();
+  const { error, isLoading } = useUser();
+  const user = localStorage.getItem('authUser');
   const [isChecking, setIsChecking] = React.useState(true);
 
   const checkPermissions = async () => {

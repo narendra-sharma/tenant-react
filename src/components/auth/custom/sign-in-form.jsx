@@ -27,8 +27,8 @@ import { useUser } from '@/hooks/use-user';
 import { Image } from '@/components/core/image';
 import { RouterLink } from '@/components/core/link';
 import { toast } from '@/components/core/toaster';
+import { login } from '@/reduxData/rootAction';
 
-import { login } from '../../../reduxData/user/userAction';
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
@@ -47,7 +47,6 @@ export function SignInForm() {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    authClient.signUp();
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (formData.email === '') {
       setEmailerror('Email is Required');
@@ -64,7 +63,7 @@ export function SignInForm() {
     }
 
     if (formData.email !== '' && formData.password !== '') {
-      await login(formData, 'admin', dispatch);
+      await login(formData, dispatch,navigate);
     }
   };
 
@@ -96,7 +95,7 @@ export function SignInForm() {
       <Stack spacing={3}>
         <Stack spacing={2}>
           <Typography level="h3" textAlign="center">
-            Sign In
+            Sign In 
           </Typography>
           <FormControl>
             <FormLabel>Email Address</FormLabel>
