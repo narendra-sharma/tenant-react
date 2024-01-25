@@ -1,20 +1,15 @@
 import axios from 'axios';
 
-import { LOG_OUT, USER_UPDATE } from './userTypes';
+import { USER_PERMISSIONS, USER_UPDATE } from './userTypes';
 import { start_loading, stop_loading } from '../rootAction';
 import { toast } from '@/components/core/toaster';
 const url = import.meta.env.VITE_API_URL;
-const Headers = {
+const headers = {
   headers: {
     'Content-Type': 'application/json',
   },
 };
-export const logout = () => {
-  return {
-    type: LOG_OUT,
-  };
-};
-
+const token=localStorage.getItem('custom-auth-token');
 export const catch_errors_handle = (error,dispatch) => {
   if (error.response) {
     toast.error(error.response.data.message);
@@ -28,29 +23,10 @@ export const catch_errors_handle = (error,dispatch) => {
   }
 };
 
-export const signup = async (user, role, navigate, dispatch) => {
-  // start loading dispatch
-  console.log('Started diapatch');
-  try {
-    const url = 'dummyurl.com';
-    const Headers = {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    };
-    const res = await axios.post(url, user, Headers);
-    if (res?.data?.status) {
-      // send a toast success message
-      navigate('/login');
-    }
-  } catch (error) {}
-};
-
 export const login = async (user, dispatch,navigate) => {
   dispatch(start_loading());
   try {
-    const res = await axios.post(url+'auth/login', user, Headers);
+    const res = await axios.post(url+'auth/login', user, headers);
     console.log(res);
     if (res?.data?.token && res?.data?.data) {
       toast.success("Successfully user logged-in!");
@@ -66,10 +42,66 @@ export const login = async (user, dispatch,navigate) => {
     dispatch(stop_loading());
   }
 };
+export const update_profile_detail = async (data,dispatch) => {
+  try {
+    dispatch(start_loading());
+    headers.headers['x-access-token'] = token;
+    const res = await axios.post(url+'auth/profile',data, headers);
+    if (res.data && res.data.status) {
+      toast.success("Successfully updated profile");
+      localStorage.setItem('custom-auth-token', token);
+      dispatch(set_update_user({...res?.data?.data,token:token}));
+    } else {
+      toast.error(res.data.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error,dispatch))
+  } finally {
+    dispatch(stop_loading());
+  }
+};
 export const set_update_user = (user) => {
   localStorage.setItem("authUser", JSON.stringify(user));
   return {
     type: USER_UPDATE,
     payload: user,
   };
+};
+
+
+export const get_permissions = async (dispatch) => {
+  try {
+    dispatch(start_loading());
+    headers.headers['x-access-token'] = token;
+    const res = await axios.get(url+'auth/permissions', headers);
+    if (res.data && res.data.status) {
+      dispatch({
+        type: USER_PERMISSIONS,
+        payload: res.data.data
+      })
+    } else {
+      toast.error(res.data.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error,dispatch))
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+export const update_permissions = async (data,dispatch) => {
+  try {
+    dispatch(start_loading());
+    headers.headers['x-access-token'] = token;
+    const res = await axios.post(url+'auth/permissions',data, headers);
+    if (res.data && res.data.status) {
+      toast.success("Successfully updated permissions!");
+      get_permissions(dispatch);
+    } else {
+      toast.error(res.data.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error,dispatch))
+  } finally {
+    dispatch(stop_loading());
+  }
 };
