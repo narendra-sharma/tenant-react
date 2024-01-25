@@ -14,6 +14,7 @@ import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { paths } from '@/paths';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
+import { Pagination } from '@/components/core/pagination';
 
 const customers = [
   {
@@ -92,7 +93,10 @@ const devices = () => {
           </Stack>
           <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <DeviceTable rows={customers} />
+          
           </Card>
+          <Pagination count={10} page={1} showFirstButton showLastButton size="sm" variant="outlined" />
+          
        </Stack>
       </Container>
   );
