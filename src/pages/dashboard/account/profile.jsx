@@ -215,10 +215,10 @@ export function Page() {
         </Stack>
         
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-        <Button color="neutral" variant="outlined">
+          <Button color="neutral" variant="outlined">
               Discard
-            </Button>
-            <Button>Save Changes</Button>
+          </Button>
+          <Button>Save Changes</Button>
         </Stack>
       </Stack>
     </React.Fragment>

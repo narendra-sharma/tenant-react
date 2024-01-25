@@ -2,18 +2,24 @@ import React from 'react';
 import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
-import Stack from '@mui/joy/Stack';
 import dayjs from 'dayjs';
-import Typography from '@mui/joy/Typography';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { paths } from '@/paths';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
+import { Pagination } from '@/components/core/pagination';
+
+import Box from '@mui/joy/Box';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
+import Grid from '@mui/joy/Grid';
+import Input from '@mui/joy/Input';
+import Option from '@mui/joy/Option';
+import Select from '@mui/joy/Select';
+import Stack from '@mui/joy/Stack';
+import Typography from '@mui/joy/Typography';
+import Button from '@mui/joy/Button';
+import Divider from '@mui/joy/Divider';
 
 const customers = [
   {
@@ -58,8 +64,17 @@ const customers = [
     status: 'offline',
   },
 ];
-
+const user = {
+  firstName: 'K1',
+  lastName: 'Wells',
+  serailNumber:  '86800001562435',
+  cfirstName: 'Zaid',
+  clastName: 'Schwartz',
+  tenant1: "Tenant 1",
+  tenant2:'Publish to Tenant',
+}
 const devices = () => {
+  
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
@@ -93,8 +108,85 @@ const devices = () => {
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <DeviceTable rows={customers} />
         </Card>
-       </Stack>
+        <Box sx={{ display: 'flex', justifyContent: 'center' , textCenter: 'center'}}>
+        <Pagination count={10} page={1} showFirstButton showLastButton size="sm" variant="outlined"/>
+        </Box>
+        </Stack>
+        <Stack component="main"  spacing={3}>
+          <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
+            Devices
+          </Typography>
+          <Breadcrumbs separator={<BreadcrumbsSeparator />}>
+            <BreadcrumbsItem href={paths['dashboard']} type="start" />
+            <BreadcrumbsItem href={paths['dashboard.admin']} >Admin</BreadcrumbsItem>
+            <BreadcrumbsItem  href={paths['dashboard.admin']} >Devices</BreadcrumbsItem>
+            <BreadcrumbsItem type="end">Create Devices</BreadcrumbsItem>
+          </Breadcrumbs>
+          <Stack spacing={5} divider={<Divider />}>
+            <Stack >
+              <Box sx={{ maxWidth: 'lg' }}>
+                <Grid container spacing={3}>
+                  <Grid md={6} xs={12}>
+                    <FormControl>
+                      <FormLabel>Device Name</FormLabel>
+                      <Input defaultValue={user.firstName} name="firstName"  type="text"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                    </FormControl>
+                  </Grid>
+                  <Grid md={6} xs={12}>
+                    <FormControl>
+                      <FormLabel>Serial Number</FormLabel>
+                      <Input defaultValue={user.serailNumber} name="serailNumber"   type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                    </FormControl>
+                  </Grid>
+                  <Grid md={6} xs={12}>  
+                    <FormControl>
+                      <FormLabel>Client First Name</FormLabel>
+                      <Input defaultValue={user.cfirstName} name="cfirstName" type="text"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                    </FormControl>
+                  
+                  </Grid>
+                  <Grid md={6} xs={12}>
+                    <FormControl>
+                      <FormLabel>Client Last Name</FormLabel>
+                      <Input defaultValue={user.clastName} name="clastName" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                    </FormControl>
+                  </Grid>
+                  <Grid md={6} xs={12}>
+                  <FormControl>
+                        <FormLabel>Tenant</FormLabel>
+                        <Select defaultValue={user.tenant1} name="tenant1" style={{borderColor:'#EAEEF6' , fontSize:'14px'}} >
+                          <Option value="">Tenant 1</Option>
+                          <Option value="ca">Tenant 2</Option>
+                          <Option value="uk">Tenant 3</Option>
+                      
+                        </Select>
+                      </FormControl>
+                  </Grid>
+                  <Grid md={6} xs={12}>
+                    <FormControl>
+                        <FormLabel>Status</FormLabel>
+                        <Select defaultValue={user.tenant2} name="tenant2" style={{borderColor:'#EAEEF6' , fontSize:'14px'}} >
+                          <Option value="">Publish to Tenant</Option>
+                          <Option value="ca">Publish to user</Option>
+                        
+                        </Select>
+                    </FormControl>
+                  </Grid>
+              
+                </Grid>
+              </Box>
+            </Stack>
+            <Stack direction="row" spacing={3} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+            <Button color="neutral" variant="outlined">
+                  Discard
+                </Button>
+                <Button>Save Changes</Button>
+            </Stack>
+          </Stack>
+        </Stack>
       </Container>
+
+  
   );
 }
 export default devices;
