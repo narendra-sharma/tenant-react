@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
@@ -15,10 +16,52 @@ import { config } from '@/config';
 import { SessionItem } from '@/components/dashboard/account/session-item';
 
 const metadata = {
-  title: `Security | Account | Dashboard | ${config.site.name}`,
+  title: `Security | ${config.site.name}`,
 };
 
 export function Page() {
+  const [formData, setformData] = useState({
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [oldPassError, setoldPassError] = useState(null);
+  const [newPassError, setnewPassError] = useState(null);
+  const [confirmPassError, setconfirmPassError] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setformData({ ...formData, [name]: value });
+    switch (name) {
+      case 'oldPassword':
+        setoldPassError(value == null || value == '' ? 'Old password is reuired' : null);
+        break;
+      case 'newPassword':
+        setnewPassError(
+          value == null || value == ''
+            ? 'New password is required'
+            : value.length < 8
+              ? 'Password must be greater than 8 digits'
+              : null
+        );
+        break;
+      case 'confirmPassword':
+        setconfirmPassError(
+          value == null || value == ''
+            ? 'Confirm password is required'
+            : formData.newPassword !== formData?.confirmPassword
+              ? "Password doesn't match"
+              : null
+        );
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <React.Fragment>
       <Helmet>
@@ -30,23 +73,46 @@ export function Page() {
           <Stack spacing={3} sx={{ maxWidth: 'sm' }}>
             <FormControl>
               <FormLabel>Current password</FormLabel>
-              <Input defaultValue="" name="password" type="password" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+              <Input
+                defaultValue=""
+                name="oldPassword"
+                type="password"
+                style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                onChange={(e) => handleChange(e)}
+              />
+              {oldPassError ? <FormHelperText style={{ color: 'red' }}>{oldPassError}</FormHelperText> : null}
             </FormControl>
             <FormControl>
               <FormLabel>New password</FormLabel>
-              <Input defaultValue="" name="newPassword" type="password" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+              <Input
+                defaultValue=""
+                name="newPassword"
+                type="password"
+                style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                onChange={(e) => handleChange(e)}
+              />
               <FormHelperText>Your new password must be more than 8 characters.</FormHelperText>
             </FormControl>
+            {newPassError ? <FormHelperText style={{ color: 'red' }}>{newPassError}</FormHelperText> : null}
             <FormControl>
               <FormLabel>Confirm new password</FormLabel>
-              <Input defaultValue="" name="passwordConfirm" type="password" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+              <Input
+                defaultValue=""
+                name="confirmPassword"
+                type="password"
+                style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                onChange={(e) => handleChange(e)}
+              />
             </FormControl>
+            {confirmPassError ? <FormHelperText style={{ color: 'red' }}>{confirmPassError}</FormHelperText> : null}
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
             <Button color="neutral" variant="outlined">
               Discard
             </Button>
-            <Button>Save Changes</Button>
+            <Button type="submit" onClick={(e) => handleSubmit(e)}>
+              Save Changes
+            </Button>
           </Stack>
         </Stack>
         <Stack spacing={3}>

@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import { forgot_password } from '@/reduxData/user/userAction';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
@@ -11,17 +10,12 @@ import FormHelperText from '@mui/joy/FormHelperText';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 
-export function ResetPasswordForm() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+export function ResetPasswordSent() {
   const [emailAdd, setemailAdd] = useState('');
   const [emailError, setemailError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    const redirect = true;
+  const handleSubmit = (e) => {
     e.preventDefault();
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (emailAdd == '') {
@@ -32,7 +26,7 @@ export function ResetPasswordForm() {
       setemailError(null);
     }
     if (emailAdd !== '' || emailAdd !== null) {
-      await forgot_password(emailAdd, dispatch, navigate, redirect);
+      alert('Api called');
     }
   };
 

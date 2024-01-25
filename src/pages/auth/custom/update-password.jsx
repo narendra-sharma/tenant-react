@@ -4,8 +4,8 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 
 import { paths } from '@/paths';
+import { UpdatePasswordForm } from '@/components/auth/custom/update-password-form';
 import { SplitLayout } from '@/components/auth/split-layout';
-import { UpdatePasswordForm } from '@/components/auth/supabase/update-password-form';
 import { RouterLink } from '@/components/core/link';
 import { DynamicLogo } from '@/components/core/logo';
 
