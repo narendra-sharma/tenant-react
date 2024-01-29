@@ -83,5 +83,5 @@ const columns = [
 ];
 
 export function DeviceTable({ rows }) {
-  return <DataTable columns={columns} rows={rows} selectable stripe="even" />;
+  return <DataTable columns={columns} rows={rows}  stripe="even" />;
 }
