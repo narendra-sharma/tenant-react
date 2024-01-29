@@ -42,7 +42,7 @@ export function CreateDevice() {
                 <Button
                   color="neutral"
                   component={RouterLink}
-                  href={paths['dashboard.customers']}
+                  href={paths['dashboard.admin.devices']}
                   startDecorator={<ArrowLeftIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
                   variant="outlined"
                 >

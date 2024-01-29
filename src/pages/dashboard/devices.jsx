@@ -72,15 +72,15 @@ const devices = () => {
           <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
         </Breadcrumbs>
         <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            <FormControl sx={{ maxWidth: '240px', mr: 'auto', width: '100%' }}>
+            <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
               <FormLabel>Device Name</FormLabel>
               <Input defaultValue="" name="orderId" />
             </FormControl>
-            <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
+            <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Client Name</FormLabel>
               <Input defaultValue="" name="customer" />
             </FormControl>
-            <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
+            <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Status</FormLabel>
               <Select defaultValue="all" name="status">
                 <Option value="all">All</Option>
@@ -92,8 +92,7 @@ const devices = () => {
            
           </Stack>
           <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <DeviceTable rows={customers} />
-          
+            <DeviceTable rows={customers} />
           </Card>
           <Pagination count={10} page={1} showFirstButton showLastButton size="sm" variant="outlined" />
           
