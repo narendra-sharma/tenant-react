@@ -20,7 +20,8 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
-
+import { RouterLink } from '@/components/core/link';
+import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 const customers = [
   {
     id: 'k5',
@@ -78,14 +79,28 @@ const devices = () => {
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
-        <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-          Devices
-        </Typography>
-        <Breadcrumbs separator={<BreadcrumbsSeparator />}>
-          <BreadcrumbsItem href={paths['dashboard']} type="start" />
-          <BreadcrumbsItem href={paths['dashboard.admin']} >Admin</BreadcrumbsItem>
-          <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
-        </Breadcrumbs>
+        <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
+          <Stack spacing={1} sx={{ flexGrow: 1 }}>
+            <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
+              Devices
+            </Typography>
+            <Breadcrumbs separator={<BreadcrumbsSeparator />}>
+              <BreadcrumbsItem href={paths['dashboard']} type="start" />
+              <BreadcrumbsItem href={paths['dashboard.admin']}>ADMIN</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
+            </Breadcrumbs>
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+            <Button
+              component={RouterLink}
+              href={paths['dashboard.admin.create.device']}
+              startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
+            >
+              Create
+            </Button>
+          </Stack>
+        </Stack>
+        
         <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
             <FormControl sx={{ maxWidth: '240px', mr: 'auto', width: '100%' }}>
               <FormLabel>Device Name</FormLabel>
