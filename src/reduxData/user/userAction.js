@@ -1,15 +1,18 @@
 import axios from 'axios';
-import { USER_PERMISSIONS, USER_UPDATE } from './userTypes';
-import { start_loading, stop_loading } from '../rootAction';
+
 import { toast } from '@/components/core/toaster';
+
+import { start_loading, stop_loading } from '../rootAction';
+import { GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
+
 const url = import.meta.env.VITE_API_URL;
 const headers = {
   headers: {
     'Content-Type': 'application/json',
   },
 };
-const token=localStorage.getItem('custom-auth-token');
-export const catch_errors_handle = (error,dispatch) => {
+const token = localStorage.getItem('custom-auth-token');
+export const catch_errors_handle = (error, dispatch) => {
   if (error.response) {
     toast.error(error.response.data.message);
     if (error.response.status === 401) {
@@ -22,10 +25,10 @@ export const catch_errors_handle = (error,dispatch) => {
   }
 };
 
-export const login = async (user, dispatch,navigate) => {
+export const login = async (user, dispatch, navigate) => {
   dispatch(start_loading());
   try {
-    const res = await axios.post(url+'auth/login', user, headers);
+    const res = await axios.post(url + 'auth/login', user, headers);
     console.log(res);
     if (res?.data?.token && res?.data?.data) {
       toast.success('Successfully user logged-in!');
@@ -41,20 +44,20 @@ export const login = async (user, dispatch,navigate) => {
     dispatch(stop_loading());
   }
 };
-export const update_profile_detail = async (data,dispatch) => {
+export const update_profile_detail = async (data, dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] = token;
-    const res = await axios.post(url+'auth/profile',data, headers);
+    const res = await axios.put(url + 'profile/update', data, headers);
     if (res.data && res.data.status) {
-      toast.success("Successfully updated profile");
+      toast.success('Successfully updated profile');
       localStorage.setItem('custom-auth-token', token);
-      dispatch(set_update_user({...res?.data?.data,token:token}));
+      dispatch(set_update_user({ ...res?.data?.data, token: token }));
     } else {
       toast.error(res.data.message);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error,dispatch))
+    dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }
@@ -77,7 +80,7 @@ export const update_password = async (token, dispatch, newPassword) => {
     }
   } catch (error) {
     dispatch(catch_errors_handle(error, dispatch));
-} finally {
+  } finally {
     dispatch(stop_loading());
   }
 };
@@ -88,48 +91,101 @@ export const forgot_password = async (userEmail, dispatch, navigate, redirect) =
     const res = await axios.post(`${url}auth/forgot-password`, { email: userEmail }, Headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
-      redirect && navigate('/reset-password-sent', { state: { email: userEmail } });
+      redirect && navigate(`/reset-password-sent?email=${encodeURIComponent(userEmail)}`);
     } else {
       toast.error(res?.data?.message);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error,dispatch))
+    dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }
 };
- export const get_permissions = async (dispatch) => {
+
+export const change_password = async (dispatch, userData) => {
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token;
+    const res = await axios.put(`${url}profile/change-password`, userData, headers);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const get_permissions = async (dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] = token;
-    const res = await axios.get(url+'auth/permissions', headers);
+    const res = await axios.get(url + 'auth/permissions', headers);
     if (res.data && res.data.status) {
       dispatch({
         type: USER_PERMISSIONS,
-        payload: res.data.data
-      })
+        payload: res.data.data,
+      });
     } else {
       toast.error(res.data.message);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error,dispatch))
+    dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }
 };
-export const update_permissions = async (data,dispatch) => {
+
+export const update_permissions = async (data, dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] = token;
-    const res = await axios.post(url+'auth/permissions',data, headers);
+    const res = await axios.post(url + 'auth/permissions', data, headers);
     if (res.data && res.data.status) {
-      toast.success("Successfully updated permissions!");
+      toast.success('Successfully updated permissions!');
       get_permissions(dispatch);
     } else {
       toast.error(res.data.message);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error,dispatch))
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const get_login_history = async (dispatch) => {
+  dispatch(start_loading());
+  try {
+    const res = await axios.get(`${url}get-login-history`, headers);
+    if (res?.data?.status) {
+      dispatch({ type: LOGIN_HISTORY, payload: res?.data });
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const get_user_profile_details = async (dispatch) => {
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token;
+    const res = await axios.get(`${url}profile`, headers);
+    if (res?.data?.status) {
+      console.log(res?.data?.data);
+      dispatch({ type: GET_USER_PROFILE, payload: res?.data?.data });
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }

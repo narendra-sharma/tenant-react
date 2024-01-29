@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { change_password, get_login_history } from '@/reduxData/user/userAction';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
@@ -11,6 +12,7 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import dayjs from 'dayjs';
 import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { config } from '@/config';
 import { SessionItem } from '@/components/dashboard/account/session-item';
@@ -28,10 +30,44 @@ export function Page() {
   const [oldPassError, setoldPassError] = useState(null);
   const [newPassError, setnewPassError] = useState(null);
   const [confirmPassError, setconfirmPassError] = useState(null);
-
+  const loginHistory = useSelector((state) => state.user.loginHistory);
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (formData.oldPassword == '' || formData.oldPassword == null) {
+      setoldPassError('Old password is required');
+    } else {
+      setoldPassError(null);
+    }
+
+    if (formData.newPassword == '' || formData.confirmPassword == null) {
+      setnewPassError('New password is required');
+    } else {
+      setnewPassError(null);
+    }
+    if (formData.confirmPassword == '' || formData.confirmPassword == null) {
+      setconfirmPassError('Confirm password is required');
+    } else if (formData.confirmPassword != formData.newPassword) {
+      setconfirmPassError("Password doesn't match");
+    } else {
+      setconfirmPassError(null);
+    }
+    if (
+      (!oldPassError && !newPassError && !confirmPassError && formData.oldPassword != '') ||
+      formData.newPassword != '' ||
+      formData.confirmPassword != '' ||
+      formData.confirmPassword != ''
+    ) {
+      const { oldPassword, newPassword } = formData;
+      change_password(dispatch, { oldPassword, newPassword });
+    }
   };
+
+  useEffect(() => {
+    // get_login_history(dispatch, 'asdasdasdasdasf3qweqeqwe23dgfs');
+    console.log(loginHistory);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,13 +86,7 @@ export function Page() {
         );
         break;
       case 'confirmPassword':
-        setconfirmPassError(
-          value == null || value == ''
-            ? 'Confirm password is required'
-            : formData.newPassword !== formData?.confirmPassword
-              ? "Password doesn't match"
-              : null
-        );
+        setconfirmPassError(value == null || value == '' ? 'Confirm password is required' : null);
         break;
       default:
         break;

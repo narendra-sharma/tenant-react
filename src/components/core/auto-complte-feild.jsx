@@ -1,4 +1,5 @@
-import { usePlacesWidget } from "react-google-autocomplete";
+import { usePlacesWidget } from 'react-google-autocomplete';
+
 const gapi = import.meta.env.VITE_APP_GOOGLE_API_KEY;
 export function CustomAutoComplete ({value,onChange}) {
     const { ref } = usePlacesWidget({

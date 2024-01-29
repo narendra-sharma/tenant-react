@@ -14,9 +14,7 @@ import { CreateDevice } from '@/pages/dashboard/admin/create/device';
 const AccountBillingPage = React.lazy(() =>
   import('@/pages/dashboard/account/billing').then((m) => ({ default: m.Page }))
 );
-const AccountProfilePage = React.lazy(() =>
-  import('@/pages/dashboard/account/profile').then((m) => ({ default: m.Page }))
-);
+const AccountProfilePage = React.lazy(() => import('@/pages/dashboard/account/profile'));
 const AccountSecurityPage = React.lazy(() =>
   import('@/pages/dashboard/account/security').then((m) => ({ default: m.Page }))
 );
@@ -103,7 +101,7 @@ export const routes = [
     ),
     children: [
       {
-        path:'dashboard',
+        path: 'dashboard',
         index: true,
         element: <OverviewPage />,
       },
@@ -244,10 +242,10 @@ export const routes = [
         ],
       },
       {
-        path:'admin',
-        children:[
+        path: 'admin',
+        children: [
           {
-            index:true,
+            index: true,
             element: <PermissionsPage />,
           },
           {
@@ -305,8 +303,8 @@ export const routes = [
               },
             ],
           },
-        ]
-      }
+        ],
+      },
     ],
   },
 ];
