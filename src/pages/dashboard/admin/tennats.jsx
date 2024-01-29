@@ -17,7 +17,9 @@ import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { DeviceTable } from '@/components/dashboard/admin/tenant-table';
 import { Pagination } from '@/components/core/pagination';
 import Box from '@mui/joy/Box';
-
+import { Button } from '@mui/joy';
+import { RouterLink } from '@/components/core/link';
+import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 const customer = [
   {
     id: 'Tenant',
@@ -72,13 +74,27 @@ const tenants = () => {
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
-        <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-         Tenants
-        </Typography>
-        <Breadcrumbs separator={<BreadcrumbsSeparator />}>
-          <BreadcrumbsItem href={paths['dashboard']} type="start" />
-          <BreadcrumbsItem type="end">Tenant</BreadcrumbsItem>
-        </Breadcrumbs>
+        <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
+          <Stack spacing={1} sx={{ flexGrow: 1 }}>
+            <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
+              Tennants
+            </Typography>
+            <Breadcrumbs separator={<BreadcrumbsSeparator />}>
+              <BreadcrumbsItem href={paths['dashboard']} type="start" />
+              <BreadcrumbsItem href={paths['dashboard.admin']}>ADMIN</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">Tennants</BreadcrumbsItem>
+            </Breadcrumbs>
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+            <Button
+              component={RouterLink}
+              href={paths['dashboard.admin.create.tenant']}
+              startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
+            >
+              Create
+            </Button>
+          </Stack>
+        </Stack>
         <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignvatId: 'BE0487248925start', flexWrap: 'wrap' }}>
             <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
               <FormLabel>Tenant Name</FormLabel>

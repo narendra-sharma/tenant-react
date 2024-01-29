@@ -5,6 +5,9 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { Layout as AccountLayout } from '@/components/dashboard/account/layout';
 import { Layout as DashboardLayout } from '@/components/dashboard/layout';
 import { Layout as TeamLayout } from '@/components/dashboard/team/layout';
+import { CreateTennant } from '@/pages/dashboard/admin/create/tenant';
+import { CreateUser } from '@/pages/dashboard/admin/create/user';
+import { CreateDevice } from '@/pages/dashboard/admin/create/device';
 
 // Account pages
 
@@ -252,16 +255,55 @@ export const routes = [
             element: <PermissionsPage />,
           },
           {
-            path: 'tennats',
-            element: <TennatsPages />,
+            path: 'tennants',
+            children: [
+              {
+                index: true,
+                element: <TennatsPages />,
+              },
+              {
+                path: 'create',
+                element: <CreateTennant />,
+              },
+              {
+                path: ':Id',
+                element: <CreateTennant />,
+              },
+            ],
           },
           {
             path: 'users',
-            element: <UserPages />,
+            children: [
+              {
+                index: true,
+                element: <UserPages />,
+              },
+              {
+                path: 'create',
+                element: <CreateUser />,
+              },
+              {
+                path: ':Id',
+                element: <CreateUser />,
+              },
+            ],
           },
           {
             path: 'devices',
-            element: <DevicesPages />,
+            children: [
+              {
+                index: true,
+                element: <DevicesPages />,
+              },
+              {
+                path: 'create',
+                element: <CreateDevice />,
+              },
+              {
+                path: ':Id',
+                element: <CreateDevice />,
+              },
+            ],
           },
         ]
       }
