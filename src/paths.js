@@ -51,6 +51,9 @@ export const paths = {
   'dashboard.admin': '/admin',
   'dashboard.admin.devices': '/admin/devices',
   'dashboard.admin.permissions': '/admin/permissions',
-  'dashboard.admin.tennats': '/admin/tennats',
+  'dashboard.admin.tennats': '/admin/tennants',
   'dashboard.admin.user': '/admin/users',
+  'dashboard.admin.create.device': '/admin/devices/create',
+  'dashboard.admin.create.user': '/admin/users/create',
+  'dashboard.admin.create.tenant': '/admin/tennants/create',
 };
