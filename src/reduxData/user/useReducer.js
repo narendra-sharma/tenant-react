@@ -1,55 +1,55 @@
-import { USER_PERMISSIONS, USER_UPDATE } from './userTypes';
+import { GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('authUser')),
-  permissions:[
+  permissions: [
     {
       name: 'Tenant Management',
       permissions: [
         {
-          key:'can_view_devices',
+          key: 'can_view_devices',
           name: 'Can view devices',
           readOnly: true,
-          member:false,
+          member: false,
           manager: true,
           admin: true,
         },
         {
-          key:'can_view_device_detail',
+          key: 'can_view_device_detail',
           name: 'Can view device details ',
           readOnly: true,
-          member:false,
+          member: false,
           manager: true,
           admin: true,
         },
         {
-          key:'can_change_own_detail',
+          key: 'can_change_own_detail',
           name: 'Can change own details',
           readOnly: true,
-          member:false,
+          member: false,
           manager: true,
           admin: true,
         },
         {
-          key:'can_change_device_detail',
+          key: 'can_change_device_detail',
           name: 'Can change device details (except serial number)',
-          readOnly:false,
+          readOnly: false,
           member: true,
           manager: true,
           admin: true,
         },
         {
-          key:'can_change_device_rename_password',
+          key: 'can_change_device_rename_password',
           name: 'Can change device rename password',
-          readOnly:false,
+          readOnly: false,
           member: true,
           manager: true,
           admin: true,
         },
         {
-          key:'can_change_company_detail',
+          key: 'can_change_company_detail',
           name: 'Can change company details',
-          readOnly:false,
+          readOnly: false,
           member: true,
           manager: true,
           admin: true,
@@ -60,88 +60,101 @@ const initialState = {
       name: 'ADMIN Management',
       permissions: [
         {
-          key:'can_create_tenants',
+          key: 'can_create_tenants',
           name: 'Can create tenants',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
         {
-          key:'can_create_new_user',
-          name: 'Can create new users', 
-          readOnly:false,
+          key: 'can_create_new_user',
+          name: 'Can create new users',
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
         {
-          key:'can_create_new_device',
+          key: 'can_create_new_device',
           name: 'Can create new devices',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
-        { 
-          key:'can_assign_devices',
+        {
+          key: 'can_assign_devices',
           name: 'Can assign devices to tenants',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
         {
-          key:'can_delete_tenants',
+          key: 'can_delete_tenants',
           name: 'Can delete tenants',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
         {
-          key:'can_delete_users',
+          key: 'can_delete_users',
           name: 'Can delete users',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
         {
-          key:'can_delete_devices',
+          key: 'can_delete_devices',
           name: 'Can delete devices',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
         {
-          key:'can_change_serial_number',
+          key: 'can_change_serial_number',
           name: 'Can change serial number of devices',
-          readOnly:false,
+          readOnly: false,
           member: false,
           manager: false,
           admin: true,
         },
       ],
     },
-  ]
+  ],
+  loginHistory: [],
+  userData: null,
 };
 
-export const userReducer = (state, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_UPDATE:
       return {
         ...state,
-        user: action.payload
-      }
+        user: action.payload,
+      };
     case USER_PERMISSIONS:
       return {
         ...state,
-        permissions: action.payload
-      }  
+        permissions: action.payload,
+      };
+    case LOGIN_HISTORY:
+      return {
+        ...state,
+        loginHistory: action.payload,
+      };
+    case GET_USER_PROFILE:
+      console.log(action);
+      return {
+        ...state,
+        userData: action.payload,
+      };
     default:
-      return initialState;
+      return state;
   }
 };
 
