@@ -19,18 +19,18 @@ import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
 import { City, Country, State } from 'country-state-city';
 import { Helmet } from 'react-helmet-async';
 import { connect, useDispatch } from 'react-redux';
-import { toast } from 'sonner';
 
 import { config } from '@/config';
 import { getInitials } from '@/lib/get-initials';
 import { CustomAutoComplete } from '@/components/core/auto-complte-feild';
+import CountryCodeField from '@/components/core/country-code-field';
 
+const url = import.meta.env.VITE_APP_ASSET_URL;
 const metadata = {
   title: `Profile | Account | Dashboard | ${config.site.name}`,
 };
 const Page = ({ userData }) => {
   const dispatch = useDispatch();
-  console.log('profole', userData);
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const fileinputRef = React.useRef();
   const [countries, setCountries] = React.useState([]);
@@ -102,6 +102,7 @@ const Page = ({ userData }) => {
       });
       changeCountry(userData?.country);
       changeState(userData?.state);
+      setimagePath(userData?.profile_pic ? url + userData?.profile_pic : null);
     }
   }, [userData]);
   React.useEffect(() => {
@@ -111,17 +112,19 @@ const Page = ({ userData }) => {
 
   const handleChange = (e) => {
     const selectedFile = e.target.files[0];
-    let reader = new FileReader();
-    reader.onload = (e) => {
-      setimagePath(e.target.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
+
     if (selectedFile) {
       const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
       if (allowedTypes.includes(selectedFile.type)) {
         const maxSize = 3 * 1024 * 1024;
         if (selectedFile.size <= maxSize) {
           setCuser({ ...cuser, profile_pic: selectedFile });
+          let reader = new FileReader();
+          reader.onload = (e) => {
+            setimagePath(e.target.result);
+          };
+          reader.readAsDataURL(e.target.files[0]);
+          setErrors({ ...errors, avatar: null });
         } else {
           // toast.error('File size exceeds 3MB limit.');
           setErrors({ ...errors, avatar: 'File size exceeds 3MB limit.' });
@@ -170,7 +173,7 @@ const Page = ({ userData }) => {
       if (!value) {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
-      } else if (value && (key === 'email' || key === 'comapnyEmail') && !emailRegex.test(value)) {
+      } else if (value && (key === 'email' || key === 'companyEmail') && !emailRegex.test(value)) {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'invalid' }));
       }
@@ -200,6 +203,7 @@ const Page = ({ userData }) => {
     formData.append('company_phone_number', cuser?.company_phone_number);
     formData.append('vat_number', cuser?.vat_number);
     update_profile_detail(formData, dispatch);
+    get_user_profile_details(dispatch);
   };
   return (
     <React.Fragment>
@@ -210,9 +214,7 @@ const Page = ({ userData }) => {
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
           <input type="file" ref={fileinputRef} style={{ display: 'none' }} onChange={(e) => handleChange(e)} />
           <Box sx={{ '--Avatar-size': '120px', position: 'relative' }} onClick={() => fileinputRef.current.click()}>
-            <Avatar src={imagePath ? imagePath : userData?.profile_pic}>
-              {getInitials(`${userData?.first_name} ${userData?.last_name}`)}/
-            </Avatar>
+            <Avatar src={imagePath}>{getInitials(`${userData?.first_name} ${userData?.last_name}`)}/</Avatar>
             <Box
               sx={{
                 alignItems: 'center',
@@ -294,13 +296,7 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    <Input
-                      value={cuser?.countryCode}
-                      name="countryCode"
-                      type="text"
-                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                      onChange={(e) => handleElementChange(e.target.value, 'countryCode')}
-                    />
+                    <CountryCodeField />
                     <Input
                       value={cuser?.phone_number}
                       name="number"
@@ -377,16 +373,10 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    <Input
-                      value={cuser?.countryCode}
-                      name="countryCode"
-                      type="text"
-                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                      onChange={(e) => handleElementChange(e.target.value, 'countryCodeCompany')}
-                    />
+                    <CountryCodeField />
                     <Input
                       value={cuser?.company_phone_number}
-                      name="number"
+                      name="companyPhone"
                       type="text"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'companyPhone')}
