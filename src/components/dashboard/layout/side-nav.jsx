@@ -66,7 +66,7 @@ export function SideNav({ items }) {
         <Stack spacing={3} sx={{ left: 0, position: 'absolute', py: '16px', top: 0, width: '100%', zIndex: 2 }}>
           <div>
             <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block', fontSize: 0 }}>
-              <Logo color="light" height={16} width={77} />
+              <Logo color="light" height={45} width={143} />
             </Box>
           </div>
           <CurrentOrganization />
