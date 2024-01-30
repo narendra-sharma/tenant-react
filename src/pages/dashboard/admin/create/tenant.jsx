@@ -12,7 +12,7 @@ import { paths } from '@/paths';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { RouterLink } from '@/components/core/link';
-import { CustomerCreateForm } from '@/components/dashboard/customer/customer-create-form';
+import { TenantCreateForm } from '@/components/dashboard/admin/tenant-create-form';
 
 const metadata = {
   title: `Create | Customers | Dashboard | ${config.site.name}`,
@@ -30,27 +30,18 @@ export function CreateTennant() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  Create a Customer
+                  Create Tenant
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
-                  <BreadcrumbsItem href={paths['dashboard.customers']}>Customers</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end">Create</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">Admin</BreadcrumbsItem>
+                  <BreadcrumbsItem href={paths['dashboard.admin.tennats']}>Tenants</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">Create Tenant</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
-              <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-                <Button
-                  color="neutral"
-                  component={RouterLink}
-                  href={paths['dashboard.customers']}
-                  startDecorator={<ArrowLeftIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
-                  variant="outlined"
-                >
-                  Cancel
-                </Button>
-              </Stack>
+              
             </Stack>
-            <CustomerCreateForm />
+            <TenantCreateForm />
           </Stack>
         </Container>
       </main>
