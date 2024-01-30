@@ -46,6 +46,7 @@ export function Page() {
     } else {
       setnewPassError(null);
     }
+
     if (formData.confirmPassword == '' || formData.confirmPassword == null) {
       setconfirmPassError('Confirm password is required');
     } else if (formData.confirmPassword != formData.newPassword) {
@@ -53,12 +54,7 @@ export function Page() {
     } else {
       setconfirmPassError(null);
     }
-    if (
-      (!oldPassError && !newPassError && !confirmPassError && formData.oldPassword != '') ||
-      formData.newPassword != '' ||
-      formData.confirmPassword != '' ||
-      formData.confirmPassword != ''
-    ) {
+    if (formData.newPassword === formData.confirmPassword && !oldPassError) {
       const { oldPassword, newPassword } = formData;
       change_password(dispatch, { oldPassword, newPassword });
     }
@@ -66,7 +62,6 @@ export function Page() {
 
   useEffect(() => {
     // get_login_history(dispatch, 'asdasdasdasdasf3qweqeqwe23dgfs');
-    console.log(loginHistory);
   }, []);
 
   const handleChange = (e) => {

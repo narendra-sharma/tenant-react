@@ -46,7 +46,6 @@ export function UpdatePasswordForm() {
       const userDataForm = {
         newUserPassword: formData.newpassword,
       };
-      console.log(searchParams.get('token'));
       await update_password(searchParams.get('token'), dispatch, userDataForm);
     }
   };

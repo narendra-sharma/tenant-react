@@ -148,7 +148,6 @@ export const userReducer = (state = initialState, action) => {
         loginHistory: action.payload,
       };
     case GET_USER_PROFILE:
-      console.log(action);
       return {
         ...state,
         userData: action.payload,

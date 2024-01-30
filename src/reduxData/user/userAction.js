@@ -29,7 +29,6 @@ export const login = async (user, dispatch, navigate) => {
   dispatch(start_loading());
   try {
     const res = await axios.post(url + 'auth/login', user, headers);
-    console.log(res);
     if (res?.data?.token && res?.data?.data) {
       toast.success('Successfully user logged-in!');
       localStorage.setItem('custom-auth-token', res?.data?.token);
@@ -48,11 +47,11 @@ export const update_profile_detail = async (data, dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] = token;
+    headers.headers['Content-Type'] = 'multipart/form-data';
     const res = await axios.put(url + 'profile/update', data, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated profile');
-      localStorage.setItem('custom-auth-token', token);
-      dispatch(set_update_user({ ...res?.data?.data, token: token }));
+      dispatch({ type: GET_USER_PROFILE, payload: res?.data?.data });
     } else {
       toast.error(res.data.message);
     }
@@ -110,7 +109,7 @@ export const change_password = async (dispatch, userData) => {
     if (res?.data?.status) {
       toast.success(res?.data?.message);
     } else {
-      toast.error(res?.data?.message);
+      toast.error(res?.data?.error);
     }
   } catch (error) {
     dispatch(catch_errors_handle(error, dispatch));
@@ -179,7 +178,6 @@ export const get_user_profile_details = async (dispatch) => {
     headers.headers['x-access-token'] = token;
     const res = await axios.get(`${url}profile`, headers);
     if (res?.data?.status) {
-      console.log(res?.data?.data);
       dispatch({ type: GET_USER_PROFILE, payload: res?.data?.data });
     } else {
       toast.error(res?.data?.message);

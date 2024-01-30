@@ -21,7 +21,6 @@ export function Page() {
   const dispatch = useDispatch();
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get('email');
-  console.log(email);
   async function resendEmail() {
     await forgot_password(email, dispatch, null, { redirect: false });
   }

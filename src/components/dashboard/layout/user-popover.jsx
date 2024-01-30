@@ -16,6 +16,7 @@ import { GearSix as GearSixIcon } from '@phosphor-icons/react/dist/ssr/GearSix';
 import { House as HouseIcon } from '@phosphor-icons/react/dist/ssr/House';
 import { SignOut as SignOutIcon } from '@phosphor-icons/react/dist/ssr/SignOut';
 import { User as UserIcon } from '@phosphor-icons/react/dist/ssr/User';
+import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 
 import { config } from '@/config';
@@ -27,14 +28,6 @@ import { getInitials } from '@/lib/get-initials';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
 import { RouterLink } from '@/components/core/link';
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Rene',
-  lastName: 'Wells',
-  email: 'rene@devias.io',
-};
-
 const Popup = styled(Popper)({
   maxWidth: '340px',
   width: '100%',
@@ -42,6 +35,8 @@ const Popup = styled(Popper)({
 });
 
 export function UserPopover({ anchorEl, onClose, open }) {
+  const userData = useSelector((state) => state.user.userData);
+  const url = import.meta.env.VITE_APP_ASSET_URL;
   const handleSignOut = React.useCallback(async () => {
     let redirectTo;
 
@@ -99,13 +94,15 @@ export function UserPopover({ anchorEl, onClose, open }) {
         >
           <Stack spacing={2}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
-              <Avatar src={user.avatar}>{getInitials(`${user.firstName} ${user.lastName}`)}</Avatar>
+              <Avatar src={userData?.profile_pic ? url + userData?.profile_pic : null}>
+                {getInitials(`${userData?.first_name} ${userData?.last_name}`)}
+              </Avatar>
               <div>
                 <Typography fontWeight="lg" textColor="inherit">
-                  {user.firstName} {user.lastName}
+                  {userData?.first_name} {userData?.last_name}
                 </Typography>
                 <Typography level="body-sm" textColor="neutral.500">
-                  {user.email}
+                  {userData?.email}
                 </Typography>
               </div>
             </Stack>

@@ -8,6 +8,7 @@ import IconButton from '@mui/joy/IconButton';
 import Stack from '@mui/joy/Stack';
 import { Bell as BellIcon } from '@phosphor-icons/react/dist/ssr/Bell';
 import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
+import { useSelector } from 'react-redux';
 
 import { getInitials } from '@/lib/get-initials';
 import { usePopover } from '@/hooks/use-popover';
@@ -16,15 +17,9 @@ import { MobileNav } from './mobile-nav';
 import { NotificationsPopover } from './notifications-popover';
 import { UserPopover } from './user-popover';
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Rene',
-  lastName: 'Wells',
-  email: 'rene@devias.io',
-};
-
 export function MainNav({ items }) {
+  const userData = useSelector((state) => state.user.userData);
+  const url = import.meta.env.VITE_APP_ASSET_URL;
   const [openNav, setOpenNav] = React.useState(false);
   const notificationsPopover = usePopover();
   const userPopover = usePopover();
@@ -110,7 +105,9 @@ export function MainNav({ items }) {
                 },
               }}
             >
-              <Avatar src={user.avatar}>{getInitials(`${user.firstName} ${user.lastName}`)}</Avatar>
+              <Avatar src={userData?.profile_pic ? url + userData?.profile_pic : null}>
+                {getInitials(`${userData?.first_name} ${userData?.last_name}`)}
+              </Avatar>
             </Badge>
           </Stack>
         </Box>
