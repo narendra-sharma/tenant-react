@@ -10,19 +10,24 @@ import { Desktop as DesktopIcon } from '@phosphor-icons/react/dist/ssr/Desktop';
 import { DeviceMobile as DeviceMobileIcon } from '@phosphor-icons/react/dist/ssr/DeviceMobile';
 
 export function SessionItem({ session }) {
-  const DeviceIcon = session.device === 'mobile' ? DeviceMobileIcon : DesktopIcon;
+  const DeviceIcon = session.deviceName === 'mobile' ? DeviceMobileIcon : DesktopIcon;
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
 
   return (
-    <ListItem key={session.id} sx={{ alignItems: 'flex-start' }}>
+    <ListItem key={session._id} sx={{ alignItems: 'flex-start' }}>
       <ListItemDecorator>
         <DeviceIcon color="var(--joy-palette-text-primary)" fontSize="var(--joy-fontSize-lg)" />
       </ListItemDecorator>
       <ListItemContent>
         <Stack spacing={1}>
           <div>
-            <Typography level="title-sm">{session.agent}</Typography>
+            <Typography level="title-sm">{session.browserName}</Typography>
             <Typography level="body-sm">
-              {session.location} • {session.date}
+              {session?.location?.city?.name}({session?.location?.country?.name}{session?.location?.country?.emoji}) • {formatDate(session.updatedAt)}
             </Typography>
           </div>
           {session.active ? (
