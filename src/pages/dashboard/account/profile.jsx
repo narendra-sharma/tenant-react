@@ -25,6 +25,10 @@ import { getInitials } from '@/lib/get-initials';
 import { CustomAutoComplete } from '@/components/core/auto-complte-feild';
 import CountryCodeField from '@/components/core/country-code-field';
 
+import 'react-phone-number-input/style.css';
+
+import PhoneInput from 'react-phone-number-input';
+
 const url = import.meta.env.VITE_APP_ASSET_URL;
 const metadata = {
   title: `Profile | Account | Dashboard | ${config.site.name}`,
@@ -38,6 +42,7 @@ const Page = ({ userData }) => {
   const [states, setStates] = React.useState([]);
   const [cities, setCities] = React.useState([]);
   const [imagePath, setimagePath] = useState('');
+  const [value, setValue] = useState();
   const [cuser, setCuser] = React.useState({
     profile_pic: '',
     first_name: '',
@@ -57,24 +62,22 @@ const Page = ({ userData }) => {
     vat_number: '',
   });
   const [errors, setErrors] = React.useState({
-    avatar: '',
-    firstName: '',
-    lastName: '',
+    profile_pic: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    countryCode: '',
-    countryCodeCompany: '',
-    number: '',
+    phone_number: '',
     website: '',
     country: '',
     state: '',
     city: '',
     zipcode: '',
     address: '',
-    companyFirstName: '',
-    companyLastName: '',
-    comapnyEmail: '',
-    companyNumber: '',
-    vatNumber: '',
+    company_first_name: '',
+    company_last_name: '',
+    company_email: '',
+    company_phone_number: '',
+    vat_number: '',
   });
   React.useEffect(() => {
     get_user_profile_details(dispatch);
@@ -124,15 +127,15 @@ const Page = ({ userData }) => {
             setimagePath(e.target.result);
           };
           reader.readAsDataURL(e.target.files[0]);
-          setErrors({ ...errors, avatar: null });
+          setErrors({ ...errors, profile_pic: null });
         } else {
           // toast.error('File size exceeds 3MB limit.');
-          setErrors({ ...errors, avatar: 'File size exceeds 3MB limit.' });
+          setErrors({ ...errors, profile_pic: 'File size exceeds 3MB limit.' });
         }
       } else if (!allowedTypes.includes(selectedFile.type)) {
-        setErrors({ ...errors, avatar: 'Invalid file type. Please select a PNG, JPEG, or GIF file.' });
+        setErrors({ ...errors, profile_pic: 'Invalid file type. Please select a PNG, JPEG, or GIF file.' });
       } else {
-        setErrors({ ...errors, avatar: null });
+        setErrors({ ...errors, profile_pic: null });
       }
     }
   };
@@ -149,9 +152,9 @@ const Page = ({ userData }) => {
     setCities([...citieArr]);
   };
   const handleElementChange = (value, label) => {
+    console.log(value,label)
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
-      ...prev,
       [label]: !value
         ? 'required'
         : (label === 'email' || label === 'comapnyEmail') && !emailRegex.test(value)
@@ -181,6 +184,7 @@ const Page = ({ userData }) => {
     return err;
   };
   const handleSubmit = (event) => {
+    console.log('test 1', cuser);
     event.preventDefault();
     if (checkAllErrors()) {
       return;
@@ -244,7 +248,7 @@ const Page = ({ userData }) => {
             <Typography level="body-sm">Supports PNGs, JPEGs and GIFs under 3MB</Typography>
           </div>
         </Stack>
-        {errors.avatar && <FormHelperText style={{ color: 'red' }}>{errors?.avatar}</FormHelperText>}
+        {errors.profile_pic && <FormHelperText style={{ color: 'red' }}>{errors?.profile_pic}</FormHelperText>}
         <Stack spacing={3}>
           <Typography level="h4">My details</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
@@ -254,11 +258,11 @@ const Page = ({ userData }) => {
                   <FormLabel>First Name</FormLabel>
                   <Input
                     value={cuser?.first_name}
-                    name="firstName"
+                    name="first_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'firstName')}
+                    onChange={(e) => handleElementChange(e.target.value, 'first_name')}
                   />
-                  {errors.firstName && (
+                  {errors.first_name && (
                     <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -268,11 +272,11 @@ const Page = ({ userData }) => {
                   <FormLabel>Last Name</FormLabel>
                   <Input
                     value={cuser?.last_name}
-                    name="lastName"
+                    name="last_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'lastName')}
+                    onChange={(e) => handleElementChange(e.target.value, 'last_name')}
                   />
-                  {errors.lastName && <FormHelperText style={{ color: 'red' }}>Last Name is required.</FormHelperText>}
+                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>Last Name is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -296,13 +300,19 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    <CountryCodeField />
-                    <Input
+                    {/* <CountryCodeField /> */}
+                    {/* <Input
                       value={cuser?.phone_number}
                       name="number"
                       type="text"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px', width: '30%' }}
-                      onChange={(e) => handleElementChange(e.target.value, 'number')}
+                      onChange={(e) => handleElementChange(e.target.value, 'phone_number')}
+                    /> */}
+                    <PhoneInput
+                    international
+                      placeholder="Enter phone number"
+                      value={cuser.phone_number}
+                      onChange={(e) => handleElementChange(e, 'phone_number')}
                     />
                   </Box>
                   {errors.number && (
@@ -310,9 +320,9 @@ const Page = ({ userData }) => {
                       {errors.number === 'required' ? 'Phone number is required.' : null}
                     </FormHelperText>
                   )}
-                  {errors.countryCode && (
+                  {errors.country_code && (
                     <FormHelperText style={{ color: 'red' }}>
-                      {errors.countryCode === 'required' ? 'Country code is required.' : null}
+                      {errors.country_code === 'required' ? 'Country code is required.' : null}
                     </FormHelperText>
                   )}
                 </FormControl>
@@ -331,9 +341,9 @@ const Page = ({ userData }) => {
                     value={cuser?.company_first_name}
                     name="companyFirstName"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'companyFirstName')}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_first_name')}
                   />
-                  {errors.companyFirstName && (
+                  {errors.company_first_name && (
                     <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -343,11 +353,11 @@ const Page = ({ userData }) => {
                   <FormLabel>Last Name</FormLabel>
                   <Input
                     value={cuser?.company_last_name}
-                    name="companyLastName"
+                    name="company_last_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'companyLastName')}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_last_name')}
                   />
-                  {errors.companyLastName && (
+                  {errors.company_last_name && (
                     <FormHelperText style={{ color: 'red' }}>Company last Name is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -357,14 +367,14 @@ const Page = ({ userData }) => {
                   <FormLabel>Email</FormLabel>
                   <Input
                     value={cuser?.company_email}
-                    name="comapnyEmail"
+                    name="company_email"
                     type="email"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'companyEmail')}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_email')}
                   />
-                  {errors.comapnyEmail && (
+                  {errors.company_email && (
                     <FormHelperText style={{ color: 'red' }}>
-                      {errors.comapnyEmail === 'required' ? 'Company email is required.' : 'Email is invalid.'}
+                      {errors.company_email === 'required' ? 'Company email is required.' : 'Email is invalid.'}
                     </FormHelperText>
                   )}
                 </FormControl>
@@ -373,15 +383,20 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    <CountryCodeField />
-                    <Input
+                    {/* <CountryCodeField /> */}
+                    {/* <Input
                       value={cuser?.company_phone_number}
-                      name="companyPhone"
+                      name="company_phone_number"
                       type="text"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                      onChange={(e) => handleElementChange(e.target.value, 'companyPhone')}
+                      onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
+                    /> */}
+                     <PhoneInput
+                      placeholder="Enter phone number"
+                      value={cuser.company_phone_number}
+                      onChange={(e) => handleElementChange(e, 'company_phone_number')}
                     />
-                    {errors.companyNumber && (
+                    {errors.company_phone_number && (
                       <FormHelperText style={{ color: 'red' }}>Phone Number is required.</FormHelperText>
                     )}
                   </Box>
@@ -397,12 +412,12 @@ const Page = ({ userData }) => {
                   <FormLabel>VAT Number</FormLabel>
                   <Input
                     value={cuser?.vat_number}
-                    name="vatNumber"
+                    name="vat_number"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'vatNumber')}
+                    onChange={(e) => handleElementChange(e.target.value, 'vat_number')}
                   />
-                  {errors.vatNumber && (
+                  {errors.vat_number && (
                     <FormHelperText style={{ color: 'red' }}>Vat Number is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -436,7 +451,7 @@ const Page = ({ userData }) => {
                   <FormControl>
                     <FormLabel>Country</FormLabel>
                     <Select
-                      value={cuser?.country || ''}
+                      value={cuser?.country}
                       name="country"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => e && handleElementChange(e.target.textContent, 'country')}
@@ -458,7 +473,7 @@ const Page = ({ userData }) => {
                   <FormControl>
                     <FormLabel>State</FormLabel>
                     <Select
-                      value={cuser?.state || ''}
+                      value={cuser?.state}
                       name="state"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => e && handleElementChange(e.target.textContent, 'state')}
@@ -480,7 +495,7 @@ const Page = ({ userData }) => {
                   <FormControl>
                     <FormLabel>City</FormLabel>
                     <Select
-                      value={cuser?.city || ''}
+                      value={cuser?.city}
                       name="city"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => e && handleElementChange(e.target.textContent, 'city')}

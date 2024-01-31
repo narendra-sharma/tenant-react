@@ -31,6 +31,7 @@ export function Page() {
   const [newPassError, setnewPassError] = useState(null);
   const [confirmPassError, setconfirmPassError] = useState(null);
   const loginHistory = useSelector((state) => state.user.loginHistory);
+  console.log('hhhhhhhhhhhhhhhhhhhh',loginHistory)
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,7 +62,7 @@ export function Page() {
   };
 
   useEffect(() => {
-    // get_login_history(dispatch, 'asdasdasdasdasf3qweqeqwe23dgfs');
+    get_login_history(dispatch);
   }, []);
 
   const handleChange = (e) => {
@@ -146,28 +147,10 @@ export function Page() {
             <Typography level="body-sm">Your recent login activity</Typography>
           </div>
           <List sx={{ '--List-gap': '24px' }}>
-            {[
-              {
-                id: 'SES-002',
-                device: 'desktop',
-                agent: 'Chrome, Mac OS 116.0.5845.50',
-                location: 'California, USA',
-                date: dayjs().format('D MMM [at] hh:mm A'),
-                active: true,
-              },
-              {
-                id: 'SES-001',
-                device: 'mobile',
-                agent: 'Chrome, Android 116.0.5845.51',
-                location: 'Denver, USA',
-                date: dayjs()
-                  .subtract(2, 'day')
-                  .subtract(5, 'hours')
-                  .subtract(45, 'minute')
-                  .format('D MMM [at] hh:mm A'),
-              },
-            ].map((session) => (
-              <SessionItem key={session.id} session={session} />
+            {loginHistory.map((session) => (
+              <div key={session?._id}>
+              <SessionItem  session={session} />
+              </div>
             ))}
           </List>
         </Stack>

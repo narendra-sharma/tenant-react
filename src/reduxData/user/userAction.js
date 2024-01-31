@@ -9,6 +9,8 @@ const url = import.meta.env.VITE_API_URL;
 const headers = {
   headers: {
     'Content-Type': 'application/json',
+    'x-access-token':localStorage.getItem('custom-auth-token')
+
   },
 };
 const token = localStorage.getItem('custom-auth-token');
@@ -159,9 +161,10 @@ export const update_permissions = async (data, dispatch) => {
 export const get_login_history = async (dispatch) => {
   dispatch(start_loading());
   try {
-    const res = await axios.get(`${url}get-login-history`, headers);
+    const res = await axios.get(`${url}profile/login-history`, headers);
     if (res?.data?.status) {
-      dispatch({ type: LOGIN_HISTORY, payload: res?.data });
+      console.log("#######################",res)
+      dispatch({ type: LOGIN_HISTORY, payload: res?.data.data });
     } else {
       toast.error(res?.data?.message);
     }

@@ -4,7 +4,7 @@ import Input from 'react-phone-number-input/input';
 const CountryCodeField = () => {
   const [countryCode, setcountryCode] = useState('');
   const onChangeInput = (e, label) => {
-    setcountryCode(e.target.value);
+    // setcountryCode(e.target.value);
   };
   return (
     <Input
