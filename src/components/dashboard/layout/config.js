@@ -16,18 +16,18 @@ export const layoutConfig = {
           key: 'dashboard:devices',
           title: 'Devices',
           href: paths['dashboard.devices'],
-          icon: 'chart-pie',
+          icon: 'sign-out',
         },
         {
           key: 'dashboard:account',
           title: 'Settings',
           href: paths['dashboard.account'],
-          icon: 'currency-btc',
+          icon: 'gear-six',
         },
         {
           key: 'dashboard:admin',
           title: 'Admin',
-          icon: 'shopping-cart',
+          icon: 'buildings',
           items: [
             {
               key: 'dashboard:admin:tennats',

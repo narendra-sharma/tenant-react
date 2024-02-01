@@ -8,9 +8,12 @@ import { ShoppingCart as ShoppingCartIcon } from '@phosphor-icons/react/dist/ssr
 import { UsersThree as UsersThreeIcon } from '@phosphor-icons/react/dist/ssr/UsersThree';
 import { Helmet } from 'react-helmet-async';
 import { config } from '@/config';
-import { DeviceSummary } from '@/components/dashboard/overview/device-summary';
+import { Inbox } from '@/components/dashboard/overview/inbox';
 import { Orders } from '@/components/dashboard/overview/orders';
+import { SessionsByDevice } from '@/components/dashboard/overview/sessions-by-device';
 import { Stats } from '@/components/dashboard/overview/stats';
+import { Tasks } from '@/components/dashboard/overview/tasks';
+import { UsersRealtime } from '@/components/dashboard/overview/users-realtime';
 import { PowerUsageToday } from '@/components/dashboard/smart-home/power-usage-today';
 import Card from '@mui/joy/Card';
 import FormControl from '@mui/joy/FormControl';
@@ -83,17 +86,52 @@ export function Page() {
                 DashBoard
               </Typography>
             </div>
-            <DeviceSummary active={268} canceled={4} completed={623} total={891} />
+            <Grid container spacing={3}>
+              <Grid md={3} sx={{ '& > *': { height: '100%' } }} xs={12}>
+                <Stats color="primary" icon={ShoppingCartIcon} label="Total Devices" value="220" />
+              </Grid>
+              <Grid md={3} sx={{ '& > *': { height: '100%' } }} xs={12}>
+                <Stats
+                  color="danger"
+                  diff={16}
+                  icon={CoinVerticalIcon}
+                  label="Water Meters"
+                  trend="up"
+                  value="$92,175"
+                />
+              </Grid>
+              <Grid md={3} sx={{ '& > *': { height: '100%' } }} xs={12}>
+                <Stats
+                  color="success"
+                  diff={24}
+                  icon={UsersThreeIcon}
+                  label="Electricity Meters"
+                  trend="up"
+                  value="560,410"
+                />
+              </Grid>
+              <Grid md={3} sx={{ '& > *': { height: '100%' } }} xs={12}>
+                <Stats
+                  color="success"
+                  diff={24}
+                  icon={UsersThreeIcon}
+                  label="Offline Meters"
+                  trend="up"
+                  value="560,410"
+                />
+              </Grid>
+            </Grid>
+
             <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-              <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
+              <FormControl sx={{ maxWidth: '240px', mr: 'auto', width: '100%' }}>
                 <FormLabel>Device Name</FormLabel>
                 <Input defaultValue="" name="orderId" />
               </FormControl>
-              <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
+              <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
                 <FormLabel>Client Name</FormLabel>
                 <Input defaultValue="" name="customer" />
               </FormControl>
-              <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
+              <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
                 <FormLabel>Status</FormLabel>
                 <Select defaultValue="all" name="status">
                   <Option value="all">All</Option>

@@ -25,7 +25,7 @@ export function PowerUsageToday({ data = [] }) {
 
   return (
     <Card>
-      <Typography level="h4">Today&apos;s Power Usage</Typography>
+      <Typography level="h4">Today&apos;s Total Usage</Typography>
       <NoSSR fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
         <ResponsiveContainer height={chartHeight} width="100%">
           <AreaChart data={data} margin={{ top: 0, right: -40, bottom: 0, left: -20 }}>
