@@ -28,7 +28,7 @@ export function Orders({ data = [] }) {
 
   return (
     <Card>
-      <Typography level="h4">Current Week Usage</Typography>
+      <Typography level="h4">This Week Total Usage</Typography>
       <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', justifyContent: 'flex-end' }}>
         {bars.map((bar) => (
           <Stack direction="row" key={bar.name} spacing={1} sx={{ alignItems: 'center' }}>

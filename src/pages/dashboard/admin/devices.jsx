@@ -102,15 +102,15 @@ const devices = () => {
         </Stack>
         
         <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            <FormControl sx={{ maxWidth: '240px', mr: 'auto', width: '100%' }}>
+            <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
               <FormLabel>Device Name</FormLabel>
               <Input defaultValue="" name="orderId" />
             </FormControl>
-            <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
+            <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Client Name</FormLabel>
               <Input defaultValue="" name="customer" />
             </FormControl>
-            <FormControl sx={{ maxWidth: '240px', width: '100%' }}>
+            <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Status</FormLabel>
               <Select defaultValue="all" name="status">
                 <Option value="all">All</Option>
