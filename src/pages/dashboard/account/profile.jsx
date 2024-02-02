@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { get_user_profile_details, update_profile_detail } from '@/reduxData/user/userAction';
-import { FormHelperText } from '@mui/joy';
+import { FormHelperText, Textarea } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -19,6 +19,7 @@ import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
 import { City, Country, State } from 'country-state-city';
 import { Helmet } from 'react-helmet-async';
 import { connect, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 import { config } from '@/config';
 import { getInitials } from '@/lib/get-initials';
@@ -79,6 +80,7 @@ const Page = ({ userData }) => {
     company_phone_number: '',
     vat_number: '',
   });
+  const navigate = useNavigate();
   React.useEffect(() => {
     get_user_profile_details(dispatch);
   }, []);
@@ -152,7 +154,6 @@ const Page = ({ userData }) => {
     setCities([...citieArr]);
   };
   const handleElementChange = (value, label) => {
-    console.log(value, label);
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       [label]: !value
@@ -528,7 +529,10 @@ const Page = ({ userData }) => {
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>Address</FormLabel>
-                    <Input value={cuser?.address} onChange={(val) => handleElementChange(val, 'address')} />
+                    <CustomAutoComplete
+                      value={cuser?.address}
+                      onChange={(val) => handleElementChange(val, 'address')}
+                    />
                     {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
                   </FormControl>
                 </Grid>
@@ -538,7 +542,7 @@ const Page = ({ userData }) => {
         </Stack>
 
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Button color="neutral" variant="outlined">
+          <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
             Discard
           </Button>
           <Button onClick={(event) => handleSubmit(event)}>Save Changes</Button>

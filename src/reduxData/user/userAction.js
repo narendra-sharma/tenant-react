@@ -111,7 +111,7 @@ export const forgot_password = async (userEmail, dispatch, navigate, redirect) =
       dispatch(stop_loading());
     }
   }else{
-    toast.error("Please enter the email id.");
+    // toast.error("Please enter the email id.");
   }
 
 };
@@ -119,15 +119,16 @@ export const forgot_password = async (userEmail, dispatch, navigate, redirect) =
 export const change_password = async (dispatch, userData) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] = token;
+    headers.headers['x-access-token'] = localStorage.getItem('custom-auth-token');
     const res = await axios.put(`${url}profile/change-password`, userData, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
+      return res;
     } else {
       toast.error(res?.data?.error);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error, dispatch));
+    toast.error(error.response.data.error);
   } finally {
     dispatch(stop_loading());
   }

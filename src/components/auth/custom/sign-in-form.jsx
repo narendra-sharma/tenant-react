@@ -50,6 +50,7 @@ export function SignInForm() {
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (formData.email === '') {
       setEmailerror('Email is Required');
+      return
     } else if (!exptest.test(formData.email)) {
       setEmailerror('Email is Invalid');
     } else {
@@ -62,7 +63,7 @@ export function SignInForm() {
       setPassworderror(null);
     }
 
-    if (formData.email !== '' && formData.password !== '') {
+    if (formData.email !== '' && formData.password !== '' && !emailerror) {
       await login(formData, dispatch,navigate);
     }
   };

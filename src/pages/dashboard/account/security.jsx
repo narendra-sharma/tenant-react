@@ -37,27 +37,32 @@ export function Page() {
     e.preventDefault();
 
     if (formData.oldPassword == '' || formData.oldPassword == null) {
-      setoldPassError('Old password is required');
+      setoldPassError('Current password is required');
+      return;
     } else {
       setoldPassError(null);
     }
 
     if (formData.newPassword == '' || formData.confirmPassword == null) {
       setnewPassError('New password is required');
+      return;
     } else {
       setnewPassError(null);
     }
 
     if (formData.confirmPassword == '' || formData.confirmPassword == null) {
       setconfirmPassError('Confirm password is required');
+      return
     } else if (formData.confirmPassword != formData.newPassword) {
       setconfirmPassError("Password doesn't match");
+      return
     } else {
       setconfirmPassError(null);
     }
     if (formData.newPassword === formData.confirmPassword && !oldPassError) {
+      console.log(formData.oldPassword,formData.newPassword,formData.confirmPassword )
       const { oldPassword, newPassword } = formData;
-      change_password(dispatch, { oldPassword, newPassword });
+       change_password(dispatch, { oldPassword, newPassword });
     }
   };
 
@@ -133,7 +138,7 @@ export function Page() {
             {confirmPassError ? <FormHelperText style={{ color: 'red' }}>{confirmPassError}</FormHelperText> : null}
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-            <Button color="neutral" variant="outlined"onClick={(e) => navigate('../')}>
+            <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
               Discard
             </Button>
             <Button type="submit" onClick={(e) => handleSubmit(e)}>
