@@ -13,9 +13,9 @@ import Typography from '@mui/joy/Typography';
 import dayjs from 'dayjs';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { config } from '@/config';
 import { SessionItem } from '@/components/dashboard/account/session-item';
+import { useNavigate } from 'react-router';
 
 const metadata = {
   title: `Security | ${config.site.name}`,
@@ -31,7 +31,7 @@ export function Page() {
   const [newPassError, setnewPassError] = useState(null);
   const [confirmPassError, setconfirmPassError] = useState(null);
   const loginHistory = useSelector((state) => state.user.loginHistory);
-  console.log('hhhhhhhhhhhhhhhhhhhh',loginHistory)
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ export function Page() {
     setformData({ ...formData, [name]: value });
     switch (name) {
       case 'oldPassword':
-        setoldPassError(value == null || value == '' ? 'Old password is reuired' : null);
+        setoldPassError(value == null || value == '' ? 'Current password is required' : null);
         break;
       case 'newPassword':
         setnewPassError(
@@ -133,7 +133,7 @@ export function Page() {
             {confirmPassError ? <FormHelperText style={{ color: 'red' }}>{confirmPassError}</FormHelperText> : null}
           </Stack>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-            <Button color="neutral" variant="outlined">
+            <Button color="neutral" variant="outlined"onClick={(e) => navigate('../')}>
               Discard
             </Button>
             <Button type="submit" onClick={(e) => handleSubmit(e)}>

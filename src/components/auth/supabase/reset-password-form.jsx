@@ -75,7 +75,7 @@ export function ResetPasswordForm() {
           </FormControl>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
           <Button disabled={isPending} fullWidth type="submit">
-            Send Recover Link
+          Send Reset Link
           </Button>
         </Stack>
       </Stack>

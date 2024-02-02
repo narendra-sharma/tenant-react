@@ -57,7 +57,7 @@ export function ResetPasswordSent() {
             type="submit"
             style={{ padding: '10px 10px', background: '#0074be' }}
           >
-            Send Recover Link
+            Send Reset Link
           </Button>
         </Stack>
       </Stack>

@@ -22,7 +22,7 @@ export function Page() {
   const queryParams = new URLSearchParams(location.search);
   const email = queryParams.get('email');
   async function resendEmail() {
-    await forgot_password(email, dispatch, null, { redirect: false });
+    const data = await forgot_password(email, dispatch, null, { redirect: false });
   }
   return (
     <React.Fragment>
@@ -39,8 +39,8 @@ export function Page() {
           <Typography marginTop={'3vh'}>
             If an account exists with email "{email}", you will receive a recovery email.
           </Typography>
-          <Typography
-            style={{ color: '#443DF6' }}
+          <a
+            style={{ color: '#443DF6',cursor:'pointer' }}
             fontSize={12}
             marginTop={5}
             marginBottom={5}
@@ -48,7 +48,7 @@ export function Page() {
             onClick={() => navigateTo('/reset-password')}
           >
             Use another mail
-          </Typography>
+          </a>
           <Button
             variant="contained"
             style={{ backgroundColor: '#443DF6', color: '#fff', width: '100%' }}

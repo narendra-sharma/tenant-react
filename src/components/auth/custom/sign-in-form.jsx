@@ -126,7 +126,7 @@ export function SignInForm() {
           </FormControl>
           <div>
             <Link component={RouterLink} href={paths['auth.custom.reset-password']}>
-              Fogot password?
+              Forgot password?
             </Link>
           </div>
           <Button
