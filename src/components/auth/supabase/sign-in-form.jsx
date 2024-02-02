@@ -175,7 +175,7 @@ export function SignInForm() {
           </FormControl>
           <div>
             <Link component={RouterLink} href={paths['auth.supabase.reset-password']}>
-              Fogot password?
+              Forgot password?
             </Link>
           </div>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}

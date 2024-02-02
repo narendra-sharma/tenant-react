@@ -152,7 +152,7 @@ const Page = ({ userData }) => {
     setCities([...citieArr]);
   };
   const handleElementChange = (value, label) => {
-    console.log(value,label)
+    console.log(value, label);
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       [label]: !value
@@ -308,12 +308,14 @@ const Page = ({ userData }) => {
                       style={{ borderColor: '#EAEEF6', fontSize: '14px', width: '30%' }}
                       onChange={(e) => handleElementChange(e.target.value, 'phone_number')}
                     /> */}
-                    <PhoneInput
-                    international
-                      placeholder="Enter phone number"
-                      value={cuser.phone_number}
-                      onChange={(e) => handleElementChange(e, 'phone_number')}
-                    />
+                    <div className="phoneNumberContainer">
+                      <PhoneInput
+                        international
+                        placeholder="Enter phone number"
+                        value={cuser.phone_number}
+                        onChange={(e) => handleElementChange(e, 'phone_number')}
+                      />
+                    </div>
                   </Box>
                   {errors.number && (
                     <FormHelperText style={{ color: 'red' }}>
@@ -336,7 +338,7 @@ const Page = ({ userData }) => {
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Company Name</FormLabel>
                   <Input
                     value={cuser?.company_first_name}
                     name="companyFirstName"
@@ -350,7 +352,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Tenant Name</FormLabel>
                   <Input
                     value={cuser?.company_last_name}
                     name="company_last_name"
@@ -358,13 +360,13 @@ const Page = ({ userData }) => {
                     onChange={(e) => handleElementChange(e.target.value, 'company_last_name')}
                   />
                   {errors.company_last_name && (
-                    <FormHelperText style={{ color: 'red' }}>Company last Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>Tenant Name is required.</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Company Email</FormLabel>
                   <Input
                     value={cuser?.company_email}
                     name="company_email"
@@ -381,7 +383,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>My Phone Number</FormLabel>
+                  <FormLabel>Company Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
                     {/* <CountryCodeField /> */}
                     {/* <Input
@@ -391,13 +393,13 @@ const Page = ({ userData }) => {
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
                     /> */}
-                     <PhoneInput
+                    <PhoneInput
                       placeholder="Enter phone number"
                       value={cuser.company_phone_number}
                       onChange={(e) => handleElementChange(e, 'company_phone_number')}
                     />
                     {errors.company_phone_number && (
-                      <FormHelperText style={{ color: 'red' }}>Phone Number is required.</FormHelperText>
+                      <FormHelperText style={{ color: 'red' }}>Company Phone Number is required.</FormHelperText>
                     )}
                   </Box>
                   {errors.countryCodeCompany && (
@@ -409,7 +411,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>VAT Number</FormLabel>
+                  <FormLabel>VAT ID</FormLabel>
                   <Input
                     value={cuser?.vat_number}
                     name="vat_number"
@@ -417,9 +419,7 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'vat_number')}
                   />
-                  {errors.vat_number && (
-                    <FormHelperText style={{ color: 'red' }}>Vat Number is required.</FormHelperText>
-                  )}
+                  {errors.vat_number && <FormHelperText style={{ color: 'red' }}>VAT ID is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -444,7 +444,7 @@ const Page = ({ userData }) => {
         </Stack>
         <Stack spacing={3}>
           <Stack spacing={3}>
-            <Typography level="h4">Location</Typography>
+            <Typography level="h4">Company Address</Typography>
             <Box sx={{ maxWidth: 'lg' }}>
               <Grid container spacing={3}>
                 <Grid md={6} xs={12}>
@@ -528,10 +528,7 @@ const Page = ({ userData }) => {
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>Address</FormLabel>
-                    <CustomAutoComplete
-                      value={cuser?.address}
-                      onChange={(val) => handleElementChange(val, 'address')}
-                    />
+                    <Input value={cuser?.address} onChange={(val) => handleElementChange(val, 'address')} />
                     {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
                   </FormControl>
                 </Grid>
