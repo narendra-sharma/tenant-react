@@ -46,10 +46,13 @@ export function UpdatePasswordForm() {
       const userDataForm = {
         newUserPassword: formData.newpassword,
       };
-     let data = await update_password(searchParams.get('token'), dispatch, userDataForm);
-     if(data.data.status){
-      navigate('../../../')
-     }
+      if(formData?.newpassword && formData?.confirmpassword){
+        let data = await update_password(searchParams.get('token'), dispatch, userDataForm);
+        if(data.data.status){
+         navigate('../../../')
+        }
+      }
+    
     }
   };
   const handleChange = (e) => {

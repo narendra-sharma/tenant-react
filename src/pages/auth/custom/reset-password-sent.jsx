@@ -51,8 +51,9 @@ export function Page() {
           </a>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#443DF6', color: '#fff', width: '100%' }}
+            style={{ backgroundColor: '#443DF6', color: '#fff', width: '100%',marginTop:'12px' }}
             onClick={resendEmail}
+            mt={5}
           >
             Resend
           </Button>
