@@ -269,18 +269,17 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    <div className="phoneNumberContainer">
                       <PhoneInput
                         international
                         maxLength="15"
                         placeholder="Enter phone number"
                         value={cuser.phone_number}
-                        onChange={(e) => handleElementChange(e, 'phone_number')}
+                        onChange={(e) => handleElementChange(e, 'phone_number')} style={{borderColor:'transparent'}}
                       />
                         {errors.phone_number && (
                       <FormHelperText style={{ color: 'red' }}> Phone Number is required.</FormHelperText>
                     )}
-                    </div>
+                  
                   </Box>
                 </FormControl>
               </Grid>
@@ -340,12 +339,15 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>Company Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    <PhoneInput
+                  <div className="phoneNumberContainer"  style={{borderRadius:'5px',boxShadow: 'var(--joy-shadow-xs)', border: 'solid 1px #EAEEF6', fontSize: '14px', width: '100%' }} >
+                  <PhoneInput
                       maxLength="15"
                       placeholder="Enter phone number"
                       value={cuser.company_phone_number}
                       onChange={(e) => handleElementChange(e, 'company_phone_number')}
                     />
+                    </div>
+                  
                   </Box>
                 </FormControl>
               </Grid>
