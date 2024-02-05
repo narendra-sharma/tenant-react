@@ -105,8 +105,17 @@ const Page = ({ userData }) => {
         company_phone_number: userData?.company_phone_number,
         vat_number: userData?.vat_number,
       });
-      changeCountry(userData?.country);
-      changeState(userData?.state);
+
+      const country = countries.find((c) => c.name === userData?.country);
+
+    const stateArr = State.getStatesOfCountry(country?.isoCode);
+    setStates([...stateArr]);
+
+    const state = stateArr.find((c) => c.name === userData?.state);
+    const citieArr =City.getCitiesOfState(country?.isoCode, state?.isoCode);
+    setCities([...citieArr]);
+
+
       setimagePath(userData?.profile_pic ? url + userData?.profile_pic : null);
     }
   }, [userData]);
@@ -144,13 +153,13 @@ const Page = ({ userData }) => {
 
   const changeCountry = (value) => {
     const country = countries.find((c) => c.name === value);
-    setCountryCode(country?.isoCode);
     const stateArr = State.getStatesOfCountry(country?.isoCode);
+    setCountryCode(country?.isoCode);
     setStates([...stateArr]);
   };
   const changeState = (value) => {
     const state = states.find((c) => c.name === value);
-    const citieArr = City.getCitiesOfState(countryCode, state?.isoCode);
+    const citieArr =City.getCitiesOfState(countryCode, state?.isoCode);
     setCities([...citieArr]);
   };
   const handleElementChange = (value, label) => {
@@ -185,7 +194,6 @@ const Page = ({ userData }) => {
     return err;
   };
   const handleSubmit = (event) => {
-    console.log('test 1', cuser);
     event.preventDefault();
     if (checkAllErrors()) {
       return;
@@ -312,10 +320,14 @@ const Page = ({ userData }) => {
                     <div className="phoneNumberContainer">
                       <PhoneInput
                         international
+                        maxLength="15"
                         placeholder="Enter phone number"
                         value={cuser.phone_number}
                         onChange={(e) => handleElementChange(e, 'phone_number')}
                       />
+                        {errors.phone_number && (
+                      <FormHelperText style={{ color: 'red' }}> Phone Number is required.</FormHelperText>
+                    )}
                     </div>
                   </Box>
                   {errors.number && (
@@ -395,6 +407,7 @@ const Page = ({ userData }) => {
                       onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
                     /> */}
                     <PhoneInput
+                      maxLength="15"
                       placeholder="Enter phone number"
                       value={cuser.company_phone_number}
                       onChange={(e) => handleElementChange(e, 'company_phone_number')}
