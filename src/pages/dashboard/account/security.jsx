@@ -38,28 +38,25 @@ export function Page() {
 
     if (formData.oldPassword == '' || formData.oldPassword == null) {
       setoldPassError('Current password is required');
-      return;
     } else {
       setoldPassError(null);
     }
 
     if (formData.newPassword == '' || formData.confirmPassword == null) {
       setnewPassError('New password is required');
-      return;
     } else {
       setnewPassError(null);
     }
 
     if (formData.confirmPassword == '' || formData.confirmPassword == null) {
       setconfirmPassError('Confirm password is required');
-      return
     } else if (formData.confirmPassword != formData.newPassword) {
       setconfirmPassError("Password doesn't match");
       return
     } else {
       setconfirmPassError(null);
     }
-    if (formData.newPassword === formData.confirmPassword && !oldPassError) {
+    if (formData.newPassword === formData.confirmPassword && formData.newPassword && formData.confirmPassword && !oldPassError && !newPassError && !confirmPassError) {
       console.log(formData.oldPassword,formData.newPassword,formData.confirmPassword )
       const { oldPassword, newPassword } = formData;
        change_password(dispatch, { oldPassword, newPassword });
