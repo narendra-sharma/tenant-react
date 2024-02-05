@@ -9,6 +9,7 @@ import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import dayjs from 'dayjs';
+import Grid from '@mui/joy/Grid';
 import Typography from '@mui/joy/Typography';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { paths } from '@/paths';
@@ -71,26 +72,32 @@ const devices = () => {
           <BreadcrumbsItem href={paths['dashboard']} type="start" />
           <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
         </Breadcrumbs>
-        <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-          <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
-            <FormLabel>Device Name</FormLabel>
-            <Input defaultValue="" name="orderId" />
-          </FormControl>
-          <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
+        <Grid container spacing={3}>
+          <Grid lg={4}  xl={4} xs={12}>
+            <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+              <FormLabel>Device Name</FormLabel>
+              <Input defaultValue="" name="orderId" />
+            </FormControl>
+          </Grid>
+          <Grid lg={4}  xl={4} xs={12}>
+            <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
             <FormLabel>Client Name</FormLabel>
             <Input defaultValue="" name="customer" />
           </FormControl>
-          <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
-            <FormLabel>Status</FormLabel>
-            <Select defaultValue="all" name="status">
-              <Option value="all">All</Option>
-              <Option value="active">Online</Option>
-              <Option value="canceled">Offline</Option>
-              
-            </Select>
-          </FormControl>
-           
-        </Stack>
+          </Grid>
+          <Grid lg={4}  xl={4} xs={12}>
+            <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+              <FormLabel>Status</FormLabel>
+              <Select defaultValue="all" name="status">
+                <Option value="all">All</Option>
+                <Option value="active">Online</Option>
+                <Option value="canceled">Offline</Option>
+              </Select>
+            </FormControl>
+
+          </Grid>
+            
+        </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <DeviceTable rows={customers} />
         </Card>

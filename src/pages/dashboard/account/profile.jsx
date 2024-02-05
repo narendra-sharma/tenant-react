@@ -224,7 +224,7 @@ const Page = ({ userData }) => {
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>First Name <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.first_name}
                     name="first_name"
@@ -238,7 +238,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Last Name <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.last_name}
                     name="last_name"
@@ -250,7 +250,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.email}
                     name="email"
@@ -269,17 +269,15 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
+                  <div className="phoneNumberContainer"  style={{borderRadius:'5px',boxShadow: 'var(--joy-shadow-xs)', border: 'solid 1px #EAEEF6', fontSize: '14px', width: '100%' }} >
                       <PhoneInput
                         international
                         maxLength="15"
                         placeholder="Enter phone number"
                         value={cuser.phone_number}
-                        onChange={(e) => handleElementChange(e, 'phone_number')} style={{borderColor:'transparent'}}
+                        onChange={(e) => handleElementChange(e, 'phone_number')}
                       />
-                        {errors.phone_number && (
-                      <FormHelperText style={{ color: 'red' }}> Phone Number is required.</FormHelperText>
-                    )}
-                  
+                  </div>
                   </Box>
                 </FormControl>
               </Grid>
@@ -292,7 +290,7 @@ const Page = ({ userData }) => {
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Name</FormLabel>
+                  <FormLabel>Company Name <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.company_first_name}
                     name="companyFirstName"
@@ -300,13 +298,13 @@ const Page = ({ userData }) => {
                     onChange={(e) => handleElementChange(e.target.value, 'company_first_name')}
                   />
                   {errors.company_first_name && (
-                    <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>Company Name is required.</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Tenant Name</FormLabel>
+                  <FormLabel>Tenant Name <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.company_last_name}
                     name="company_last_name"
@@ -320,7 +318,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Email</FormLabel>
+                  <FormLabel>Company Email <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.company_email}
                     name="company_email"
@@ -353,7 +351,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>VAT ID</FormLabel>
+                  <FormLabel>VAT ID <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.vat_number}
                     name="vat_number"
@@ -366,7 +364,7 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Website</FormLabel>
+                  <FormLabel>Website <sup>*</sup></FormLabel>
                   <Input
                     value={cuser?.website}
                     name="website"
@@ -391,7 +389,7 @@ const Page = ({ userData }) => {
               <Grid container spacing={3}>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>Country</FormLabel>
+                    <FormLabel>Country <sup>*</sup></FormLabel>
                     <Select
                       value={cuser?.country}
                       name="country"
@@ -424,7 +422,7 @@ const Page = ({ userData }) => {
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>City</FormLabel>
+                    <FormLabel>City <sup>*</sup></FormLabel>
                     <Input
                     value={cuser?.city}
                     name="city"
@@ -436,7 +434,7 @@ const Page = ({ userData }) => {
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>Zip Code</FormLabel>
+                    <FormLabel>Zip Code <sup>*</sup></FormLabel>
                     <Input
                       value={cuser?.zipcode}
                       name="zip"

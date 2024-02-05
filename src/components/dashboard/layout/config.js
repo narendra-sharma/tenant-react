@@ -16,7 +16,7 @@ export const layoutConfig = {
           key: 'dashboard:devices',
           title: 'Devices',
           href: paths['dashboard.devices'],
-          icon: 'sign-out',
+          icon: 'power',
         },
         {
           key: 'dashboard:account',

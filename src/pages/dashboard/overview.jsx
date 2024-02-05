@@ -84,26 +84,34 @@ export function Page() {
               </Typography>
             </div>
             <DeviceSummary active={268} canceled={4} completed={623} total={891} />
-            <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignItems: 'flex-start', flexWrap: 'wrap' }}>
-              <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
-                <FormLabel>Device Name</FormLabel>
-                <Input defaultValue="" name="orderId" />
-              </FormControl>
-              <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
-                <FormLabel>Client Name</FormLabel>
-                <Input defaultValue="" name="customer" />
-              </FormControl>
-              <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
-                <FormLabel>Status</FormLabel>
-                <Select defaultValue="all" name="status">
-                  <Option value="all">All</Option>
-                  <Option value="active">Online</Option>
-                  <Option value="canceled">Offline</Option>
-                  
-                </Select>
-              </FormControl>
+           
+            <Grid container spacing={3}>
+              <Grid lg={4}  xl={4} xs={12}>
+                <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                  <FormLabel>Device Name</FormLabel>
+                  <Input defaultValue="" name="orderId" />
+                </FormControl>
+                </Grid>
+                <Grid lg={4}  xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                  <FormLabel>Client Name</FormLabel>
+                  <Input defaultValue="" name="customer" />
+                </FormControl>
+                </Grid>
+                <Grid lg={4}  xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>Status</FormLabel>
+                    <Select defaultValue="all" name="status">
+                      <Option value="all">All</Option>
+                      <Option value="active">Online</Option>
+                      <Option value="canceled">Offline</Option>
+                    </Select>
+                  </FormControl>
+
+                </Grid>
               
-            </Stack>
+            </Grid>
+             
             <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
               <DeviceTable rows={customers} />
             </Card>
