@@ -16,6 +16,7 @@ import { Storefront as StorefrontIcon } from '@phosphor-icons/react/dist/ssr/Sto
 import { Thermometer as ThermometerIcon } from '@phosphor-icons/react/dist/ssr/Thermometer';
 import { Truck as TruckIcon } from '@phosphor-icons/react/dist/ssr/Truck';
 import { Users as UsersIcon } from '@phosphor-icons/react/dist/ssr/Users';
+import { Power as PowerIcon } from '@phosphor-icons/react/dist/ssr/Power';
 
 export const icons = {
   'chart-pie': ChartPieIcon,
@@ -25,6 +26,7 @@ export const icons = {
   'shopping-bag': ShoppingBagIcon,
   'shopping-cart': ShoppingCartIcon,
   'sign-out': SignOutIcon,
+  'power':PowerIcon,
   buildings: BuildingsIcon,
   file: FileIcon,
   house: HouseIcon,

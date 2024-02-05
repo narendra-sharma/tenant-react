@@ -30,13 +30,13 @@ export function Page() {
         <title>{metadata.title}</title>
       </Helmet>
       <SplitLayout>
-        <Stack spacing={3}>
+        <Stack spacing={4}>
           <Typography level="h3" textAlign="center">
             Reset Password Sent
           </Typography>
         </Stack>
-        <Stack alignItems={'center'} width={'100%'}>
-          <Typography marginTop={'3vh'}>
+        <Stack alignItems={'center'} width={'100%'}  spacing={3}>
+          <Typography marginTop={'10px'}  style={{textAlign:'center'}}>
             If an account exists with email "{email}", you will receive a recovery email.
           </Typography>
           <a
@@ -44,20 +44,20 @@ export function Page() {
             fontSize={12}
             marginTop={5}
             marginBottom={5}
-            fontWeight={500}
+            fontWeight={600}
             onClick={() => navigateTo('/reset-password')}
           >
             Use another mail
           </a>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#443DF6', color: '#fff', width: '100%',marginTop:'12px' }}
+            style={{ backgroundColor: '#443DF6', color: '#fff', width: '100%' , padding: '10px 10px' }}
             onClick={resendEmail}
             mt={5}
           >
             Resend
           </Button>
-          <Typography marginTop={3} fontSize={10}>
+          <Typography fontSize={10}>
             Wait a few minutes then try again
           </Typography>
         </Stack>

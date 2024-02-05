@@ -120,7 +120,7 @@ export function SideNav({ items }) {
 function renderNavGroups({ items, pathname }) {
   const children = items.reduce((acc, curr) => {
     acc.push(
-      <ListItem
+      <ListItem 
         key={curr.key}
         sx={{
           '--ListItem-paddingRight': 0,
@@ -128,7 +128,7 @@ function renderNavGroups({ items, pathname }) {
           '--ListItem-paddingY': 0,
         }}
       >
-        <ListItemContent>
+        <ListItemContent >
           {curr.title ? (
             <Box sx={{ py: '12px' }}>
               <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">
@@ -156,7 +156,7 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
       : false;
 
     acc.push(
-      <NavItem depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
+      <NavItem  depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
         {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}
       </NavItem>
     );
@@ -165,7 +165,7 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
   }, []);
 
   return (
-    <List data-depth={depth} sx={{ '--List-gap': '4px', '--List-padding': 0 }}>
+    <List data-depth={depth} sx={{ '--List-gap': '15px', '--List-padding': 0 }}>
       {children}
     </List>
   );

@@ -96,6 +96,7 @@
 .phoneNumberContainer input{
   border: transparent;
   height: 34px; 
+  border-radius: 5px;
 }
 .phoneNumberContainer .PhoneInputCountry {
   padding-left: 10px;

@@ -96,7 +96,9 @@ export function Page() {
         <title>{metadata.title}</title>
       </Helmet>
       <Stack component="main" divider={<Divider />} spacing={5}>
-        <Stack spacing={3}>
+      <Stack divider={<Divider />} spacing={5}>
+        <Stack spacing={3} >
+        
           <Typography level="h4">Change Password</Typography>
           <Stack spacing={3} sx={{ maxWidth: 'sm' }}>
             <FormControl>
@@ -142,7 +144,34 @@ export function Page() {
               Save Changes
             </Button>
           </Stack>
-        </Stack>
+          </Stack>
+          </Stack>
+          <Stack spacing={3} >
+            <Stack  spacing={3} sx={{ maxWidth: 'sm' }}>
+              <Typography level="h4">Password Device Renaming</Typography>
+              <FormControl>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  defaultValue=""
+                  name="renamePasswoed"
+                  type="password"
+                  style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                  onChange={(e) => handleChange(e)}
+                />
+              
+              </FormControl>
+            </Stack>
+          
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
+              <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
+                Discard
+              </Button>
+              <Button type="submit" onClick={(e) => handleSubmit(e)}>
+                Save Changes
+              </Button>
+            </Stack>
+            </Stack>
+        
         <Stack spacing={3}>
           <div>
             <Typography level="h4">Login History</Typography>

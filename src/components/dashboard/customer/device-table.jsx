@@ -36,7 +36,7 @@ const columns = [
       </Link>
     ),
     name: 'Device Name',
-    width: '150px',
+    width: '120px',
   },
   {
     formatter: (row) => (
@@ -49,18 +49,18 @@ const columns = [
       </Stack>
     ),
     name: 'Client Name',
-    width: '150px',
+    width: '120px',
   },
   {
     formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'),
     name: 'Date Last Reading Water',
     width: '200px',
   },
-  { field: 'reading', name: 'Last Reading Water (Liters)' ,  width: '260px',},
+  { field: 'reading', name: 'Last Reading Water (Liters)' ,  width: '220px',},
   {
     formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'),
     name: 'Date Last Reading Electricity',
-    width: '250px',
+    width: '230px',
   },
  
   { field: 'items', name: 'Last Reading Electricity (kWh)', width: '250px' },
@@ -78,7 +78,7 @@ const columns = [
       );
     },
     name: 'Status',
-    width: '140px',
+    width: '120px',
   },
 ];
 
