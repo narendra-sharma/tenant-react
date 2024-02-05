@@ -106,7 +106,7 @@ export function MobileNav({ items, onClose, open }) {
         <NoSSR>
           <ColorSchemeSwitch />
         </NoSSR>
-        <CurrentUser onNavigate={onClose} />
+        {/* <CurrentUser onNavigate={onClose} /> */}
       </Stack>
     </Drawer>
   );
@@ -160,7 +160,7 @@ function renderNavItems({ depth = 0, items = [], onClose, pathname }) {
   }, []);
 
   return (
-    <List data-depth={depth} sx={{ '--List-gap': '4px', '--List-padding': 0 }}>
+    <List data-depth={depth} sx={{ '--List-gap': '10px', '--List-padding': 0 }}>
       {children}
     </List>
   );
@@ -264,7 +264,7 @@ function NavItem({
           {isBranch ? <ExpandIcon style={{ fontSize: 'var(--joy-fontSize-sm)' }} weight="bold" /> : null}
         </Box>
         {showChildren ? (
-          <Box sx={{ pl: '20px' }}>
+          <Box sx={{ pl: '20px' }} >
             <Box sx={{ borderLeft: '1px solid var(--joy-palette-neutral-700)', pl: '12px' }}>{children}</Box>
           </Box>
         ) : null}
