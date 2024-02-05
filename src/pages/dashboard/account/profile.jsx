@@ -16,19 +16,17 @@ import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
-import { City, Country, State } from 'country-state-city';
+import { Country } from 'country-state-city';
 import { Helmet } from 'react-helmet-async';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import { config } from '@/config';
 import { getInitials } from '@/lib/get-initials';
-import { CustomAutoComplete } from '@/components/core/auto-complte-feild';
-import CountryCodeField from '@/components/core/country-code-field';
 
 import 'react-phone-number-input/style.css';
+import { PhoneInput } from '@/components/core/phone-input';
 
-import PhoneInput from 'react-phone-number-input';
 
 const url = import.meta.env.VITE_APP_ASSET_URL;
 const metadata = {
@@ -39,11 +37,7 @@ const Page = ({ userData }) => {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const fileinputRef = React.useRef();
   const [countries, setCountries] = React.useState([]);
-  const [countryCode, setCountryCode] = React.useState('IN');
-  const [states, setStates] = React.useState([]);
-  const [cities, setCities] = React.useState([]);
   const [imagePath, setimagePath] = useState('');
-  const [value, setValue] = useState();
   const [cuser, setCuser] = React.useState({
     profile_pic: '',
     first_name: '',
@@ -67,17 +61,13 @@ const Page = ({ userData }) => {
     first_name: '',
     last_name: '',
     email: '',
-    phone_number: '',
-    website: '',
     country: '',
-    state: '',
     city: '',
     zipcode: '',
     address: '',
     company_first_name: '',
     company_last_name: '',
     company_email: '',
-    company_phone_number: '',
     vat_number: '',
   });
   const navigate = useNavigate();
@@ -105,17 +95,6 @@ const Page = ({ userData }) => {
         company_phone_number: userData?.company_phone_number,
         vat_number: userData?.vat_number,
       });
-
-      const country = countries.find((c) => c.name === userData?.country);
-
-    const stateArr = State.getStatesOfCountry(country?.isoCode);
-    setStates([...stateArr]);
-
-    const state = stateArr.find((c) => c.name === userData?.state);
-    const citieArr =City.getCitiesOfState(country?.isoCode, state?.isoCode);
-    setCities([...citieArr]);
-
-
       setimagePath(userData?.profile_pic ? url + userData?.profile_pic : null);
     }
   }, [userData]);
@@ -150,40 +129,21 @@ const Page = ({ userData }) => {
       }
     }
   };
-
-  const changeCountry = (value) => {
-    const country = countries.find((c) => c.name === value);
-    const stateArr = State.getStatesOfCountry(country?.isoCode);
-    setCountryCode(country?.isoCode);
-    setStates([...stateArr]);
-  };
-  const changeState = (value) => {
-    const state = states.find((c) => c.name === value);
-    const citieArr =City.getCitiesOfState(countryCode, state?.isoCode);
-    setCities([...citieArr]);
-  };
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
-      [label]: !value
+      [label]: !value && (label!=='phone_number') && (label!=='company_phone_number') && (label!=='state') && (label!=='website')
         ? 'required'
         : (label === 'email' || label === 'comapnyEmail') && !emailRegex.test(value)
           ? 'invalid'
           : '',
     }));
-
-    if (label === 'country') {
-      changeCountry(value);
-    }
-    if (label === 'state') {
-      changeState(value);
-    }
   };
   const checkAllErrors = () => {
     let err = false;
     let output = Object.entries(cuser);
     output.forEach(([key, value]) => {
-      if (!value) {
+      if (!value && (key!=='phone_number') && (key!=='company_phone_number') && (key!=='state') && (key!=='website')) {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       } else if (value && (key === 'email' || key === 'companyEmail') && !emailRegex.test(value)) {
@@ -309,14 +269,6 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>My Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    {/* <CountryCodeField /> */}
-                    {/* <Input
-                      value={cuser?.phone_number}
-                      name="number"
-                      type="text"
-                      style={{ borderColor: '#EAEEF6', fontSize: '14px', width: '30%' }}
-                      onChange={(e) => handleElementChange(e.target.value, 'phone_number')}
-                    /> */}
                     <div className="phoneNumberContainer">
                       <PhoneInput
                         international
@@ -330,16 +282,6 @@ const Page = ({ userData }) => {
                     )}
                     </div>
                   </Box>
-                  {errors.number && (
-                    <FormHelperText style={{ color: 'red' }}>
-                      {errors.number === 'required' ? 'Phone number is required.' : null}
-                    </FormHelperText>
-                  )}
-                  {errors.country_code && (
-                    <FormHelperText style={{ color: 'red' }}>
-                      {errors.country_code === 'required' ? 'Country code is required.' : null}
-                    </FormHelperText>
-                  )}
                 </FormControl>
               </Grid>
             </Grid>
@@ -398,29 +340,13 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>Company Phone Number</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                    {/* <CountryCodeField /> */}
-                    {/* <Input
-                      value={cuser?.company_phone_number}
-                      name="company_phone_number"
-                      type="text"
-                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                      onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
-                    /> */}
                     <PhoneInput
                       maxLength="15"
                       placeholder="Enter phone number"
                       value={cuser.company_phone_number}
                       onChange={(e) => handleElementChange(e, 'company_phone_number')}
                     />
-                    {errors.company_phone_number && (
-                      <FormHelperText style={{ color: 'red' }}>Company Phone Number is required.</FormHelperText>
-                    )}
                   </Box>
-                  {errors.countryCodeCompany && (
-                    <FormHelperText style={{ color: 'red' }}>
-                      {errors.countryCodeCompany === 'required' ? 'Country code is required.' : null}
-                    </FormHelperText>
-                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -486,44 +412,23 @@ const Page = ({ userData }) => {
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>State</FormLabel>
-                    <Select
-                      value={cuser?.state}
-                      name="state"
-                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                      onChange={(e) => e && handleElementChange(e.target.textContent, 'state')}
-                    >
-                      <Option value="" disabled selected>
-                        Choose a State
-                      </Option>
-                      {states.length > 0 &&
-                        states.map((s) => (
-                          <Option key={s.name} value={s.name}>
-                            {s.name}
-                          </Option>
-                        ))}
-                    </Select>
-                    {errors.state && <FormHelperText style={{ color: 'red' }}>State is required.</FormHelperText>}
+                    <Input
+                    value={cuser?.state}
+                    name="state"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'state')}
+                  />
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>City</FormLabel>
-                    <Select
-                      value={cuser?.city}
-                      name="city"
-                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                      onChange={(e) => e && handleElementChange(e.target.textContent, 'city')}
-                    >
-                      <Option value="" disabled selected>
-                        Choose a city
-                      </Option>
-                      {cities.length > 0 &&
-                        cities.map((s) => (
-                          <Option key={s.name} value={s.name}>
-                            {s.name}
-                          </Option>
-                        ))}
-                    </Select>
+                    <Input
+                    value={cuser?.city}
+                    name="city"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'city')}
+                  />
                     {errors.city && <FormHelperText style={{ color: 'red' }}>City is required.</FormHelperText>}
                   </FormControl>
                 </Grid>
@@ -542,9 +447,11 @@ const Page = ({ userData }) => {
                 <Grid md={6} xs={12}>
                   <FormControl>
                     <FormLabel>Address</FormLabel>
-                    <CustomAutoComplete
+                    <Input
                       value={cuser?.address}
-                      onChange={(val) => handleElementChange(val, 'address')}
+                      name="address"
+                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                      onChange={(e) => handleElementChange(e.target.value, 'address')}
                     />
                     {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
                   </FormControl>
