@@ -5,6 +5,8 @@ export function PhoneInput({ value, onChange }) {
         international
         withCountryCallingCode
         value={value}
+        style={{ width: '100%' }}
+        maxLength={16}
         onChange={onChange}
     />;
 }
