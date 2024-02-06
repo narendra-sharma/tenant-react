@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { get_user_profile_details, update_profile_detail } from '@/reduxData/user/userAction';
+import { update_profile_detail } from '@/reduxData/user/userAction';
 import { FormHelperText } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -31,7 +31,6 @@ const metadata = {
 const Page = ({ userData }) => {
   const dispatch = useDispatch();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  const fileinputRef = React.useRef();
   const [countries, setCountries] = React.useState([]);
   const [imagePath, setimagePath] = useState('');
   const [cuser, setCuser] = React.useState({
@@ -67,10 +66,6 @@ const Page = ({ userData }) => {
   });
   const navigate = useNavigate();
   React.useEffect(() => {
-    get_user_profile_details(dispatch);
-  }, []);
-
-  React.useEffect(() => {
     if (userData) {
       setCuser({
         profile_pic: userData?.profile_pic,
@@ -90,7 +85,6 @@ const Page = ({ userData }) => {
         company_phone_number: userData?.company_phone_number,
         vat_number: userData?.vat_number,
       });
-      setimagePath(userData?.profile_pic ? url + userData?.profile_pic : null);
     }
   }, [userData]);
   React.useEffect(() => {
@@ -144,7 +138,6 @@ const Page = ({ userData }) => {
     formData.append('company_phone_number', cuser?.company_phone_number);
     formData.append('vat_number', cuser?.vat_number);
     update_profile_detail(formData, dispatch);
-    get_user_profile_details(dispatch);
   };
   return (
     <React.Fragment>
@@ -414,7 +407,7 @@ const Page = ({ userData }) => {
 
 const mapStateToProps = (state) => {
   return {
-    userData: state.user.userData,
+    userData: state.user.user,
   };
 };
 

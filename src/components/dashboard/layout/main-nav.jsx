@@ -18,7 +18,7 @@ import { NotificationsPopover } from './notifications-popover';
 import { UserPopover } from './user-popover';
 
 export function MainNav({ items }) {
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.user.user);
   const url = import.meta.env.VITE_APP_ASSET_URL;
   const [openNav, setOpenNav] = React.useState(false);
   const notificationsPopover = usePopover();
@@ -105,7 +105,7 @@ export function MainNav({ items }) {
                 },
               }}
             >
-              <Avatar src={userData?.profile_pic ? url + userData?.profile_pic : null}>
+              <Avatar src={null}>
                 {getInitials(`${userData?.first_name} ${userData?.last_name}`)}
               </Avatar>
             </Badge>

@@ -13,15 +13,17 @@ const headers = {
 
   },
 };
-const token = localStorage.getItem('custom-auth-token');
+const token =()=>{
+  return localStorage.getItem('custom-auth-token');
+};
 export const catch_errors_handle = (error, dispatch) => {
   if (error.response) {
-    toast.error(error.response.data.message);
+    toast.error(error.response.data.message || error.response.data.error);
     if (error.response.status === 401) {
       localStorage.removeItem('authUser');
       localStorage.removeItem('custom-auth-token');
       dispatch(set_update_user(''));
-    }
+    } 
   } else {
     toast.error(error.message);
   }
@@ -48,12 +50,12 @@ export const login = async (user, dispatch, navigate) => {
 export const update_profile_detail = async (data, dispatch) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] = token;
+    headers.headers['x-access-token'] =token();
     headers.headers['Content-Type'] = 'multipart/form-data';
     const res = await axios.put(url + 'profile/update', data, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated profile');
-      dispatch({ type: GET_USER_PROFILE, payload: res?.data?.data });
+      get_user_profile_details(dispatch)
     } else {
       toast.error(res.data.message);
     }
@@ -108,7 +110,7 @@ export const forgot_password = async (userEmail, dispatch, navigate, redirect) =
 export const change_password = async (dispatch, userData) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] = token;
+    headers.headers['x-access-token'] =token();
     const res = await axios.put(`${url}profile/change-password`, userData, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
@@ -126,7 +128,7 @@ export const change_password = async (dispatch, userData) => {
 export const get_permissions = async (dispatch) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] = token;
+    headers.headers['x-access-token'] =token();
     const res = await axios.get(url + 'auth/permissions', headers);
     if (res.data && res.data.status) {
       dispatch({
@@ -146,7 +148,7 @@ export const get_permissions = async (dispatch) => {
 export const update_permissions = async (data, dispatch) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] = token;
+    headers.headers['x-access-token'] =token();
     const res = await axios.post(url + 'auth/permissions', data, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated permissions!');
@@ -180,12 +182,14 @@ export const get_login_history = async (dispatch) => {
 export const get_user_profile_details = async (dispatch) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] = token;
-    const res = await axios.get(`${url}profile`, headers);
-    if (res?.data?.status) {
-      dispatch({ type: GET_USER_PROFILE, payload: res?.data?.data });
-    } else {
-      toast.error(res?.data?.message);
+    if(token()){
+      headers.headers['x-access-token'] =token();
+      const res = await axios.get(`${url}profile`, headers);
+      if (res?.data?.status) {
+        dispatch(set_update_user({ ...res?.data?.data, token: token() }));
+      } else {
+        toast.error(res?.data?.message);
+      }
     }
   } catch (error) {
     dispatch(catch_errors_handle(error, dispatch));

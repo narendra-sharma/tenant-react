@@ -35,7 +35,7 @@ const Popup = styled(Popper)({
 });
 
 export function UserPopover({ anchorEl, onClose, open }) {
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.user.user);
   const url = import.meta.env.VITE_APP_ASSET_URL;
   const handleSignOut = React.useCallback(async () => {
     let redirectTo;
@@ -94,7 +94,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
         >
           <Stack spacing={2}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
-              <Avatar src={userData?.profile_pic ? url + userData?.profile_pic : null}>
+              <Avatar src={null}>
                 {getInitials(`${userData?.first_name} ${userData?.last_name}`)}
               </Avatar>
               <div>

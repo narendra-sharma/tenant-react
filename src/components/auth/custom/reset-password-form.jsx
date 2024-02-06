@@ -26,12 +26,14 @@ export function ResetPasswordForm() {
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (emailAdd == '') {
       setemailError('Email is Required');
+      return
     } else if (!exptest.test(emailAdd)) {
       setemailError('Email is Invalid');
+      return
     } else {
       setemailError(null);
     }
-    if (emailAdd !== '' || emailAdd !== null) {
+    if (emailAdd !== '' || emailAdd !== null && !emailError) {
       await forgot_password(emailAdd, dispatch, navigate, redirect);
     }
   };
@@ -48,6 +50,8 @@ export function ResetPasswordForm() {
         break;
     }
   };
+
+
   return (
     <form className="authform">
       <Stack spacing={3}>
@@ -55,8 +59,8 @@ export function ResetPasswordForm() {
           <FormControl>
             <FormLabel>Email Address</FormLabel>
             <Input type="email" name="email" onChange={(e) => handleInputChange(e)} />
-          </FormControl>
           {emailError && <FormHelperText style={{ color: 'red' }}>{emailError}</FormHelperText>}
+          </FormControl>
           <Button
             onClick={(e) => handleSubmit(e)}
             fullWidth

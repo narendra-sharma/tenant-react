@@ -16,79 +16,90 @@ export function UpdatePasswordForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [newpassworderror, setNewpassworderror] = useState(null);
-  const [confirmpassworderror, setconfirmPassworderror] = useState(null);
   const [formData, setFormData] = useState({
     newpassword: '',
     confirmpassword: '',
   });
 
+  const [errors, setErrors] = useState({
+    newpassword: '',
+    confirmpassword: '',
+  });
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+
+  const checkAllErrors = () => {
+    let err = false;
+    let output = Object.entries(formData);
+    output.forEach(([key, value]) => {
+      if (!value) {
+        err = true;
+        setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
+      } else if (value && key === 'newpassword' && !passwordRegex.test(value)) {
+        err = true;
+        setErrors((prevErrors) => ({ ...prevErrors, [key]: 'invalid' }));
+      } else if (key === 'confirmpassword' && value !== formData?.newpassword) {
+        err = true;
+        setErrors((prevErrors) => ({ ...prevErrors, [key]: 'unmatch' }));
+      }
+    });
+    return err;
+  };
+
+  const handleChange = (value, label) => {
+    setFormData((prev) => ({ ...prev, [label]: value }));
+    setErrors((prev) => ({
+      [label]: !value
+        ? 'required'
+        : label === 'newpassword' && !passwordRegex.test(value)
+          ? 'invalid'
+          : label === 'confirmpassword' && value !== formData?.newpassword
+            ? 'unmatch'
+            : '',
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('custom-auth-token');
-    if (formData.newpassword == '') {
-      setNewpassworderror('New Password is Required');
-    } else if (formData.newpassword.length < 5) {
-      setNewpassworderror('Password length should be more than 5 characters');
-    } else {
-      setNewpassworderror(null);
+    if (checkAllErrors()) {
+      return;
     }
-
-    if (formData.confirmpassword == '') {
-      setconfirmPassworderror('Confirm Password is Required');
-    } else if (formData.confirmpassword !== formData.newpassword) {
-      setconfirmPassworderror("Password doesn't match");
-    } else {
-      setconfirmPassworderror(null);
-    }
-
-    if (formData.newpassword == formData.confirmpassword && !newpassworderror && !confirmpassworderror) {
-      const userDataForm = {
-        newUserPassword: formData.newpassword,
-      };
-      if(formData?.newpassword && formData?.confirmpassword){
-        let data = await update_password(searchParams.get('token'), dispatch, userDataForm);
-        if(data.data.status){
-         navigate('../../../')
-        }
-      }
-    
+    const userDataForm = {
+      newUserPassword: formData.newpassword,
+    };
+    const { newpassword, confirmpassword } = formData;
+    let data = await update_password(searchParams.get('token'), dispatch, userDataForm);
+    if (data.data.status) {
+      navigate('../../../');
     }
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    switch (name) {
-      case 'newpassword':
-        setNewpassworderror(
-          value == '' || value == null
-            ? 'New Password is Required'
-            : value.length < 5
-              ? 'Password must be greater than 5 digits '
-              : null
-        );
-        break;
-      case 'confirmpassword':
-        setconfirmPassworderror(value == '' || value == null ? 'Confirm password is required' : null);
-        break;
-      default:
-        break;
-    }
-  };
-
   return (
     <form>
       <Stack spacing={3}>
         <Stack spacing={2}>
-          <FormControl color={newpassworderror ? 'danger' : undefined}>
+          <FormControl>
             <FormLabel>Password</FormLabel>
-            <Input type="password" name="newpassword" onChange={(e) => handleChange(e)} />
-            {newpassworderror ? <FormHelperText>{newpassworderror}</FormHelperText> : null}
+            <Input type="password" name="newpassword" onChange={(e) => handleChange(e.target.value, 'newpassword')} />
+
+            {errors.newpassword && (
+              <FormHelperText style={{ color: 'red' }}>
+                {errors.newpassword === 'required'
+                  ? 'Password is required'
+                  : 'Your new password must be more than 12 characters including 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol.'}
+              </FormHelperText>
+            )}
           </FormControl>
-          <FormControl color={confirmpassworderror ? 'danger' : undefined}>
+          <FormControl>
             <FormLabel>Confirm Password</FormLabel>
-            <Input type="password" name="confirmpassword" onChange={(e) => handleChange(e)} />
-            {confirmpassworderror ? <FormHelperText>{confirmpassworderror}</FormHelperText> : null}
+            <Input
+              type="password"
+              name="confirmpassword"
+              onChange={(e) => handleChange(e.target.value, 'confirmpassword')}
+            />
+            {errors.confirmpassword ? (
+              <FormHelperText style={{ color: 'red' }}>
+                {errors.confirmpassword === 'required' ? 'Confirm password is requiredd' : 'Password does not match'}
+              </FormHelperText>
+            ) : null}
           </FormControl>
           <Button fullWidth type="submit" onClick={(e) => handleSubmit(e)}>
             Update Password
