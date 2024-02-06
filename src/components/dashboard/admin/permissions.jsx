@@ -18,8 +18,13 @@ const columns = [
 
 export function Permissions({ groups = [] }) {
   const dispatch=useDispatch();
-  const [permissions,setPermissions]=React.useState(groups);
+  const [permissions,setPermissions]=React.useState([]);
+  React.useEffect(()=>{
+    setPermissions([...groups]);
+  },[groups])
   const saveCahnges=()=>{
+    permissions[0].name='tenant_management';
+    permissions[1].name='admin_manangement';
     update_permissions(permissions,dispatch);
   }
   const changeCheck=(gindex,pindex,role)=>{
@@ -64,13 +69,13 @@ export function Permissions({ groups = [] }) {
                   <tr key={permission.name}>
                     <td>{permission.name}</td>
                     {[
-                      { id: 'readOnly', value: permission.readOnly },
-                      { id: 'member', value: permission.member },
-                      { id: 'manager', value: permission.manager },
+                      { id: 'tenant_read_only', value: permission.tenant_read_only },
+                      { id: 'tenant_user', value: permission.tenant_user },
+                      { id: 'tenant_manager', value: permission.tenant_manager },
                       { id: 'admin', value: permission.admin },
                     ].map((role) => (
-                      <td key={role.id}>
-                        <Checkbox color="neutral" defaultChecked={role.value} readOnly variant="outlined" className='checkboxs' onChange={()=>changeCheck(gindex,pindex,role)}/>
+                      <td key={role.id+pindex}>
+                        <Checkbox color="neutral" defaultChecked={role.value} variant="outlined" disabled={role.id==='admin'} className='checkboxs' onChange={()=>changeCheck(gindex,pindex,role)}/>
                       </td>
                     ))}
                   </tr>
