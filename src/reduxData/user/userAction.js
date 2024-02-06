@@ -129,11 +129,21 @@ export const get_permissions = async (dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] =token();
-    const res = await axios.get(url + 'auth/permissions', headers);
+    const res = await axios.get(url + 'admin/permission', headers);
     if (res.data && res.data.status) {
+      const data=[
+        {
+          name:'Tenant Management',
+          permissions:res.data.data[0].permissions
+        },
+        {
+          name:'ADMIN Management',
+          permissions:res.data.data[1].permissions
+        },
+      ]
       dispatch({
         type: USER_PERMISSIONS,
-        payload: res.data.data,
+        payload: data,
       });
     } else {
       toast.error(res.data.message);
@@ -149,7 +159,7 @@ export const update_permissions = async (data, dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] =token();
-    const res = await axios.post(url + 'auth/permissions', data, headers);
+    const res = await axios.put(url + 'admin/edit-permission', {permission:data}, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated permissions!');
       get_permissions(dispatch);
@@ -166,6 +176,7 @@ export const update_permissions = async (data, dispatch) => {
 export const get_login_history = async (dispatch) => {
   dispatch(start_loading());
   try {
+    headers.headers['x-access-token'] =token();
     const res = await axios.get(`${url}profile/login-history`, headers);
     if (res?.data?.status) {
       dispatch({ type: LOGIN_HISTORY, payload: res?.data.data });

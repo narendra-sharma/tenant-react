@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Permissions } from '@/components/dashboard/admin/permissions';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
@@ -8,9 +8,18 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import { paths } from '@/paths';
 import Container from '@mui/joy/Container';
-import { useSelector } from 'react-redux';
-const permissions = () => {
-  const groups = useSelector((state) => state.user.permissions);
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { get_permissions } from '@/reduxData/rootAction';
+const permissions = ({permissions}) => {
+
+  const [groups, setGroups]= useState([]);
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    get_permissions(dispatch)
+  },[])
+  useEffect(()=>{
+   setGroups([...permissions]);
+  },[permissions])
   return (
     <main>
       <Container maxWidth={false} sx={{ py: 3 }}>
@@ -31,4 +40,10 @@ const permissions = () => {
   )
 }
 
-export default permissions
+const mapStateToProps = (state) => {
+  return {
+    permissions: state.user.permissions,
+  };
+};
+
+export default connect(mapStateToProps)(permissions);

@@ -132,7 +132,7 @@ export function Page() {
                   onChange={(e) => handleChange(e.target.value, 'oldPassword')}
                 />
                 {errors?.oldPassword ? (
-                  <FormHelperText style={{ color: 'red' }}>Old password is required.</FormHelperText>
+                  <FormHelperText style={{ color: 'red' }}>Current password is required.</FormHelperText>
                 ) : null}
               </FormControl>
               <FormControl>
