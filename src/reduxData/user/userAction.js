@@ -37,13 +37,10 @@ export const login = async (user, dispatch, navigate) => {
       dispatch(set_update_user({ ...res?.data?.data, token: res?.data?.token }));
       navigate('/dashboard');
     } else {
-      
-      // toast.error(res.data.message);
+      toast.error(res.data.message);
     }
   } catch (error) {
-    // console.log("login error",error)
-    toast.error(error.response.data.error);
-    // dispatch(catch_errors_handle(error, dispatch));
+    dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }
@@ -51,7 +48,7 @@ export const login = async (user, dispatch, navigate) => {
 export const update_profile_detail = async (data, dispatch) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] = localStorage.getItem('custom-auth-token');
+    headers.headers['x-access-token'] = token;
     headers.headers['Content-Type'] = 'multipart/form-data';
     const res = await axios.put(url + 'profile/update', data, headers);
     if (res.data && res.data.status) {
@@ -91,35 +88,27 @@ export const update_password = async (token, dispatch, newPassword) => {
 };
 
 export const forgot_password = async (userEmail, dispatch, navigate, redirect) => {
-  console.log("userEmail, dispatch, navigate, redirect",userEmail, dispatch, navigate, redirect)
-  if(userEmail){
   dispatch(start_loading());
-    try {
-      // console.log("userEmail, dispatch, navigate, redirect",userEmail, dispatch, navigate, redirect)
-      
-      const res = await axios.post(`${url}auth/forgot-password`, { email: userEmail }, Headers);
-      if (res?.data?.status) {
-        toast.success(res?.data?.message);
-        (redirect && navigate) && navigate(`/reset-password-sent?email=${encodeURIComponent(userEmail)}`);
-        return res.data;
-      } else {
-        toast.error(res?.data?.message);
-      }
-    } catch (error) {
-      dispatch(catch_errors_handle(error, dispatch));
-    } finally {
-      dispatch(stop_loading());
+  try {
+    const res = await axios.post(`${url}auth/forgot-password`, { email: userEmail }, Headers);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      (redirect && navigate) && navigate(`/reset-password-sent?email=${encodeURIComponent(userEmail)}`);
+      return res.data;
+    } else {
+      toast.error(res?.data?.message);
     }
-  }else{
-    // toast.error("Please enter the email id.");
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
   }
-
 };
 
 export const change_password = async (dispatch, userData) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] = localStorage.getItem('custom-auth-token');
+    headers.headers['x-access-token'] = token;
     const res = await axios.put(`${url}profile/change-password`, userData, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
@@ -177,7 +166,6 @@ export const get_login_history = async (dispatch) => {
   try {
     const res = await axios.get(`${url}profile/login-history`, headers);
     if (res?.data?.status) {
-      console.log("#######################",res)
       dispatch({ type: LOGIN_HISTORY, payload: res?.data.data });
     } else {
       toast.error(res?.data?.message);
@@ -192,7 +180,7 @@ export const get_login_history = async (dispatch) => {
 export const get_user_profile_details = async (dispatch) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] = localStorage.getItem('custom-auth-token');
+    headers.headers['x-access-token'] = token;
     const res = await axios.get(`${url}profile`, headers);
     if (res?.data?.status) {
       dispatch({ type: GET_USER_PROFILE, payload: res?.data?.data });

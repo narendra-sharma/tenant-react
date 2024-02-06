@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { get_user_profile_details, update_profile_detail } from '@/reduxData/user/userAction';
-import { FormHelperText, Textarea } from '@mui/joy';
+import { FormHelperText } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -15,18 +15,14 @@ import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
 import { Country } from 'country-state-city';
 import { Helmet } from 'react-helmet-async';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-
 import { config } from '@/config';
 import { getInitials } from '@/lib/get-initials';
-
 import 'react-phone-number-input/style.css';
 import { PhoneInput } from '@/components/core/phone-input';
-
 
 const url = import.meta.env.VITE_APP_ASSET_URL;
 const metadata = {
@@ -57,7 +53,6 @@ const Page = ({ userData }) => {
     vat_number: '',
   });
   const [errors, setErrors] = React.useState({
-    profile_pic: '',
     first_name: '',
     last_name: '',
     email: '',
@@ -103,32 +98,6 @@ const Page = ({ userData }) => {
     setCountries(cArr);
   }, []);
 
-  const handleChange = (e) => {
-    const selectedFile = e.target.files[0];
-
-    if (selectedFile) {
-      const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
-      if (allowedTypes.includes(selectedFile.type)) {
-        const maxSize = 3 * 1024 * 1024;
-        if (selectedFile.size <= maxSize) {
-          setCuser({ ...cuser, profile_pic: selectedFile });
-          let reader = new FileReader();
-          reader.onload = (e) => {
-            setimagePath(e.target.result);
-          };
-          reader.readAsDataURL(e.target.files[0]);
-          setErrors({ ...errors, profile_pic: null });
-        } else {
-          // toast.error('File size exceeds 3MB limit.');
-          setErrors({ ...errors, profile_pic: 'File size exceeds 3MB limit.' });
-        }
-      } else if (!allowedTypes.includes(selectedFile.type)) {
-        setErrors({ ...errors, profile_pic: 'Invalid file type. Please select a PNG, JPEG, or GIF file.' });
-      } else {
-        setErrors({ ...errors, profile_pic: null });
-      }
-    }
-  };
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -159,7 +128,6 @@ const Page = ({ userData }) => {
       return;
     }
     const formData = new FormData();
-    formData.append('profile_pic', cuser?.profile_pic);
     formData.append('first_name', cuser?.first_name);
     formData.append('last_name', cuser?.last_name);
     formData.append('email', cuser?.email);
@@ -185,37 +153,9 @@ const Page = ({ userData }) => {
       </Helmet>
       <Stack component="main" divider={<Divider />} spacing={5}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
-          <input type="file" ref={fileinputRef} style={{ display: 'none' }} onChange={(e) => handleChange(e)} />
-          <Box sx={{ '--Avatar-size': '120px', position: 'relative' }} onClick={() => fileinputRef.current.click()}>
-            <Avatar src={imagePath}>{getInitials(`${userData?.first_name} ${userData?.last_name}`)}/</Avatar>
-            <Box
-              sx={{
-                alignItems: 'center',
-                borderRadius: '100%',
-                color: 'var(--joy-palette-common-white)',
-                cursor: 'pointer',
-                display: 'flex',
-                height: '100%',
-                justifyContent: 'center',
-                left: 0,
-                position: 'absolute',
-                top: 0,
-                width: '100%',
-                '&:hover': {
-                  bgcolor: 'rgba(0, 0, 0, 0.4)',
-                },
-                '&:not(:hover) > *': {
-                  display: 'none',
-                },
-              }}
-            >
-              <PenIcon style={{ fontSize: 'var(--joy-fontSize-lg)' }} weight="bold" />
-            </Box>
+          <Box sx={{ '--Avatar-size': '120px', position: 'relative' }} >
+            <Avatar src={imagePath}>{getInitials(`${cuser?.first_name} ${cuser?.last_name}`)}</Avatar>
           </Box>
-          <div>
-            <Typography level="h4">Profile Picture</Typography>
-            <Typography level="body-sm">Supports PNGs, JPEGs and GIFs under 3MB</Typography>
-          </div>
         </Stack>
         {errors.profile_pic && <FormHelperText style={{ color: 'red' }}>{errors?.profile_pic}</FormHelperText>}
         <Stack spacing={3}>

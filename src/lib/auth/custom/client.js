@@ -50,6 +50,7 @@ class AuthClient {
     const token = localStorage.getItem('custom-auth-token');
     
     if (!token) {
+      this.signOut();
       return { data: null };
     }
 

@@ -57,7 +57,6 @@ export function Page() {
       setconfirmPassError(null);
     }
     if (formData.newPassword === formData.confirmPassword && formData.newPassword && formData.confirmPassword && !oldPassError && !newPassError && !confirmPassError) {
-      console.log(formData.oldPassword,formData.newPassword,formData.confirmPassword )
       const { oldPassword, newPassword } = formData;
        change_password(dispatch, { oldPassword, newPassword });
     }
@@ -166,7 +165,7 @@ export function Page() {
               <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
                 Discard
               </Button>
-              <Button type="submit" onClick={(e) => handleSubmit(e)}>
+              <Button type="submit">
                 Save Changes
               </Button>
             </Stack>
