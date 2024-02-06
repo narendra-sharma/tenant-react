@@ -147,11 +147,6 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         loginHistory: action.payload,
       };
-    case GET_USER_PROFILE:
-      return {
-        ...state,
-        userData: action.payload,
-      };
     default:
       return state;
   }
