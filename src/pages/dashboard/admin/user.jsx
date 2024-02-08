@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
@@ -13,6 +13,8 @@ import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { UserTable } from '@/components/dashboard/admin/user-table';
 import Box from '@mui/joy/Box';
+import { connect, useDispatch } from 'react-redux';
+import { get_users } from '@/reduxData/user/userAction';
 const customer = [
   {
     userName: 'Full Name',
@@ -59,7 +61,12 @@ const customer = [
     permissionProfile: 'Tenant User',
   },
 ];
-const user = () => {
+const Users = ({users}) => {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+  // get_users(dispatch)
+  },[])
+
   return <Container maxWidth={false} sx={{ py: 3 }}>
   <Stack spacing={3}>
     <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
@@ -93,4 +100,10 @@ const user = () => {
   </Container>
 };
 
-export default user;
+const mapStateToProps = (state) => {
+  return {
+    users: state.user.users,
+  };
+};
+
+export default connect(mapStateToProps)(Users);

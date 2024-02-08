@@ -1,4 +1,4 @@
-import { GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
+import { GET_USERS, GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('authUser')),
@@ -147,6 +147,12 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         loginHistory: action.payload,
       };
+      case GET_USERS:
+        return {
+          ...state,
+          users: action.payload,
+        };
+    
     default:
       return state;
   }

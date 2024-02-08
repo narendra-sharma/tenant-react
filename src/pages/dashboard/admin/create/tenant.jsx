@@ -19,6 +19,10 @@ const metadata = {
 };
 
 export function CreateTennant() {
+  const [dataFromChild, setDataFromChild] = React.useState(null);
+    const handleDataFromChild = (data) => {
+      setDataFromChild(data);
+    };
   return (
     <React.Fragment>
       <Helmet>
@@ -30,18 +34,18 @@ export function CreateTennant() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  Create Tenant
+                  {dataFromChild==='edit'?'Update':'Create'} Tenant
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
                   <BreadcrumbsItem type="end">Admin</BreadcrumbsItem>
                   <BreadcrumbsItem href={paths['dashboard.admin.tennats']}>Tenants</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end">Create Tenant</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">{dataFromChild==='edit'?'Update':'Create'} Tenant</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
               
             </Stack>
-            <TenantCreateForm />
+            <TenantCreateForm onDataFromChild={handleDataFromChild} />
           </Stack>
         </Container>
       </main>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from '@/components/core/toaster';
 
 import { start_loading, stop_loading } from '../rootAction';
-import { GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
+import { GET_USERS, GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
 
 const url = import.meta.env.VITE_API_URL;
 const headers = {
@@ -180,6 +180,23 @@ export const get_login_history = async (dispatch) => {
     const res = await axios.get(`${url}profile/login-history`, headers);
     if (res?.data?.status) {
       dispatch({ type: LOGIN_HISTORY, payload: res?.data.data });
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const get_users = async (dispatch) => {
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] =token();
+    const res = await axios.get(`${url}admin/users`, headers);
+    if (res?.data?.status) {
+      dispatch({ type: GET_USERS, payload: res?.data.data });
     } else {
       toast.error(res?.data?.message);
     }
