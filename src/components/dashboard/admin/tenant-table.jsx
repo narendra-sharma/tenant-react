@@ -8,9 +8,7 @@ import Typography from '@mui/joy/Typography';
 import { DataTable } from '@/components/core/data-table';
 import { RouterLink } from '@/components/core/link';
 import Box from '@mui/joy/Box';
-import IconButton from '@mui/joy/IconButton';
 import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
-
 
 const columns = [
   {
@@ -19,10 +17,10 @@ const columns = [
         component={RouterLink}
         fontSize="sm"
         fontWeight="md"
-        href={paths['dashboard.orders.details']}
+        href={paths['dashboard.admin.create.tenant']}
         underline="none"
       >
-        {row.id}
+        {row.tenant_user_name}
       </Link>
     ),
     name: 'Tenant Name',
@@ -33,7 +31,7 @@ const columns = [
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
           <Typography level="body-sm" textColor="text.primary">
-            {row.companyName}
+            {row.tenant_user_name}
           </Typography>
           <Typography level="body-xs">{row.companyEmail}</Typography>
         </div>
@@ -43,15 +41,21 @@ const columns = [
     width: '230px',
   },
   { field: 'address', name: 'Address' ,  width: '250px',},
-  { field: 'phoneNumber', name: 'Phone Number' ,  width: '200px',},
-  { field: 'vatId', name: 'VAT ID', width: '200px' },
+  { field: 'company_phone_number', name: 'Phone Number' ,  width: '200px',},
+  { field: 'vat_number', name: 'VAT ID', width: '200px' },
   { field: 'totalDevice', name: 'Total Devices', width: '120px' },
   {
-    formatter: () => (
+    formatter: (row) => (
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <IconButton color="neutral" size="sm" variant="plain">
+        <Link
+        component={RouterLink}
+        fontSize="sm"
+        fontWeight="md"
+        href={paths['dashboard.admin.update.tenant'](`${row._id}`)}
+        underline="none"
+      >
           <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
-        </IconButton>
+        </Link>
       </Box>
     ),
     hideName: true,

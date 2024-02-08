@@ -56,4 +56,5 @@ export const paths = {
   'dashboard.admin.create.device': '/admin/devices/create',
   'dashboard.admin.create.user': '/admin/users/create',
   'dashboard.admin.create.tenant': '/admin/tennants/create',
+  'dashboard.admin.update.tenant': (tenantId)=>`/admin/tennants/update/${tenantId}`
 };

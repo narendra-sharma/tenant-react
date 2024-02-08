@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
@@ -9,7 +9,6 @@ import Input from '@mui/joy/Input';
 import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
-import dayjs from 'dayjs';
 import Typography from '@mui/joy/Typography';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { paths } from '@/paths';
@@ -20,57 +19,15 @@ import Box from '@mui/joy/Box';
 import { Button } from '@mui/joy';
 import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
-const customer = [
-  {
-    id: 'Tenant',
-    address: 'Shreveport, LA 71109',
-    companyEmail: 'info@company.com',
-    companyName: 'Company',
-    phoneNumber: '(907) 555-0101',
-    vatId: 'BE0487248925', 
-    reading: '1',
-    totalDevice: '10',
-  },
+import { get_tenants } from '@/reduxData/rootAction';
+import { connect,useDispatch } from 'react-redux';
 
-  {
-    id: 'Tenant',
-    address: 'Cedar Creek, TX 78612',
-    companyName: 'Company',
-    companyEmail: 'info@company.com',
-    phoneNumber: '(907) 555-0101',
-    vatId: 'BE0487248925',
-    totalDevice: '15',
-  },
-  {
-    id: 'Tenant',
-    address: 'Saint Cloud, FL 34769',
-    companyName: 'Company',
-    companyEmail: 'info@company.com',
-    phoneNumber: '(907) 555-0101',
-    vatId: 'BE0487248925',
-    totalDevice: '17',
-  },
-  {
-    id: 'Tenant',
-    companyName:'Company',
-    companyEmail: 'info@company.com',
-    address: 'Auburn, CA 95602',
-    phoneNumber: '(907) 555-0101',
-    vatId: 'BE0487248925',
-    totalDevice: '7',
-  },
-  {
-    id: 'Tenant',
-    companyName: 'Company',
-    companyEmail: 'info@company.com',
-    address: 'Vineland, NJ 08360',
-    phoneNumber: '(907) 555-0101',
-    vatId: 'BE0487248925',
-    totalDevice: '143',
-  },
-];
+const Tenants = ({tenants}) => {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+  get_tenants(dispatch)
+  },[])
 
-const tenants = () => {
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
@@ -116,7 +73,7 @@ const tenants = () => {
            
           </Stack>
           <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <DeviceTable rows={customer} />
+          <DeviceTable rows={tenants} />
           
           </Card>
           <Box sx={{ display: 'flex', justifyContent: 'center' , textCenter: 'center'}}>
@@ -127,4 +84,10 @@ const tenants = () => {
       </Container>
   );
 }
-export default tenants;
+const mapStateToProps = (state) => {
+  return {
+    tenants: state.tenant.tenants,
+  };
+};
+
+export default connect(mapStateToProps)(Tenants);

@@ -1,31 +1,138 @@
 'use client';
 
 import * as React from 'react';
+import { FormHelperText } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Checkbox from '@mui/joy/Checkbox';
+import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Grid from '@mui/joy/Grid';
 import Input from '@mui/joy/Input';
-import Link from '@mui/joy/Link';
 import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
+import { Country } from 'country-state-city';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
-import Chip from '@mui/joy/Chip';
+import { create_tenant } from '@/reduxData/tenant/tenantAction';
 
 export function TenantCreateForm() {
+  const state = useSelector((state) => state);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+  const [cuser, setCuser] = React.useState({
+    company_name: '',
+    tenant_name: '',
+    company_email: '',
+    company_phone_number: '',
+    tax_id: '',
+    website: '',
+    country: '',
+    state: '',
+    city: '',
+    zip_code: '',
+    address: '',
+    azure_cosmos: '',
+    database_name: '',
+    account_key: '',
+  });
+  const [countries, setCountries] = React.useState([]);
+  const [errors, setErrors] = React.useState({
+    company_name: '',
+    tenant_name: '',
+    company_email: '',
+    company_phone_number: '',
+    tax_id: '',
+    website: '',
+    country: '',
+    state: '',
+    city: '',
+    zip_code: '',
+    address: '',
+    azure_cosmos: '',
+    database_name: '',
+  });
+
+  React.useEffect(() => {
+    const pathname = window.location.pathname;
+
+    // Split the pathname into parts using '/'
+    const pathParts = pathname.split('/');
+
+    // Find the index of 'update' in the path
+    const updateIndex = pathParts.indexOf('update');
+
+    // If 'update' is found and there is an element after it, it's the 'id'
+    if (updateIndex !== -1 && updateIndex < pathParts.length - 1) {
+      const id = pathParts[updateIndex + 1];
+      console.log('ID from URL:', id);
+    }
+    const cArr = Country.getAllCountries();
+    setCountries(cArr);
+  }, []);
+
+  const checkAllErrors = () => {
+    let err = false;
+    let output = Object.entries(cuser);
+    output.forEach(([key, value]) => {
+      if (!value && key !== 'phone_number' && key !== 'company_phone_number' && key !== 'state' && key !== 'website') {
+        err = true;
+        setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
+      } else if (value && (key === 'email' || key === 'companyEmail') && !emailRegex.test(value)) {
+        err = true;
+        setErrors((prevErrors) => ({ ...prevErrors, [key]: 'invalid' }));
+      }
+    });
+    return err;
+  };
 
   const onSubmit = React.useCallback(() => {
-    navigate(paths['dashboard.admin.tenants']);
-  }, [navigate]);
+    if (checkAllErrors()) {
+      console.log(errors);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('company_name', cuser?.company_name);
+    formData.append('tenant_name', cuser?.tenant_name);
+    formData.append('company_email', cuser?.company_email);
+    formData.append('company_phone_number', cuser?.company_phone_number);
+    formData.append('website', cuser?.website);
+    formData.append('tax_id', cuser?.tax_id);
+    formData.append('state', cuser?.state);
+    formData.append('city', cuser?.city);
+    formData.append('country', cuser?.country);
+    formData.append('address', cuser?.address);
+    formData.append('zipcode', cuser?.zip_code);
+    formData.append('connection_string', cuser?.azure_cosmos);
+    formData.append('db_name', cuser?.database_name);
+    formData.append('account_key',cuser?.account_key)
+    create_tenant(formData,dispatch)
+  });
+
+  const handleElementChange = (value, label) => {
+    setCuser((prev) => ({ ...prev, [label]: value }));
+    setErrors((prev) => ({
+      ...prev,
+      [label]:
+        !value &&
+        label !== 'phone_number' &&
+        label !== 'company_phone_number' &&
+        label !== 'state' &&
+        label !== 'website'
+          ? 'required'
+          : (label === 'email' || label === 'company_email') && !emailRegex.test(value)
+            ? 'invalid'
+            : '',
+    }));
+  };
 
   return (
     <form
@@ -42,47 +149,88 @@ export function TenantCreateForm() {
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Company Name</FormLabel>
-                  <Input defaultValue="" name="companyName" style={{borderColor:'#EAEEF6' , fontSize:'14px'}} />
+                  <Input
+                    value={cuser?.company_name}
+                    name="company_name"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_name')}
+                  />
+                  {errors.company_name && (
+                    <FormHelperText style={{ color: 'red' }}>Company Name is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Tenant Name</FormLabel>
-                  <Input defaultValue="" name="tenantName" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <Input
+                    name="tenant_name"
+                    value={cuser.tenant_name}
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'tenant_name')}
+                  />
+                  {errors.tenant_name && (
+                    <FormHelperText style={{ color: 'red' }}>Tenant Name is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
-              <Grid md={6} xs={12}>  
+              <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Company Email</FormLabel>
-                  <Input defaultValue="" name="cfirstName" type="text"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <Input
+                    value={cuser.company_email}
+                    name="company_email"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_email')}
+                  />
+                  {errors.company_email && (
+                    <FormHelperText style={{ color: 'red' }}>
+                      {errors.company_email === 'required' ? 'Company Email is required' : 'Enter valid email id.'}
+                    </FormHelperText>
+                  )}
                 </FormControl>
-              
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Company Phone Number</FormLabel>
-                  <Input defaultValue="" name="phoneNumber" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <Input
+                    value={cuser.company_phone_number}
+                    name="company_phone_number"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
+                  />
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                   <FormLabel>TAX ID</FormLabel>
-                   <Input defaultValue="" name="taxId" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <FormLabel>TAX ID</FormLabel>
+                  <Input
+                    value={cuser.tax_id}
+                    name="tax_id"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'tax_id')}
+                  />
+                  {errors.tax_id && <FormHelperText style={{ color: 'red' }}>TAX ID is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Website</FormLabel>
-                  <Input  name="website"
+                  <Input
+                    value={cuser.website}
+                    name="website"
                     startDecorator={
                       <Chip size="sm" variant="soft">
                         www.
                       </Chip>
                     }
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    
+                    onChange={(e) => handleElementChange(e.target.value, 'website')}
                   />
-                 
                 </FormControl>
               </Grid>
             </Grid>
@@ -90,77 +238,123 @@ export function TenantCreateForm() {
         </Stack>
 
         <Stack spacing={3}>
-          <Typography level="h4">Address
-          </Typography>
+          <Typography level="h4">Address</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Country</FormLabel>
-                  <Select defaultValue="" name="country">
+                  <Select
+                    name="country"
+                    value={cuser?.country}
+                    onChange={(e) => e && handleElementChange(e.target.textContent, 'country')}
+                  >
                     <Option value="">Choose a country</Option>
-                    <Option value="ca">Canada</Option>
-                    <Option value="uk">United Kingdom</Option>
-                    <Option value="us">United States</Option>
+                    {countries.length > 0 &&
+                      countries.map((c) => (
+                        <Option key={c.name} value={c.name}>
+                          {c.name}
+                        </Option>
+                      ))}
                   </Select>
+                  {errors.country && <FormHelperText style={{ color: 'red' }}>Country is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>State</FormLabel>
-                  <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <Input name="state" type="text" style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />
                 </FormControl>
               </Grid>
-              <Grid md={6} xs={12}>  
+              <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>City</FormLabel>
-                  <Input defaultValue="" name="city" type="text"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <Input
+                    name="city"
+                    type="text"
+                    value={cuser.city}
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'city')}
+                  />
+                  {errors.city && <FormHelperText style={{ color: 'red' }}>City is required.</FormHelperText>}
                 </FormControl>
-              
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Zip Code</FormLabel>
-                  <Input defaultValue="" name="zip" />
+                  <Input
+                    name="zip_code"
+                    value={cuser.zip_code}
+                    onChange={(e) => handleElementChange(e.target.value, 'zip_code')}
+                  />
+                  {errors.zip_code && <FormHelperText style={{ color: 'red' }}>Zip Code is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Address</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={2} name="street" />
+                  <Textarea
+                    maxRows={3}
+                    minRows={2}
+                    name="address"
+                    value={cuser.address}
+                    onChange={(e) => handleElementChange(e.target.value, 'address')}
+                  />
+                  {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
                 </FormControl>
               </Grid>
-           
             </Grid>
           </Box>
         </Stack>
 
         <Stack spacing={3}>
-          <Typography level="h4">Settings Database
-          </Typography>
+          <Typography level="h4">Settings</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
-              <Grid md={12} xs={12}>
+              {/* <Grid md={12} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Endpoint URI</FormLabel>
+                  <FormLabel>Connection String Azure Cosmos DB</FormLabel>
                   <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
                  
                 </FormControl>
+              </Grid> */}
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Connection String Azure Cosmos DB</FormLabel>
+                  <Input
+                    name="azure_cosmos"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    value={cuser.azure_cosmos}
+                    onChange={(e) => handleElementChange(e.target.value, 'azure_cosmos')}
+                  />
+                </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Key</FormLabel>
-                  <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <FormLabel>Database Name</FormLabel>
+                  <Input
+                    name="database_name"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    value={cuser.database_name}
+                    onChange={(e) => handleElementChange(e.target.value, 'database_name')}
+                  />
                 </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>  
-                <FormControl>
-                  <FormLabel>Azure Cosmos DB Database Name</FormLabel>
-                  <Input defaultValue="" name="city" type="text"  style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
-                </FormControl>
-              
               </Grid>
               <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Account Key</FormLabel>
+                  <Input
+                    name="account_key"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    value={cuser.account_key}
+                    onChange={(e) => handleElementChange(e.target.value, 'account_key')}
+                  />
+                </FormControl>
+              </Grid>
+              {/* <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Container Name Water</FormLabel>
                   <Input defaultValue="" name="zip" />
@@ -183,13 +377,12 @@ export function TenantCreateForm() {
                   <FormLabel>Azure Cosmos DB Partition Key Path Electricity</FormLabel>
                   <Textarea defaultValue="" maxRows={3} minRows={2} name="street" />
                 </FormControl>
-              </Grid>
-           
+              </Grid> */}
             </Grid>
           </Box>
         </Stack>
 
-        <Stack spacing={3}>
+        {/* <Stack spacing={3}>
           <Typography level="h4">Settings Timeframe Meters
           </Typography>
           <Box sx={{ maxWidth: 'lg' }}>
@@ -210,16 +403,15 @@ export function TenantCreateForm() {
               
             </Grid>
           </Box>
-        </Stack>
-        
+        </Stack> */}
+
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.tenants']} variant="outlined">
             Cancel
           </Button>
-          <Button type="submit">Create Device</Button>
+          <Button type="submit">Create Tenant</Button>
         </Stack>
       </Stack>
-      
     </form>
   );
 }

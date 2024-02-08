@@ -8,6 +8,7 @@ import { Layout as TeamLayout } from '@/components/dashboard/team/layout';
 import { CreateTennant } from '@/pages/dashboard/admin/create/tenant';
 import { CreateUser } from '@/pages/dashboard/admin/create/user';
 import { CreateDevice } from '@/pages/dashboard/admin/create/device';
+import UpdateTenant from '@/pages/dashboard/admin/update/tenant';
 
 // Account pages
 
@@ -264,8 +265,8 @@ export const routes = [
                 element: <CreateTennant />,
               },
               {
-                path: ':Id',
-                element: <CreateTennant />,
+                path: 'update/:tenantId',
+                element: <UpdateTenant />,
               },
             ],
           },
