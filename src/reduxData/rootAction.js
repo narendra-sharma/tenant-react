@@ -3,9 +3,12 @@ import {
   login,
   get_permissions
 } from "./user/userAction";
+
+import { get_tenants } from "./tenant/tenantAction";
 export {
   start_loading,
   stop_loading,
   login,
-  get_permissions
+  get_permissions,
+  get_tenants
 };

@@ -10,7 +10,6 @@ import Input from '@mui/joy/Input';
 import List from '@mui/joy/List';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import dayjs from 'dayjs';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -35,16 +34,13 @@ export function Page() {
     confirmPassword: '',
   });
 
-  const [oldPassError, setoldPassError] = useState(null);
-  const [newPassError, setnewPassError] = useState(null);
-  const [confirmPassError, setconfirmPassError] = useState(null);
   const loginHistory = useSelector((state) => state.user.loginHistory);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$/;
   const checkAllErrors = () => {
     let err = false;
     let output = Object.entries(formData);
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
     output.forEach(([key, value]) => {
       if (!value) {
         err = true;
@@ -73,35 +69,7 @@ export function Page() {
     get_login_history(dispatch);
   }, []);
 
-  // const handleChange = (e) => {
-
-  //   const { name, value } = e.target;
-  //   setformData({ ...formData, [name]: value });
-  //   const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
-
-  //   switch (name) {
-  //     case 'oldPassword':
-  //       setoldPassError(value == null || value == '' ? 'Current password is required' : null);
-  //       break;
-  //     case 'newPassword':
-  //       setnewPassError(
-  //         value == null || value == ''
-  //           ? 'New password is required'
-  //           : value.length < 12
-  //             ? 'Password must be greater than 12 digits'
-  //             : !passwordRegex.test(value) ?
-  //               'Password should be combination of digits, uppercase, lowercase and special characters. ':null
-  //       );
-  //       break;
-  //     case 'confirmPassword':
-  //       setconfirmPassError(value == null || value == '' ? 'Confirm password is required' : formData.newPassword == !value? "Password does not match":null);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
   const handleChange = (value, label) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
     setformData((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       [label]: !value
@@ -143,10 +111,6 @@ export function Page() {
                   style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                   onChange={(e) => handleChange(e.target.value, 'newPassword')}
                 />
-                {/* <FormHelperText>
-                  Your new password must be more than 12 characters including 1 uppercase letter, 1 lowercase letter, 1
-                  number, 1 symbol.
-                </FormHelperText> */}
                 {errors.newPassword && (
                   <FormHelperText style={{ color: 'red' }}>
                     {errors.newPassword === 'required' ? 'New password is required' : 'Your new password must be more than 12 characters including 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol.'}

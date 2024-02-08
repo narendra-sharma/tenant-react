@@ -25,7 +25,7 @@ export function UpdatePasswordForm() {
     newpassword: '',
     confirmpassword: '',
   });
-  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{12,}$/;
 
   const checkAllErrors = () => {
     let err = false;
