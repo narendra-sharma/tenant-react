@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { create_tenant, update_tenant } from '@/reduxData/tenant/tenantAction';
 import { FormHelperText } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -17,15 +18,14 @@ import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
 import { Country } from 'country-state-city';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
-import { create_tenant } from '@/reduxData/tenant/tenantAction';
 
-export function TenantCreateForm() {
+export function TenantCreateForm({ onDataFromChild }) {
   const state = useSelector((state) => state);
-  const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const [cuser, setCuser] = React.useState({
     company_name: '',
@@ -60,20 +60,33 @@ export function TenantCreateForm() {
     database_name: '',
   });
 
+  const id = useParams();
   React.useEffect(() => {
-    const pathname = window.location.pathname;
-
-    // Split the pathname into parts using '/'
-    const pathParts = pathname.split('/');
-
-    // Find the index of 'update' in the path
-    const updateIndex = pathParts.indexOf('update');
-
-    // If 'update' is found and there is an element after it, it's the 'id'
-    if (updateIndex !== -1 && updateIndex < pathParts.length - 1) {
-      const id = pathParts[updateIndex + 1];
-      console.log('ID from URL:', id);
+    if (id.tenantId) {
+      let data = state.tenant.tenants.filter((res) => {
+        if (res._id === id.tenantId) {
+          onDataFromChild('edit');
+          console.log('PPPPPPPPPPP', res);
+          setCuser({
+            company_name: res?.tenant_company_name,
+            tenant_name: res?.tenant_name,
+            company_email: res?.comapny_email,
+            company_phone_number: res?.company_phone_number,
+            tax_id: res?.company_tax_id,
+            website: res?.company_website,
+            country: res?.company_country,
+            state: res?.company_state,
+            city: res?.company_city,
+            zip_code: res?.company_zip_code,
+            address: res?.company_address,
+            azure_cosmos: res?.setting_endpoint_uri,
+            database_name: res?.setting_database_name,
+            account_key: res?.setting_key,
+          });
+        }
+      });
     }
+
     const cArr = Country.getAllCountries();
     setCountries(cArr);
   }, []);
@@ -95,7 +108,6 @@ export function TenantCreateForm() {
 
   const onSubmit = React.useCallback(() => {
     if (checkAllErrors()) {
-      console.log(errors);
       return;
     }
 
@@ -113,8 +125,13 @@ export function TenantCreateForm() {
     formData.append('zipcode', cuser?.zip_code);
     formData.append('connection_string', cuser?.azure_cosmos);
     formData.append('db_name', cuser?.database_name);
-    formData.append('account_key',cuser?.account_key)
-    create_tenant(formData,dispatch)
+    formData.append('account_key', cuser?.account_key);
+    if (id?.tenantId) {
+      formData.append('tenant_id', id?.tenantId);
+      update_tenant(formData, dispatch);
+    } else {
+      create_tenant(formData, dispatch);
+    }
   });
 
   const handleElementChange = (value, label) => {
@@ -263,7 +280,13 @@ export function TenantCreateForm() {
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>State</FormLabel>
-                  <Input name="state" type="text" style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />
+                  <Input
+                    name="state"
+                    value={cuser.state}
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'state')}
+                  />
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -409,7 +432,7 @@ export function TenantCreateForm() {
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.tenants']} variant="outlined">
             Cancel
           </Button>
-          <Button type="submit">Create Tenant</Button>
+          <Button type="submit">{id?.tenantId ? 'Update' : 'Create'} Tenant</Button>
         </Stack>
       </Stack>
     </form>

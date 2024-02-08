@@ -64,3 +64,21 @@ export const catch_errors_handle = (error, dispatch) => {
       dispatch(stop_loading());
     }
   };
+
+  export const update_tenant = async (data,dispatch)=>{
+    dispatch(start_loading());
+    try {
+      headers.headers['x-access-token'] =token();
+      const res = await axios.put(`${url}admin/edit_tenant`,data, headers);
+      if (res?.data?.status) {
+        toast.success(res?.data?.message);
+        get_tenants(dispatch)
+      } else {
+        toast.error(res?.data?.message);
+      }
+    } catch (error) {
+      dispatch(catch_errors_handle(error, dispatch));
+    } finally {
+      dispatch(stop_loading());
+    }
+  }

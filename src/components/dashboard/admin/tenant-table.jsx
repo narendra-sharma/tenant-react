@@ -20,7 +20,7 @@ const columns = [
         href={paths['dashboard.admin.create.tenant']}
         underline="none"
       >
-        {row.tenant_user_name}
+        {row.tenant_name}
       </Link>
     ),
     name: 'Tenant Name',
@@ -31,7 +31,7 @@ const columns = [
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
           <Typography level="body-sm" textColor="text.primary">
-            {row.tenant_user_name}
+            {row.tenant_company_name}
           </Typography>
           <Typography level="body-xs">{row.companyEmail}</Typography>
         </div>
@@ -40,10 +40,10 @@ const columns = [
     name: 'Company Name',
     width: '230px',
   },
-  { field: 'address', name: 'Address' ,  width: '250px',},
+  { field: 'company_address', name: 'Address' ,  width: '250px',},
   { field: 'company_phone_number', name: 'Phone Number' ,  width: '200px',},
-  { field: 'vat_number', name: 'VAT ID', width: '200px' },
-  { field: 'totalDevice', name: 'Total Devices', width: '120px' },
+  { field: 'company_tax_id', name: 'VAT ID', width: '200px' },
+  { field: 'devices_assigned', name: 'Total Devices', width: '120px' },
   {
     formatter: (row) => (
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
