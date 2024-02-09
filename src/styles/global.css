@@ -101,3 +101,8 @@
 .phoneNumberContainer .PhoneInputCountry {
   padding-left: 10px;
 }
+.MuiTablePagination-toolbar{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

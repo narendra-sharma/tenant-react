@@ -1,13 +1,11 @@
 
-import React, { useEffect } from 'react';
+import React,{ useEffect, useState } from 'react';
 import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
@@ -20,13 +18,19 @@ import { Button } from '@mui/joy';
 import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { get_tenants } from '@/reduxData/rootAction';
-import { connect,useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import CustomPagination from '@/components/core/custom-pagination';
 
-const Tenants = ({tenants}) => {
+const Tenants = ({tenants,total}) => {
   const dispatch = useDispatch()
+  const [tenant, setTenant] = useState(null);
+  const [company, setCompany] = useState(null);
+  const [status, setStatus] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
   useEffect(()=>{
-  get_tenants(dispatch)
-  },[])
+    get_tenants(dispatch,page,limit,tenant,company,status);
+  },[page,limit,tenant,company,status]);
 
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
@@ -55,30 +59,34 @@ const Tenants = ({tenants}) => {
         <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignvatId: 'BE0487248925start', flexWrap: 'wrap' }}>
             <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
               <FormLabel>Tenant Name</FormLabel>
-              <Input defaultValue="" name="orderId" />
+              <Input defaultValue={tenant} name="tenant" 
+                onChange={(e)=>window.setTimeout(() => {
+                  setTenant(e.target.value)
+                }, 1000)}
+              />
             </FormControl>
             <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Company Name</FormLabel>
-              <Input defaultValue="" name="customer" />
+              <Input defaultValue={company} name="company" 
+                onChange={(e)=>window.setTimeout(() => {
+                  setCompany(e.target.value)
+                }, 1000)}
+              />
             </FormControl>
             <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Status</FormLabel>
-              <Select defaultValue="all" name="status">
-                <Option value="all">All</Option>
-                <Option value="active">Online</Option>
-                <Option value="canceled">Offline</Option>
-                
-              </Select>
+              <select defaultValue={status} name="status" onChange={(e)=>setStatus(e.target.value)}>
+                <option value="">All</option>
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+              </select>
             </FormControl>
-           
           </Stack>
           <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <DeviceTable rows={tenants} />
-          
           </Card>
-          <Box sx={{ display: 'flex', justifyContent: 'center' , textCenter: 'center'}}>
-          <Pagination count={10} page={1} showFirstButton showLastButton size="sm" variant="outlined" />
-          </Box>
+          {total > 0 && <CustomPagination total={total} onPageChange={(newPage, perPage) =>{setPage(newPage);setLimit(perPage);}} />}
+         
           
        </Stack>
       </Container>
@@ -87,6 +95,7 @@ const Tenants = ({tenants}) => {
 const mapStateToProps = (state) => {
   return {
     tenants: state.tenant.tenants,
+    total: state.tenant.total,
   };
 };
 

@@ -30,11 +30,11 @@ export const catch_errors_handle = (error, dispatch) => {
     }
   };
 
-  export const get_tenants = async (dispatch) => {
+  export const get_tenants = async (dispatch,page,limit,tenant,company,status) => {
     dispatch(start_loading());
     try {
       headers.headers['x-access-token'] =token();
-      const res = await axios.get(`${url}admin/tenant_list`, headers);
+      const res = await axios.get(`${url}admin/tenant_list?page=${page}&limit=${limit}${tenant?'&tenant='+tenant:''}${company?'&company='+company:''}${status?'&status='+status:''}`, headers);
       if (res?.data?.status) {
         dispatch({ type: GET_TENANTS, payload: res?.data });
       } else {
