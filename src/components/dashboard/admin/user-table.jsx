@@ -1,16 +1,15 @@
 'use client';
 
 import * as React from 'react';
+import Box from '@mui/joy/Box';
 import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
-import { paths } from '@/paths';
 import Typography from '@mui/joy/Typography';
-import { DataTable } from '@/components/core/data-table';
-import { RouterLink } from '@/components/core/link';
-import Box from '@mui/joy/Box';
-import IconButton from '@mui/joy/IconButton';
 import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
 
+import { paths } from '@/paths';
+import { DataTable } from '@/components/core/data-table';
+import { RouterLink } from '@/components/core/link';
 
 const columns = [
   {
@@ -22,7 +21,7 @@ const columns = [
         href={paths['dashboard.orders.details']}
         underline="none"
       >
-        {row.userName}
+        {row.first_name}
       </Link>
     ),
     name: 'User Name',
@@ -32,14 +31,14 @@ const columns = [
     formatter: (row) => (
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
-          <Typography >{row.userEmail}</Typography>
+          <Typography>{row.email}</Typography>
         </div>
       </Stack>
     ),
     name: 'User Email',
     width: '200px',
   },
-  { field: 'phoneNumber', name: 'Phone Number' ,  width: '170px',},
+  { field: 'phone_number', name: 'Phone Number', width: '170px' },
   {
     formatter: (row) => (
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
@@ -57,9 +56,9 @@ const columns = [
     formatter: (row) => (
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
-          <Typography>{row.userCompany}</Typography>
-          <Typography level="body-xs">{row.userCompany1}</Typography>
-          <Typography level="body-xs">{row.userCompany2}</Typography>
+          <Typography>{row.company_name}</Typography>
+          <Typography level="body-xs">{row.company_name}</Typography>
+          <Typography level="body-xs">{row.company_name}</Typography>
         </div>
       </Stack>
     ),
@@ -70,9 +69,9 @@ const columns = [
     formatter: (row) => (
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
-          <Typography>{row.permissionProfile}</Typography>
-          <Typography level="body-xs">{row.permissionProfile1}</Typography>
-          <Typography level="body-xs">{row.permissionProfile2}</Typography>
+          <Typography>{row.role}</Typography>
+          <Typography level="body-xs">{row.role}</Typography>
+          <Typography level="body-xs">{row.role}</Typography>
         </div>
       </Stack>
     ),
@@ -80,20 +79,25 @@ const columns = [
     width: '170px',
   },
   {
-    formatter: () => (
+    formatter: (row) => (
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <IconButton color="neutral" size="sm" variant="plain">
+        <Link
+          component={RouterLink}
+          fontSize="sm"
+          fontWeight="md"
+          href={paths['dashboard.admin.update.user'](`${row._id}`)}
+          underline="none"
+        >
           <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
-        </IconButton>
+        </Link>
       </Box>
     ),
     hideName: true,
     name: 'Actions',
     width: '100px',
   },
-  
 ];
 
 export function UserTable({ rows }) {
-  return <DataTable columns={columns} rows={rows}  stripe="even" />;
+  return <DataTable columns={columns} rows={rows} stripe="even" />;
 }
