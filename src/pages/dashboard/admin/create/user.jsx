@@ -19,6 +19,10 @@ const metadata = {
 };
 
 export function CreateUser() {
+  const [dataFromChild, setDataFromChild] = React.useState(null);
+  const handleDataFromChild = (data) => {
+    setDataFromChild(data);
+  };
   return (
     <React.Fragment>
       <Helmet>
@@ -30,17 +34,17 @@ export function CreateUser() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  Create User
+                {dataFromChild==='edit'?'Update':'Create'} User
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
                   <BreadcrumbsItem  type="end">Admin</BreadcrumbsItem>
                   <BreadcrumbsItem  href={paths['dashboard.admin.user']}>user</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end">Create User</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">{dataFromChild==='edit'?'Update':'Create'} User</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
             </Stack>
-            <UserCreateForm />
+            <UserCreateForm onDataFromChild={handleDataFromChild}/>
           </Stack>
         </Container>
       </main>

@@ -9,6 +9,7 @@ import { CreateTennant } from '@/pages/dashboard/admin/create/tenant';
 import { CreateUser } from '@/pages/dashboard/admin/create/user';
 import { CreateDevice } from '@/pages/dashboard/admin/create/device';
 import UpdateTenant from '@/pages/dashboard/admin/update/tenant';
+import UpdateUser from '@/pages/dashboard/admin/update/user';
 
 // Account pages
 
@@ -268,6 +269,7 @@ export const routes = [
                 path: 'update/:tenantId',
                 element: <UpdateTenant />,
               },
+              
             ],
           },
           {
@@ -282,8 +284,8 @@ export const routes = [
                 element: <CreateUser />,
               },
               {
-                path: ':Id',
-                element: <CreateUser />,
+                path: 'update/:userId',
+                element: <UpdateUser />,
               },
             ],
           },

@@ -66,7 +66,6 @@ export function TenantCreateForm({ onDataFromChild }) {
       let data = state.tenant.tenants.filter((res) => {
         if (res._id === id.tenantId) {
           onDataFromChild('edit');
-          console.log('PPPPPPPPPPP', res);
           setCuser({
             company_name: res?.tenant_company_name,
             tenant_name: res?.tenant_name,
@@ -110,7 +109,6 @@ export function TenantCreateForm({ onDataFromChild }) {
     if (checkAllErrors()) {
       return;
     }
-
     const formData = new FormData();
     formData.append('company_name', cuser?.company_name);
     formData.append('tenant_name', cuser?.tenant_name);
@@ -129,10 +127,31 @@ export function TenantCreateForm({ onDataFromChild }) {
     if (id?.tenantId) {
       formData.append('tenant_id', id?.tenantId);
       update_tenant(formData, dispatch);
+      clearForm()
     } else {
       create_tenant(formData, dispatch);
+      clearForm()
     }
   });
+
+  const clearForm =()=>{
+    setCuser({
+      company_name: '',
+      tenant_name: '',
+      company_email: '',
+      company_phone_number: '',
+      tax_id: '',
+      website: '',
+      country: '',
+      state: '',
+      city: '',
+      zip_code: '',
+      address: '',
+      azure_cosmos: '',
+      database_name: '',
+      account_key: ''
+    });
+  }
 
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));

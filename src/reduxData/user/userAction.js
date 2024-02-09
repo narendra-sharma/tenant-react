@@ -190,16 +190,17 @@ export const get_login_history = async (dispatch) => {
   }
 };
 
-export const get_users = async (dispatch) => {
+export const get_users = async (dispatch,page,limit,user,company,status) => {
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] =token();
-    const res = await axios.get(`${url}admin/users`, headers);
+    const res = await axios.get(`${url}admin/user_list?page=${page}&limit=${limit}${user?'&user='+user:''}${company?'&company='+company:''}${status?'&status='+status:''}`, headers);
     if (res?.data?.status) {
-      dispatch({ type: GET_USERS, payload: res?.data.data });
+      dispatch({ type: GET_USERS, payload: res?.data });
     } else {
       toast.error(res?.data?.message);
     }
+    return res.data.data
   } catch (error) {
     dispatch(catch_errors_handle(error, dispatch));
   } finally {
@@ -225,3 +226,42 @@ export const get_user_profile_details = async (dispatch) => {
     dispatch(stop_loading());
   }
 };
+
+export const create_user = async (data ,dispatch) => {
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] =token();
+    const res = await axios.post(`${url}admin/add_user`, data, headers);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      return res.data;
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+
+export const update_user = async (data,dispatch)=>{
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] =token();
+    const res = await axios.put(`${url}admin/edit_user`,data, headers);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      // get_tenants(dispatch)
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+}
+
+
