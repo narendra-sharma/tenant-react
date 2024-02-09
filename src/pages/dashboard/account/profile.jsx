@@ -379,7 +379,7 @@ const Page = ({ userData }) => {
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>Address <sup>*</sup></FormLabel>
                     <Input
                       value={cuser?.address}
                       name="address"
