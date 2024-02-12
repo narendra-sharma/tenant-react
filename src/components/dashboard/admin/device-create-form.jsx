@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { create_devices } from '@/reduxData/devices/deviceAction';
+import { create_devices, update_device } from '@/reduxData/devices/deviceAction';
 import { FormHelperText } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -26,7 +26,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     serial_number: '',
     client_firstname: '',
     client_lastname: '',
-    tenant_id: [],
+    tenant_ids: [],
     device_status: '',
   });
   const state = useSelector((state) => state);
@@ -39,12 +39,15 @@ export function DeviceCreateForm({ onDataFromChild }) {
         if (res._id === id.deviceId) {
           onDataFromChild('edit');
           console.log('Device Edit data::', res);
+        //  const ans = {
+        //     data: res?.tenant_ids
+        // };
           setDevices({
             device_name: res?.device_name,
             serial_number: res?.serial_number,
             client_firstname: res?.client_firstname,
             client_lastname: res?.client_lastname,
-            tenant_id: res?.tenant_id,
+            tenant_ids: res?.tenant_ids,
             device_status: res?.device_status,
           });
         }
@@ -74,25 +77,25 @@ export function DeviceCreateForm({ onDataFromChild }) {
     serial_number: '',
     client_firstname: '',
     client_lastname: '',
-    tenant_id: '',
+    tenant_ids: '',
     device_status: '',
   });
 
   const handleElementChange = (value, label) => {
-    console.log("bdhjsgfjdfdhs",devices.tenant_id);
     console.log(value, label);
-    if(label === 'tenant_id'){
-      setDevices((prev) => ({
-        ...prev,
-        tenant_id: prev.tenant_id.includes(value)
-          ? prev.tenant_id.filter((id) => id !== value)
-          : [...prev.tenant_id, value],
-      }));
+    // if(label === 'tenant_ids'){
+    //   setDevices((prev) => ({
+    //     ...prev,
+    //     tenant_ids: prev?.tenant_ids?.includes(value)
+    //       ? prev.tenant_ids.filter((id) => id !== value)
+    //       : [...prev.tenant_ids, value],
+    //   }));
       
-    }else{
+    // }else{
 
-      setDevices((prev) => ({ ...prev, [label]: value }));
-    }
+    //   setDevices((prev) => ({ ...prev, [label]: value }));
+    // }
+    setDevices((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       [label]: !value
         ? 'required'
@@ -119,13 +122,17 @@ export function DeviceCreateForm({ onDataFromChild }) {
       console.log('find the error', errors);
       return;
     }
-    create_devices(devices, dispatch);
+    if (id?.deviceId) {
+      devices.device_id = id?.deviceId
+      update_device(devices, dispatch)
+
+    }else{
+      create_devices(devices, dispatch);
+    }
   };
 
   const onSelect = (selectedList, selectedItem) => {
-    console.log('**&&&', selectedItem?._id);
-    // console.log("ppppp",selectedList[selectedList.length - 1]?.id)
-    handleElementChange(selectedItem?._id, 'tenant_id');
+    handleElementChange(selectedList, 'tenant_ids');
   };
 
   return (
@@ -205,12 +212,12 @@ export function DeviceCreateForm({ onDataFromChild }) {
                   {tenatntList && (
                     <Multiselect
                       options={tenatntList.data}
-                      selectedValues={tenatntList.selectedValue}
+                      selectedValues={devices?.tenant_ids}
                       onSelect={onSelect}
                       displayValue="tenant_name"
                     />
                   )}
-                  {errors.tenant_id && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
+                  {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>

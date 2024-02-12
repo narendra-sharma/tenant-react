@@ -30,11 +30,11 @@ export const catch_errors_handle = (error, dispatch) => {
     }
   };
 
-  export const get_devices = async (dispatch,page,limit,tenant,company,status) => {
+  export const get_devices = async (dispatch,page,limit,device,client,status) => {
     dispatch(start_loading());
     try {
       headers.headers['x-access-token'] =token();
-      const res = await axios.get(`${url}admin/device_list?page=${page}&limit=${limit}${tenant?'&tenant='+tenant:''}${company?'&company='+company:''}${status?'&status='+status:''}`, headers);
+      const res = await axios.get(`${url}admin/device_list?page=${page}&limit=${limit}${device?'&device='+device:''}${client?'&client='+client:''}${status?'&status='+status:''}`, headers);
       if (res?.data?.status) {
         dispatch({ type: GET_DEVICES, payload: res?.data });
       } else {
@@ -65,20 +65,19 @@ export const catch_errors_handle = (error, dispatch) => {
     }
   };
 
-  // export const update_tenant = async (data,dispatch)=>{
-  //   dispatch(start_loading());
-  //   try {
-  //     headers.headers['x-access-token'] =token();
-  //     const res = await axios.put(`${url}admin/edit_tenant`,data, headers);
-  //     if (res?.data?.status) {
-  //       toast.success(res?.data?.message);
-  //       get_tenants(dispatch)
-  //     } else {
-  //       toast.error(res?.data?.message);
-  //     }
-  //   } catch (error) {
-  //     dispatch(catch_errors_handle(error, dispatch));
-  //   } finally {
-  //     dispatch(stop_loading());
-  //   }
-  // }
+  export const update_device = async (data,dispatch)=>{
+    dispatch(start_loading());
+    try {
+      headers.headers['x-access-token'] =token();
+      const res = await axios.put(`${url}admin/edit_device`,data, headers);
+      if (res?.data?.status) {
+        toast.success(res?.data?.message);
+      } else {
+        toast.error(res?.data?.message);
+      }
+    } catch (error) {
+      dispatch(catch_errors_handle(error, dispatch));
+    } finally {
+      dispatch(stop_loading());
+    }
+  }

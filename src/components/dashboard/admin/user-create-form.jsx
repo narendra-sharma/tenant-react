@@ -42,7 +42,6 @@ export function UserCreateForm({onDataFromChild}) {
   const [tenatntList, setTenantList] = React.useState()
 
   const state = useSelector((state) => state);
-  console.log(state)
   const id = useParams();
   const dispatch = useDispatch()
 
