@@ -10,6 +10,7 @@ import { CreateUser } from '@/pages/dashboard/admin/create/user';
 import { CreateDevice } from '@/pages/dashboard/admin/create/device';
 import UpdateTenant from '@/pages/dashboard/admin/update/tenant';
 import UpdateUser from '@/pages/dashboard/admin/update/user';
+import UpdateDevices from '@/pages/dashboard/admin/update/devices';
 
 // Account pages
 
@@ -301,8 +302,8 @@ export const routes = [
                 element: <CreateDevice />,
               },
               {
-                path: ':Id',
-                element: <CreateDevice />,
+                path: 'update/:deviceId',
+                element: <UpdateDevices />,
               },
             ],
           },

@@ -221,6 +221,7 @@ export function UserCreateForm({onDataFromChild}) {
               </Grid>
             </Grid>
           </Box>
+          <h5>Add new Tenant</h5>
         </Stack>
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { create_devices } from '@/reduxData/devices/deviceAction';
 import { FormHelperText } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
@@ -13,21 +14,43 @@ import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Multiselect from 'multiselect-react-dropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
 
-export function DeviceCreateForm() {
+export function DeviceCreateForm({ onDataFromChild }) {
   const [devices, setDevices] = React.useState({
     device_name: '',
     serial_number: '',
-    client_first_name: '',
-    client_last_name: '',
-    tenant: '',
-    status: '',
+    client_firstname: '',
+    client_lastname: '',
+    tenant_id: [],
+    device_status: '',
   });
-  const [tenatntList, setTenantList] = React.useState()
+  const state = useSelector((state) => state);
+  const [tenatntList, setTenantList] = React.useState();
+  const dispatch = useDispatch();
+  const id = useParams();
   React.useEffect(() => {
+    if (id.deviceId) {
+      let data = state.device.devices.filter((res) => {
+        if (res._id === id.deviceId) {
+          onDataFromChild('edit');
+          console.log('Device Edit data::', res);
+          setDevices({
+            device_name: res?.device_name,
+            serial_number: res?.serial_number,
+            client_firstname: res?.client_firstname,
+            client_lastname: res?.client_lastname,
+            tenant_id: res?.tenant_id,
+            device_status: res?.device_status,
+          });
+        }
+      });
+    }
+
     const url = import.meta.env.VITE_API_URL;
     const headers = {
       headers: {
@@ -37,28 +60,44 @@ export function DeviceCreateForm() {
     };
 
     fetch(`${url}admin/tenant_list`, headers)
-      .then(res => res.json()) 
-      .then(data => {
-        setTenantList(data)
+      .then((res) => res.json())
+      .then((data) => {
+        setTenantList(data);
       })
-      .catch(error => {
-        console.error("Error fetching data:", error);
+      .catch((error) => {
+        console.error('Error fetching data:', error);
       });
   }, []);
 
   const [errors, setErrors] = React.useState({
     device_name: '',
     serial_number: '',
-    client_first_name: '',
-    client_last_name: '',
-    tenant: '',
-    status: '',
+    client_firstname: '',
+    client_lastname: '',
+    tenant_id: '',
+    device_status: '',
   });
 
   const handleElementChange = (value, label) => {
-    setDevices((prev) => ({ ...prev, [label]: value }));
+    console.log("bdhjsgfjdfdhs",devices.tenant_id);
+    console.log(value, label);
+    if(label === 'tenant_id'){
+      setDevices((prev) => ({
+        ...prev,
+        tenant_id: prev.tenant_id.includes(value)
+          ? prev.tenant_id.filter((id) => id !== value)
+          : [...prev.tenant_id, value],
+      }));
+      
+    }else{
+
+      setDevices((prev) => ({ ...prev, [label]: value }));
+    }
     setErrors((prev) => ({
-      [label]: !value ? 'required' : '',
+      [label]: !value
+        ? 'required'
+        :
+           '',
     }));
   };
 
@@ -75,17 +114,19 @@ export function DeviceCreateForm() {
   };
 
   const onSubmit = () => {
-    console.log(devices)
+    console.log(devices);
     if (checkAllErrors()) {
+      console.log('find the error', errors);
       return;
     }
-    console.log(devices);
+    create_devices(devices, dispatch);
   };
 
-  const  onSelect=(selectedList, selectedItem)=> {
-    // console.log(selectedList,selectedItem)
-    handleElementChange(selectedList,'tenant')
-  }
+  const onSelect = (selectedList, selectedItem) => {
+    console.log('**&&&', selectedItem?._id);
+    // console.log("ppppp",selectedList[selectedList.length - 1]?.id)
+    handleElementChange(selectedItem?._id, 'tenant_id');
+  };
 
   return (
     <form
@@ -106,7 +147,7 @@ export function DeviceCreateForm() {
                     name="device_name"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'device_name')}
+                    onChange={(e) => handleElementChange(e?.target?.value, 'device_name')}
                   />
                   {errors.device_name && (
                     <FormHelperText style={{ color: 'red' }}>Device Name is required.</FormHelperText>
@@ -121,7 +162,7 @@ export function DeviceCreateForm() {
                     name="serial_number"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'serial_number')}
+                    onChange={(e) => handleElementChange(e?.target?.value, 'serial_number')}
                   />
                   {errors.serial_number && (
                     <FormHelperText style={{ color: 'red' }}>Serial Number is required.</FormHelperText>
@@ -132,13 +173,13 @@ export function DeviceCreateForm() {
                 <FormControl>
                   <FormLabel>Client First Name</FormLabel>
                   <Input
-                    value={devices?.client_first_name}
-                    name="client_first_name"
+                    value={devices?.client_firstname}
+                    name="client_firstname"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'client_first_name')}
+                    onChange={(e) => handleElementChange(e?.target?.value, 'client_firstname')}
                   />
-                  {errors.client_first_name && (
+                  {errors.client_firstname && (
                     <FormHelperText style={{ color: 'red' }}>Client First Name is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -147,42 +188,44 @@ export function DeviceCreateForm() {
                 <FormControl>
                   <FormLabel>Client Last Name</FormLabel>
                   <Input
-                    value={devices?.client_last_name}
-                    name="client_last_name"
+                    value={devices?.client_lastname}
+                    name="client_lastname"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'client_last_name')}
+                    onChange={(e) => handleElementChange(e?.target?.value, 'client_lastname')}
                   />
-                  {errors.client_last_name && (
+                  {errors.client_lastname && (
                     <FormHelperText style={{ color: 'red' }}>Client Last Name is required.</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-              <FormControl>
+                <FormControl>
                   <FormLabel>Tenant(s)</FormLabel>
-                  {tenatntList && <Multiselect
-                    options={tenatntList.data} 
-                    selectedValues={tenatntList.selectedValue}
-                    onSelect={onSelect}
-                    displayValue="tenant_name" 
-                  />}
-                  {errors.tenant && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
+                  {tenatntList && (
+                    <Multiselect
+                      options={tenatntList.data}
+                      selectedValues={tenatntList.selectedValue}
+                      onSelect={onSelect}
+                      displayValue="tenant_name"
+                    />
+                  )}
+                  {errors.tenant_id && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Status</FormLabel>
-                  <Select
-                    name="status"
-                    value={devices?.status}
+                  <select
+                    name="device_status"
+                    value={devices?.device_status}
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.textContent, 'status')}
+                    onChange={(e) => handleElementChange(e?.target.value, 'device_status')}
                   >
-                    <Option value="">Publish to Tenant</Option>
-                    <Option value="ca">Publish to user</Option>
-                  </Select>
-                  {errors.client_first_name && (
+                    <option value="pt">Publish to Tenant</option>
+                    <option value="pu">Publish to user</option>
+                  </select>
+                  {errors.device_status && (
                     <FormHelperText style={{ color: 'red' }}>Status is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -195,7 +238,7 @@ export function DeviceCreateForm() {
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.devices']} variant="outlined">
             Cancel
           </Button>
-          <Button type="submit">Create Device</Button>
+          <Button type="submit">{id?.deviceId ? 'Update' : 'Create'} Device</Button>
         </Stack>
       </Stack>
     </form>
