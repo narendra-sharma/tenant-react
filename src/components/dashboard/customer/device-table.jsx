@@ -10,6 +10,9 @@ import Typography from '@mui/joy/Typography';
 import { getInitials } from '@/lib/get-initials';
 import { DataTable } from '@/components/core/data-table';
 import { RouterLink } from '@/components/core/link';
+import { IconButton } from '@mui/joy';
+import { Box } from '@mui/system';
+import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
 
 const statusMapping = {
   offline: {
@@ -32,7 +35,7 @@ const columns = [
         href={paths['dashboard.orders.details']}
         underline="none"
       >
-        {row.id}
+        {row.device_name}
       </Link>
     ),
     name: 'Device Name',
@@ -43,7 +46,7 @@ const columns = [
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
           <Typography level="body-sm" textColor="text.primary">
-            {row.customerName}
+            {row.client_firstname}
           </Typography>
         </div>
       </Stack>
@@ -56,19 +59,19 @@ const columns = [
     name: 'Date Last Reading Water',
     width: '200px',
   },
-  { field: 'reading', name: 'Last Reading Water (Liters)' ,  width: '220px',},
+  { formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'), name: 'Last Reading Water (Liters)' ,  width: '220px',},
   {
     formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'),
     name: 'Date Last Reading Electricity',
     width: '230px',
   },
  
-  { field: 'items', name: 'Last Reading Electricity (kWh)', width: '250px' },
+  { field: 'last_reading_electricity_kwh', name: 'Last Reading Electricity (kWh)', width: '250px' },
   {
     formatter: (row) => {
       const { label, color } = statusMapping[row.status] ?? {
-        label: 'Unknown',
-        color: 'neutral',
+        label: 'Online',
+        color: 'green',
       };
 
       return (
@@ -79,6 +82,24 @@ const columns = [
     },
     name: 'Status',
     width: '120px',
+  },
+  {
+    formatter: (row) => (
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+         <Link
+        component={RouterLink}
+        fontSize="sm"
+        fontWeight="md"
+        href={paths['dashboard.admin.update.devices'](`${row._id}`)}
+        underline="none"
+      >
+          <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
+        </Link>
+      </Box>
+    ),
+    hideName: true,
+    name: 'Actions',
+    width: '100px',
   },
 ];
 

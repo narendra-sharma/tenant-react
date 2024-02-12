@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
@@ -22,6 +22,9 @@ import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { connect, useDispatch } from 'react-redux';
+import { get_devices } from '@/reduxData/devices/deviceAction';
+import CustomPagination from '@/components/core/custom-pagination';
 const customers = [
   {
     id: 'k5',
@@ -65,16 +68,27 @@ const customers = [
     status: 'offline',
   },
 ];
-const user = {
-  firstName: 'K1',
-  lastName: 'Wells',
-  serailNumber:  '86800001562435',
-  cfirstName: 'Zaid',
-  clastName: 'Schwartz',
-  tenant1: "Tenant 1",
-  tenant2:'Publish to Tenant',
-}
-const devices = () => {
+// const user = {
+//   firstName: 'K1',
+//   lastName: 'Wells',
+//   serailNumber:  '86800001562435',
+//   cfirstName: 'Zaid',
+//   clastName: 'Schwartz',
+//   tenant1: "Tenant 1",
+//   tenant2:'Publish to Tenant',
+// }
+const Devices = ({devices,total}) => {
+
+  const dispatch = useDispatch()
+  const [tenant, setDevices] = useState(null);
+  const [company, setCompany] = useState(null);
+  const [status, setStatus] = useState('');
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  useEffect(() => {
+    get_devices(dispatch, page, limit, company, status);
+  }, [page, limit, company, status]);
   
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
@@ -128,15 +142,23 @@ const devices = () => {
         </Grid>
  
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <DeviceTable rows={customers} />
+          <DeviceTable rows={devices} />
         </Card>
-        <Box sx={{ display: 'flex', justifyContent: 'center' , textCenter: 'center'}}>
+        {total > 0 && <CustomPagination total={total} onPageChange={(newPage, perPage) =>{setPage(newPage);setLimit(perPage);}} />}
+        {/* <Box sx={{ display: 'flex', justifyContent: 'center' , textCenter: 'center'}}>
         <Pagination count={10} page={1} showFirstButton showLastButton size="sm" variant="outlined"/>
-        </Box>
+        </Box> */}
         </Stack>
       </Container>
 
   
   );
 }
-export default devices;
+const mapStateToProps = (state) => {
+  return {
+    devices: state.device.devices,
+    total: state.device.total,
+  };
+};
+
+export default connect(mapStateToProps)(Devices);
