@@ -75,7 +75,7 @@ const Tenants = ({tenants,total}) => {
             </FormControl>
             <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
               <FormLabel>Status</FormLabel>
-              <select defaultValue={status} name="status" onChange={(e)=>setStatus(e.target.value)}>
+              <select defaultValue={status} name="status" className="form-control" onChange={(e)=>setStatus(e.target.value)}>
                 <option value="">All</option>
                 <option value="online">Online</option>
                 <option value="offline">Offline</option>

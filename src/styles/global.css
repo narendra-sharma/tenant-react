@@ -106,3 +106,18 @@
   align-items: center;
   justify-content: center;
 }
+select.form-control {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border-color:#EAEEF6;
+}
+.custom-pagination .MuiTablePagination-toolbar {
+  gap: 12px;
+}
+.MuiTablePagination-actions button {
+  background: transparent;
+  border: solid 1px #EAEEF6;
+  padding: 8px 10px;
+  border-radius: 5px;
+  margin: 0 5px;
+}

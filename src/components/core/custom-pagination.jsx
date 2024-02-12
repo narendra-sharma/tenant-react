@@ -14,9 +14,9 @@ const CustomPagination = ({ total, onPageChange }) => {
   };
   return (
     <TablePagination
-        component="div"
+        component="div" className="custom-pagination"
         onPageChange={handleNavClick}
-        count={total}
+        count={total} 
         page={page}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleRowsPerPageChange}
