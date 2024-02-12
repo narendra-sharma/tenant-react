@@ -80,15 +80,15 @@ const customers = [
 const Devices = ({devices,total}) => {
 
   const dispatch = useDispatch()
-  const [tenant, setDevices] = useState(null);
-  const [company, setCompany] = useState(null);
+  const [device, setDevices] = useState(null);
+  const [client, setClient] = useState(null);
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
   useEffect(() => {
-    get_devices(dispatch, page, limit, company, status);
-  }, [page, limit, company, status]);
+    get_devices(dispatch, page, limit,device,client, status);
+  }, [page, limit, device,client, status]);
   
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
@@ -118,27 +118,34 @@ const Devices = ({devices,total}) => {
           <Grid lg={4}  xl={4} xs={12}>
             <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
               <FormLabel>Device Name</FormLabel>
-              <Input defaultValue="" name="orderId" />
+              <Input defaultValue={device} name="device" 
+                onChange={(e)=>window.setTimeout(() => {
+                  setDevices(e.target.value)
+                }, 1000)}
+              />
             </FormControl>
           </Grid>
           <Grid lg={4}  xl={4} xs={12}>
             <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
             <FormLabel>Client Name</FormLabel>
-            <Input defaultValue="" name="customer" />
+            <Input defaultValue={client} name="client" 
+                onChange={(e)=>window.setTimeout(() => {
+                  setClient(e.target.value)
+                }, 1000)}
+              />
           </FormControl>
           </Grid>
           <Grid lg={4}  xl={4} xs={12}>
             <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
               <FormLabel>Status</FormLabel>
-              <Select defaultValue="all" name="status">
-                <Option value="all">All</Option>
-                <Option value="active">Online</Option>
-                <Option value="canceled">Offline</Option>
-              </Select>
+              <select defaultValue={status} name="status" onChange={(e)=>setStatus(e.target.value)}>
+                <option value="">All</option>
+                <option value="online">Online</option>
+                <option value="offline">Offline</option>
+              </select>
             </FormControl>
 
           </Grid>
-            
         </Grid>
  
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
