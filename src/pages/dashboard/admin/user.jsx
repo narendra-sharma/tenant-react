@@ -11,13 +11,10 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { connect, useDispatch } from 'react-redux';
-
 import { paths } from '@/paths';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
-import CustomPagination from '@/components/core/custom-pagination';
 import { RouterLink } from '@/components/core/link';
-import { Pagination } from '@/components/core/pagination';
 import { UserTable } from '@/components/dashboard/admin/user-table';
 
 const Users = ({ users, total }) => {
@@ -25,13 +22,40 @@ const Users = ({ users, total }) => {
   const [company, setCompany] = useState(null);
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  // const [tenant, setTenant] = useState(null);
+  const [limit, setLimit] = useState(50);
 
   const dispatch = useDispatch();
   useEffect(() => {
     get_users(dispatch, page, limit, user, company, status);
   }, [page, limit, user, company, status]);
+
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && (total>users.length)) {
+      get_users(dispatch,page+1,limit,user,company,status);
+      setPage(page+1)
+    }
+  };
+    const disableWindowScroll = () => {
+      document.body.style.overflow = 'hidden';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'hidden';
+      });
+    };
+    const enableWindowScroll = () => {
+      document.body.style.overflow = 'auto';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'auto';
+      });
+    };
+    useEffect(() => {
+      disableWindowScroll();
+      return () => {
+        enableWindowScroll();
+      };
+    }, []);
 
   return (
     <Container maxWidth={false} sx={{ py: 3 }}>
@@ -70,19 +94,10 @@ const Users = ({ users, total }) => {
             />
           </FormControl>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <UserTable rows={users?.data} />
+        <div  className="scroll-table-container" onScroll={handleScroll}>
+          <UserTable rows={users} />
+        </div>
         </Card>
-        <Box sx={{ display: 'flex', justifyContent: 'center', textCenter: 'center' }}>
-          {total > 0 && (
-            <CustomPagination
-              total={total}
-              onPageChange={(newPage, perPage) => {
-                setPage(newPage);
-                setLimit(perPage);
-              }}
-            />
-          )}
-        </Box>
       </Stack>
     </Container>
   );
@@ -91,7 +106,7 @@ const Users = ({ users, total }) => {
 const mapStateToProps = (state) => {
   return {
     users: state.user.users,
-    total: state.tenant.total,
+    total: state.user.tusers,
   };
 };
 

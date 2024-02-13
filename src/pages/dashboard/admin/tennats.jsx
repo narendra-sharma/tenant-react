@@ -12,8 +12,6 @@ import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { paths } from '@/paths';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { DeviceTable } from '@/components/dashboard/admin/tenant-table';
-import { Pagination } from '@/components/core/pagination';
-import Box from '@mui/joy/Box';
 import { Button } from '@mui/joy';
 import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
@@ -27,11 +25,39 @@ const Tenants = ({tenants,total}) => {
   const [company, setCompany] = useState(null);
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
   useEffect(()=>{
     get_tenants(dispatch,page,limit,tenant,company,status);
   },[page,limit,tenant,company,status]);
 
+
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && (+total>+tenants.length)) {
+      setPage(page+1);
+      get_tenants(dispatch,page+1,limit,tenant,company,status);
+    }
+  };
+    const disableWindowScroll = () => {
+      document.body.style.overflow = 'hidden';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'hidden';
+      });
+    };
+    const enableWindowScroll = () => {
+      document.body.style.overflow = 'auto';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'auto';
+      });
+    };
+    useEffect(() => {
+      disableWindowScroll();
+      return () => {
+        enableWindowScroll();
+      };
+    }, []);
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
@@ -83,11 +109,10 @@ const Tenants = ({tenants,total}) => {
             </FormControl>
           </Stack>
           <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <DeviceTable rows={tenants} />
+            <div  className="scroll-table-container" onScroll={handleScroll}>
+              <DeviceTable rows={tenants} />
+            </div>
           </Card>
-          {total > 0 && <CustomPagination total={total} onPageChange={(newPage, perPage) =>{setPage(newPage);setLimit(perPage);}} />}
-         
-          
        </Stack>
       </Container>
   );

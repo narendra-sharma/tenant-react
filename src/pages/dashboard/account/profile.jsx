@@ -95,6 +95,7 @@ const Page = ({ userData }) => {
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
+      ...prev,
       [label]: !value && (label!=='phone_number') && (label!=='company_phone_number') && (label!=='state') && (label!=='website')
         ? 'required'
         : (label === 'email' || label === 'comapnyEmail') && !emailRegex.test(value)
@@ -148,7 +149,12 @@ const Page = ({ userData }) => {
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
           <Box sx={{ '--Avatar-size': '120px', position: 'relative' }} >
             <Avatar src={imagePath}>{getInitials(`${cuser?.first_name} ${cuser?.last_name}`)}</Avatar>
+            
           </Box>
+          <div>
+            <Typography level="h4">{cuser.first_name} {cuser.last_name}</Typography>
+            <Typography level="body-sm">{cuser.company_first_name}</Typography>
+          </div>
         </Stack>
         {errors.profile_pic && <FormHelperText style={{ color: 'red' }}>{errors?.profile_pic}</FormHelperText>}
         <Stack spacing={3}>
