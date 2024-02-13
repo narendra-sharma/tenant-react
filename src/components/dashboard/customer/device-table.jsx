@@ -39,7 +39,7 @@ const columns = [
       </Link>
     ),
     name: 'Device Name',
-    width: '120px',
+    width: '150px',
   },
   {
     formatter: (row) => (

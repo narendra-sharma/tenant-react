@@ -64,7 +64,7 @@ const devices = ({devices,total}) => {
           <Grid lg={4}  xl={4} xs={12}>
             <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
               <FormLabel>Status</FormLabel>
-              <select defaultValue={status} name="status" onChange={(e)=>setStatus(e.target.value)}>
+              <select defaultValue={status} name="status" onChange={(e)=>setStatus(e.target.value)} className="form-control">
                 <option value="">All</option>
                 <option value="online">Online</option>
                 <option value="offline">Offline</option>

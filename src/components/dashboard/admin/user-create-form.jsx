@@ -207,7 +207,7 @@ export function UserCreateForm({onDataFromChild}) {
                   <Select
                     placeholder="Select a permission"
                     defaultValue={cuser.permission_profile}
-                    sx={{ width: 240 }}
+                    // sx={{ width: 240 }}
                     onChange={(value) => value && handleElementChange(value.target.textContent, 'permission_profile')}
                   >
                     <Option value="tenant_manager">Tenant Manager</Option>
@@ -227,7 +227,7 @@ export function UserCreateForm({onDataFromChild}) {
           fontWeight="md"
           href={paths['dashboard.admin.create.tenant']}
           underline="none"
-        ><Plus size={25} /> Add Another Tenant</Link>
+        ><Plus size={20} style={{marginRight:"10px"}}/>  Add Another Tenant</Link>
         </Stack>
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
