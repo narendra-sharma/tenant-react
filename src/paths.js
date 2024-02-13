@@ -15,6 +15,7 @@ export const paths = {
   'dashboard.logistics': '/logistics',
   'dashboard.smart-home': '/smart-home',
   'dashboard.devices': '/devices',
+  'device-renaming': '/device-renaming',
   'dashboard.settings': '/settings',
   'dashboard.customers': '/customers',
   'dashboard.customers.create': '/customers/create',

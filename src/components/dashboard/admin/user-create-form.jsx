@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { create_user, update_user } from '@/reduxData/user/userAction';
-import { FormHelperText } from '@mui/joy';
+import { FormHelperText, Link } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
@@ -19,6 +19,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
 import { useParams } from 'react-router';
+import { Plus } from '@phosphor-icons/react/dist/ssr/Plus';
 
 export function UserCreateForm({onDataFromChild}) {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -220,7 +221,13 @@ export function UserCreateForm({onDataFromChild}) {
               </Grid>
             </Grid>
           </Box>
-          <h5>Add new Tenant</h5>
+          <Link
+          component={RouterLink}
+          fontSize="sm"
+          fontWeight="md"
+          href={paths['dashboard.admin.create.tenant']}
+          underline="none"
+        ><Plus size={25} /> Add Another Tenant</Link>
         </Stack>
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
