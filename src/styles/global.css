@@ -121,3 +121,7 @@ select.form-control {
   border-radius: 5px;
   margin: 0 5px;
 }
+.scroll-table-container{
+  height: 500px; /* Adjust the height as needed */
+  overflow: auto;
+}

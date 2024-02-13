@@ -14,69 +14,15 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Grid from '@mui/joy/Grid';
 import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
 import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { connect, useDispatch } from 'react-redux';
 import { get_devices } from '@/reduxData/devices/deviceAction';
 import CustomPagination from '@/components/core/custom-pagination';
-const customers = [
-  {
-    id: 'k5',
-    createdAt: dayjs().subtract(1, 'day').valueOf(), 
-    customerName: 'Chris Glasser',
-    reading: '25,40',
-    items: '13,04', 
-    reading: '1',
-    status: 'online',
-  },
-  {
-    id: 'k4',
-    createdAt: dayjs().subtract(1, 'day').valueOf(),
-    customerName: 'Iva Ryan',
-    reading:'25,40',
-    items: '13,04',
-    status: 'online',
-  },
-  {
-    id: 'k2',
-    createdAt: dayjs().subtract(3, 'day').subtract(3, 'hour').valueOf(),
-    customerName: 'Ricky Smith',
-    reading: '25,40',
-    items: '13,04',
-    status: 'offline',
-  },
-  {
-    id: 'k3',
-    createdAt: dayjs().subtract(3, 'day').valueOf(),
-    customerName: 'Kenneth Allen',
-    reading: '25,40',
-    items: '13,04',
-    status: 'online',
-  },
-  {
-    id: 'k1',
-    createdAt: dayjs().subtract(2, 'day').valueOf(),
-    customerName: 'Mary Freund',
-    reading: '25,40',
-    items: '13,04',
-    status: 'offline',
-  },
-];
-// const user = {
-//   firstName: 'K1',
-//   lastName: 'Wells',
-//   serailNumber:  '86800001562435',
-//   cfirstName: 'Zaid',
-//   clastName: 'Schwartz',
-//   tenant1: "Tenant 1",
-//   tenant2:'Publish to Tenant',
-// }
+
 const Devices = ({devices,total}) => {
 
   const dispatch = useDispatch()
@@ -84,11 +30,39 @@ const Devices = ({devices,total}) => {
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
 
   useEffect(() => {
     get_devices(dispatch, page, limit,device,client, status);
   }, [page, limit, device,client, status]);
+
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && (total>(devices.length))) {
+      setPage(page+1);
+      get_devices(dispatch,page+1, limit, device,client, status);
+    }
+  };
+    const disableWindowScroll = () => {
+      document.body.style.overflow = 'hidden';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'hidden';
+      });
+    };
+    const enableWindowScroll = () => {
+      document.body.style.overflow = 'auto';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'auto';
+      });
+    };
+    useEffect(() => {
+      disableWindowScroll();
+      return () => {
+        enableWindowScroll();
+      };
+    }, []);
   
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
@@ -149,12 +123,12 @@ const Devices = ({devices,total}) => {
         </Grid>
  
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <DeviceTable rows={devices} />
+          <div  className="scroll-table-container" onScroll={handleScroll}>
+            <DeviceTable rows={devices} />
+          </div>
         </Card>
-        {total > 0 && <CustomPagination total={total} onPageChange={(newPage, perPage) =>{setPage(newPage);setLimit(perPage);}} />}
-        {/* <Box sx={{ display: 'flex', justifyContent: 'center' , textCenter: 'center'}}>
-        <Pagination count={10} page={1} showFirstButton showLastButton size="sm" variant="outlined"/>
-        </Box> */}
+        
+       
         </Stack>
       </Container>
 

@@ -25,11 +25,38 @@ const devices = ({devices,total}) => {
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(50);
 
   useEffect(() => {
     get_devices(dispatch, page, limit,device,client, status);
   }, [page, limit, device,client, status]);
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && (total>(devices.length))) {
+      setPage(page+1);
+      get_devices(dispatch,page+1, limit, device,client, status);
+    }
+  };
+    const disableWindowScroll = () => {
+      document.body.style.overflow = 'hidden';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'hidden';
+      });
+    };
+    const enableWindowScroll = () => {
+      document.body.style.overflow = 'auto';
+      const elements = document.querySelectorAll('.body-pan');
+      elements.forEach(element => {
+        element.style.overflow = 'auto';
+      });
+    };
+    useEffect(() => {
+      disableWindowScroll();
+      return () => {
+        enableWindowScroll();
+      };
+    }, []);
   return (  
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
@@ -74,9 +101,10 @@ const devices = ({devices,total}) => {
           </Grid>
         </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <DeviceTable rows={devices} />
+          <div  className="scroll-table-container" onScroll={handleScroll}>
+            <DeviceTable rows={devices} />
+          </div>
         </Card>
-        {total > 0 && <CustomPagination total={total} onPageChange={(newPage, perPage) =>{setPage(newPage);setLimit(perPage);}} />}
           
        </Stack>
       </Container>

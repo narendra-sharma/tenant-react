@@ -18,7 +18,7 @@ import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
@@ -28,6 +28,7 @@ import { Image } from '@/components/core/image';
 import { RouterLink } from '@/components/core/link';
 import { toast } from '@/components/core/toaster';
 import { login } from '@/reduxData/rootAction';
+import { get_device_bySerialNumber, update_device_renaming } from '@/reduxData/devices/deviceAction';
 
 
 const schema = zod.object({
@@ -38,61 +39,79 @@ const schema = zod.object({
 export function DeviceRename() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [emailerror, setEmailerror] = useState(null);
-  const [passworderror, setPassworderror] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    serial_numer: '',
+    device_name: '',
+    device_renaming:''
   });
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    if (formData.email === '') {
-      setEmailerror('Email is Required');
-    } else if (!exptest.test(formData.email)) {
-      setEmailerror('Email is Invalid');
-    } else {
-      setEmailerror(null);
-    }
 
-    if (formData.password === '') {
-      setPassworderror('Password is Required');
-      return
-    } else {
-      setPassworderror(null);
-    }
+const [errors, setErrors]=useState({
+    serial_numer: '',
+    device_name: '',
+    device_renaming:''
+})
 
-    if (formData.email !== '' && formData.password !== '' && !emailerror) {
-      await login(formData, dispatch,navigate);
-    }
+const { search } = useLocation();
+const urlParams = new URLSearchParams(search);
+const serialNumber = urlParams.get('serial_number');
+React.useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const data = await get_device_bySerialNumber(serialNumber,dispatch);
+            setFormData({
+                serial_numer: data.data.data?.serial_number,
+                device_name: '',
+                device_renaming:'' 
+            })
+          } catch (error) {
+            console.error("Error in useEffect:", error);
+          }
+        };
+      
+        fetchData();
+      }, [serialNumber]);
+
+const checkAllErrors = () => {
+    let err = false;
+    let output = Object.entries(formData);
+    output.forEach(([key, value]) => {
+      if (!value) {
+        err = true;
+        setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
+      }
+    });
+    return err;
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const onSubmit = async (e) => {
+    if (checkAllErrors()) {
+        console.log('find the error', errors);
+        return;
+      }
 
-    switch (name) {
-      case 'email':
-        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-        setEmailerror(value === '' ? 'Email is Required' : !emailRegex.test(value) ? 'Email is Invalid' : null);
-        break;
-      case 'password':
-        setPassworderror(
-          value === ''
-            ? 'Password is Required'
-            : value.length < 5
-              ? 'Password length should be more than 5 characters'
-              : null
-        );
-        break;
-      default:
-        break;
-    }
+      update_device_renaming(formData, dispatch)
+  };
+
+  const handleElementChange = (value, label) => {
+    console.log(value, label);
+    setFormData((prev) => ({ ...prev, [label]: value }));
+    setErrors((prev) => ({
+        ...prev,
+      [label]: !value
+        ? 'required'
+        :
+           '',
+    }));
   };
 
   return (
-    <form className="authform">
+       <form
+       className='authform'
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+      }}
+    >
       <Stack spacing={3}>
         <Stack spacing={2}>
           <Typography level="h3" textAlign="center">
@@ -100,43 +119,29 @@ export function DeviceRename() {
           </Typography>
           <FormControl>
             <FormLabel>Serial Number</FormLabel>
-            <Input type="email" name="email" onChange={(e) => handleInputChange(e)} />
-            {emailerror && <FormHelperText style={{ color: 'red' }}>{emailerror}</FormHelperText>}
+            <Input type="text" name="serial_numer" value={formData?.serial_numer} disabled={true} onChange={(e) => handleElementChange(e.target.value,'serial_numer')} />
+            {errors?.serial_numer && <FormHelperText style={{ color: 'red' }}>Serial Number is Required.</FormHelperText>}
           </FormControl>
+
           <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              endDecorator={
-                <IconButton
-                  onClick={() => {
-                    setShowPassword(!showPassword);
-                  }}
-                >
-                  {showPassword ? (
-                    <EyeSlashIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
-                  ) : (
-                    <EyeIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
-                  )}
-                </IconButton>
-              }
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              onChange={(e) => handleInputChange(e)}
-            />
-            {passworderror && <FormHelperText style={{ color: 'red' }}>{passworderror}</FormHelperText>}
+            <FormLabel>Device Name</FormLabel>
+            <Input type="text" name="device_name" value={formData?.device_name} onChange={(e) => handleElementChange(e.target.value,'device_name')} />
+            {errors?.device_name && <FormHelperText style={{ color: 'red' }}>Device Name is Required.</FormHelperText>}
           </FormControl>
-          <div>
-            <Link component={RouterLink} href={paths['auth.custom.reset-password']}>
-              Forgot password?
-            </Link>
-          </div>
+
+          <FormControl>
+            <FormLabel>Password Device Renaming</FormLabel>
+            <Input type="text" name="device_renaming" value={formData?.device_renaming} onChange={(e) => handleElementChange(e.target.value,'device_renaming')} />
+            {errors?.device_renaming && <FormHelperText style={{ color: 'red' }}>Device password is required.</FormHelperText>}
+          </FormControl>
+
           <Button
             fullWidth
             type="submit"
             style={{ padding: '10px 10px', background: '#0074be' }}
-            onClick={(e) => handleSubmit(e)}
+            onClick={(e) => onSubmit(e)}
           >
-            Sign In
+            Update Device Name
           </Button>
         </Stack>
         <Alert color="warning" variant="soft" style={{ display: 'none' }}>

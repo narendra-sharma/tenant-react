@@ -127,7 +127,8 @@ const initialState = {
     },
   ],
   loginHistory: [],
-  userData: null,
+  users: [],
+  tusers:0
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -148,9 +149,12 @@ export const userReducer = (state = initialState, action) => {
         loginHistory: action.payload,
       };
       case GET_USERS:
+        const combinedArray = [...state.users, ...(action.payload?.data || [])];
+        const uniqueArray = Array.from(new Set(combinedArray.map(item => item._id))).map(_id => combinedArray.find(item => item._id === _id));
         return {
           ...state,
-          users: action.payload,
+          users: uniqueArray,
+          tusers:action.payload?.total
         };
     
     default:

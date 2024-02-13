@@ -85,3 +85,36 @@ export const update_device = async (data, dispatch) => {
     dispatch(stop_loading());
   }
 };
+
+export const get_device_bySerialNumber = async (serialNumber,dispatch) => {
+  dispatch(start_loading());
+  try {
+    const res = await axios.get(`${url}admin/device?serial_numer=${serialNumber}`);
+    if (res?.data?.status) {
+      return res
+    } else {
+      toast.error(res?.data?.message);
+    }
+    return res.data.data;
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const update_device_renaming = async (data, dispatch) => {
+  dispatch(start_loading());
+  try {
+    const res = await axios.put(`${url}admin/device_renaming`, data);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};

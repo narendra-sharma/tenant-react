@@ -27,7 +27,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     client_firstname: '',
     client_lastname: '',
     tenant_ids: [],
-    device_status: '',
+    device_status: 'pt',
   });
   const state = useSelector((state) => state);
   const [tenatntList, setTenantList] = React.useState();
@@ -97,7 +97,8 @@ export function DeviceCreateForm({ onDataFromChild }) {
     // }
     setDevices((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
-      [label]: !value
+      ...prev,
+      [label]: !value && (label!=='client_firstname') && (label!=='client_lastname')
         ? 'required'
         :
            '',
@@ -108,7 +109,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     let err = false;
     let output = Object.entries(devices);
     output.forEach(([key, value]) => {
-      if (!value) {
+      if (!value && (key!=='client_firstname') && (key!=='client_lastname')) {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       }
@@ -119,7 +120,6 @@ export function DeviceCreateForm({ onDataFromChild }) {
   const onSubmit = () => {
     console.log(devices);
     if (checkAllErrors()) {
-      console.log('find the error', errors);
       return;
     }
     if (id?.deviceId) {
@@ -186,9 +186,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e?.target?.value, 'client_firstname')}
                   />
-                  {errors.client_firstname && (
+                  {/* {errors.client_firstname && (
                     <FormHelperText style={{ color: 'red' }}>Client First Name is required.</FormHelperText>
-                  )}
+                  )} */}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -201,9 +201,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e?.target?.value, 'client_lastname')}
                   />
-                  {errors.client_lastname && (
+                  {/* {errors.client_lastname && (
                     <FormHelperText style={{ color: 'red' }}>Client Last Name is required.</FormHelperText>
-                  )}
+                  )} */}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -230,7 +230,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e?.target.value, 'device_status')}
                   >
                     <option value="pt">Publish to Tenant</option>
-                    <option value="pu">Publish to user</option>
+                    {/* <option value="pu">Publish to user</option> */}
                   </select>
                   {errors.device_status && (
                     <FormHelperText style={{ color: 'red' }}>Status is required.</FormHelperText>
