@@ -110,6 +110,10 @@ select.form-control {
   padding: 8px 10px;
   border-radius: 5px;
   border-color:#EAEEF6;
+  font-size: 14px;
+}
+.multiselect-container  .searchWrapper{
+  border-color:#EAEEF6;
 }
 .custom-pagination .MuiTablePagination-toolbar {
   gap: 12px;
@@ -122,6 +126,13 @@ select.form-control {
   margin: 0 5px;
 }
 .scroll-table-container{
-  height: 500px; /* Adjust the height as needed */
-  overflow: auto;
+  height:calc(100vh - 400px);
+}
+.device-table.scroll-table-container{
+  height: 200px; /* Adjust the height as needed */
+}
+@media(max-width:1250px){
+  .scroll-table-container{
+    height:calc(100vh - 450px);
+  }
 }

@@ -57,13 +57,14 @@ export function CurrentOrganization() {
               height: '40px',
               p: '8px',
               width: '40px',
+              display:'none',
             }}
           >
-            {organization?.logo ? <Image alt="" height={24} src={organization.logo} width={24} /> : null}
+            {organization?.logo ? <Image alt="" height={24} src={organization.logo} width={24} style={{display:"none"}} /> : null}
           </Box>
           <Box sx={{ flexGrow: 1 }}>
             <Typography fontSize="xs" textColor="neutral.400">
-              Workspace
+              Tenant
             </Typography>
             <Typography fontSize="sm" fontWeight="md" textColor="inherit">
               {organization?.name}

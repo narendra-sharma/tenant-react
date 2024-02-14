@@ -214,7 +214,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
                       options={tenatntList.data}
                       selectedValues={devices?.tenant_ids}
                       onSelect={onSelect}
-                      displayValue="tenant_name"
+                      displayValue="tenant_name" style={{ borderColor:"#EAEEF6"}}
                     />
                   )}
                   {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
@@ -226,8 +226,8 @@ export function DeviceCreateForm({ onDataFromChild }) {
                   <select
                     name="device_status"
                     value={devices?.device_status}
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e?.target.value, 'device_status')}
+                    
+                    onChange={(e) => handleElementChange(e?.target.value, 'device_status')} className="form-control"
                   >
                     <option value="pt">Publish to Tenant</option>
                     {/* <option value="pu">Publish to user</option> */}
