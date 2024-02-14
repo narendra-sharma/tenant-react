@@ -65,27 +65,10 @@ const handleDataFromChild = (data) => {
               display:'none',
             }}
           >
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            {organization?.logo ? <Image alt="" height={24} src={organization.logo} width={24} style={{display:"none"}} /> : null}
-          </Box>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography fontSize="xs" textColor="neutral.400">
-              Tenant
-=======
-            {/* {organization?.logo ? <Image alt="" height={24} src={organization.logo} width={24} /> : null} */}
           </Box>
           <Box sx={{ flexGrow: 1 }}>
             <Typography fontSize="xs" textColor="neutral.400">
               {dataFromChild ? dataFromChild?.tenant_name:"Select Tenant" }
->>>>>>> Stashed changes
-=======
-            {/* {organization?.logo ? <Image alt="" height={24} src={organization.logo} width={24} /> : null} */}
-          </Box>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography fontSize="xs" textColor="neutral.400">
-              {dataFromChild ? dataFromChild?.tenant_name:"Select Tenant" }
->>>>>>> Stashed changes
             </Typography>
             <Typography fontSize="sm" fontWeight="md" textColor="inherit">
               {/* {organization?.name} */}
