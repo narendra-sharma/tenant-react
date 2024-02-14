@@ -28,7 +28,7 @@ export function UserCreateForm({onDataFromChild}) {
     last_name: '',
     email: '',
     phone_number: '',
-    tenant_id: [],
+    tenant_ids: [],
     permission_profile: 'tenant_manager',
   });
 
@@ -37,7 +37,7 @@ export function UserCreateForm({onDataFromChild}) {
     last_name: '',
     email: '',
     phone_number: '',
-    tenant_id: '',
+    tenant_ids: '',
     permission_profile: '',
   });
   const [tenatntList, setTenantList] = React.useState()
@@ -62,11 +62,9 @@ export function UserCreateForm({onDataFromChild}) {
       })
       .catch(error => {
         console.error("Error fetching data:", error);
-        // Handle errors if any
       });
-
       if (id.userId) {
-        let datas = state?.user?.users?.data
+        let datas = state?.user?.users
         let result = datas?.filter((res) => {
           if (res._id === id.userId) {
             onDataFromChild('edit');
@@ -75,7 +73,7 @@ export function UserCreateForm({onDataFromChild}) {
               last_name: res?.last_name,
               email: res?.email,
               phone_number: res?.phone_number,
-              tenant_id: res?.tenant_ids,
+              tenant_ids: res?.tenant_ids,
               permission_profile: 'tenant_manager',
             });
           }
@@ -84,8 +82,7 @@ export function UserCreateForm({onDataFromChild}) {
   }, []);
 
   const handleElementChange = (value, label) => {
-    console.log(label, value);
-    let ids = cuser?.tenant_id || [];
+    let ids = cuser?.tenant_ids || [];
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,
@@ -110,20 +107,24 @@ export function UserCreateForm({onDataFromChild}) {
   };
 
   const onSubmit = () => {
-    console.log('cuser', cuser);
     if (checkAllErrors()) {
       return;
     }
+    const tempData = cuser.tenant_ids
+    cuser.tenant_ids = cuser.tenant_ids.map(tenant => tenant._id);
     if(id?.userId){
+      cuser.user_id = id?.userId
       update_user(cuser,dispatch)
+      cuser.tenant_ids = tempData
     }else{
 
       create_user(cuser, dispatch);
+      cuser.tenant_ids = tempData
     }
   };
 
  const  onSelect=(selectedList, selectedItem)=> {
-  handleElementChange(selectedList,'tenant_id')
+  handleElementChange(selectedList,'tenant_ids')
 }
   return (
     <form
@@ -194,11 +195,11 @@ export function UserCreateForm({onDataFromChild}) {
                   <FormLabel>Tenant(s)</FormLabel>
                   {tenatntList && <Multiselect
                     options={tenatntList.data} 
-                    selectedValues={tenatntList.selectedValue}
+                    selectedValues={cuser.tenant_ids}
                     onSelect={onSelect}
                     displayValue="tenant_name" 
                   />}
-                  {errors.tenant_id && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
+                  {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>

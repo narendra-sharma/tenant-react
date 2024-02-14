@@ -10,27 +10,32 @@ import { usePopover } from '@/hooks/use-popover';
 import { Image } from '@/components/core/image';
 
 import { OrganizationsPopover } from './organizations-popover';
-
-export const organizations = [
-  {
-    id: 'ORG-001',
-    name: 'Devias IO',
-    environment: 'prod',
-    logo: '/assets/logo-devias.svg',
-  },
-  {
-    id: 'ORG-002',
-    name: 'Carpatin',
-    environment: 'dev',
-    logo: '/assets/logo-carpatin.svg',
-  },
-];
+import {  useDispatch, useSelector } from 'react-redux';
+import { get_tenants } from '@/reduxData/rootAction';
 
 export function CurrentOrganization() {
+  const [tenants, setTenants] = React.useState()
+  const dispatch= useDispatch()
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await get_tenants(dispatch);
+        setTenants(data)
+      } catch (error) {
+      }
+    };
+  
+    fetchData();
+  }, []);
+  const select = useSelector((state)=>state)
   const [organizationId, setOrganizationId] = React.useState('ORG-002');
   const popover = usePopover();
 
-  const organization = organizationId ? organizations.find((org) => org.id === organizationId) : null;
+
+  const [dataFromChild, setDataFromChild] = React.useState(null);
+const handleDataFromChild = (data) => {
+  setDataFromChild(data);
+};
 
   return (
     <React.Fragment>
@@ -60,14 +65,13 @@ export function CurrentOrganization() {
               display:'none',
             }}
           >
-            {organization?.logo ? <Image alt="" height={24} src={organization.logo} width={24} style={{display:"none"}} /> : null}
           </Box>
           <Box sx={{ flexGrow: 1 }}>
             <Typography fontSize="xs" textColor="neutral.400">
-              Tenant
+              {dataFromChild ? dataFromChild?.tenant_name:"Select Tenant" }
             </Typography>
             <Typography fontSize="sm" fontWeight="md" textColor="inherit">
-              {organization?.name}
+              {/* {organization?.name} */}
             </Typography>
           </Box>
           <CaretUpDownIcon fill="var(--joy-palette-neutral-400)" fontSize="var(--joy-fontSize-lg)" />
@@ -78,8 +82,10 @@ export function CurrentOrganization() {
         onChange={setOrganizationId}
         onClose={popover.handleClose}
         open={popover.open}
-        organizations={organizations}
+        organizations={tenants}
+        onDataFromChild={handleDataFromChild}
       />
     </React.Fragment>
   );
 }
+

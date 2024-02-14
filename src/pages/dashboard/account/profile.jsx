@@ -151,7 +151,7 @@ const Page = ({ userData }) => {
             <Avatar src={imagePath}>{getInitials(`${cuser?.first_name} ${cuser?.last_name}`)}</Avatar>
             
           </Box>
-          <div>
+          <div style={{textTransform:'capitalize'}}>
             <Typography level="h4">{cuser.first_name} {cuser.last_name}</Typography>
             <Typography level="body-sm">{cuser.company_first_name}</Typography>
           </div>

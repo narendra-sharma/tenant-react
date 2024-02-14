@@ -103,11 +103,15 @@ export const get_device_bySerialNumber = async (serialNumber,dispatch) => {
   }
 };
 
-export const update_device_renaming = async (data, dispatch) => {
+export const update_device_renaming = async (data, dispatch,isSave) => {
+  
   dispatch(start_loading());
   try {
     const res = await axios.put(`${url}admin/device_renaming`, data);
     if (res?.data?.status) {
+      if(isSave){
+        localStorage.setItem('serial_number',data?.serial_numer)
+      }
       toast.success(res?.data?.message);
     } else {
       toast.error(res?.data?.message);

@@ -68,10 +68,9 @@ const columns = [
   {
     formatter: (row) => (
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-        <div>
-          <Typography>{row.role}</Typography>
-          <Typography level="body-xs">{row.role}</Typography>
-          <Typography level="body-xs">{row.role}</Typography>
+        <div style={{textTransform:'capitalize'}}>
+          <Typography>{row.role?row?.role.replace(/_/g,' '):''}</Typography>
+          
         </div>
       </Stack>
     ),
