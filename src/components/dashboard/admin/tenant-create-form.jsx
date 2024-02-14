@@ -448,7 +448,7 @@ export function TenantCreateForm({ onDataFromChild }) {
         </Stack> */}
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
-          <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.tenants']} variant="outlined">
+          <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.tennats']} variant="outlined">
             Cancel
           </Button>
           <Button type="submit">{id?.tenantId ? 'Update' : 'Create'} Tenant</Button>

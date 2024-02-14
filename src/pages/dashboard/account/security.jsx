@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router';
 
 import { config } from '@/config';
 import { SessionItem } from '@/components/dashboard/account/session-item';
+import { get_device_bySerialNumber, update_device_renaming } from '@/reduxData/devices/deviceAction';
 
 const metadata = {
   title: `Security | ${config.site.name}`,
@@ -33,6 +34,24 @@ export function Page() {
     newPassword: '',
     confirmPassword: '',
   });
+
+  const [devicePassword, setDevicePassword]= useState(null)
+  const [deviceName, setDeviceName] = useState(null)
+
+  React.useEffect(() => {
+    const serialNumber = localStorage.getItem('serial_number')
+    const fetchData = async () => {
+      try {
+        const data = await get_device_bySerialNumber(serialNumber,dispatch);
+        setDevicePassword(data.data.data.device_renaming)
+        setDeviceName(data.data.data.device_name)
+      } catch (error) {
+        console.error("Error in useEffect:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
 
   const loginHistory = useSelector((state) => state.user.loginHistory);
   const navigate = useNavigate();
@@ -81,6 +100,11 @@ export function Page() {
             : '',
     }));
   };
+
+  const updateDevicePassword=()=>{
+    const serialNumber = localStorage.getItem('serial_number')
+    update_device_renaming({device_renaming:devicePassword,serial_numer:serialNumber,device_name:deviceName},dispatch,true)
+  }
   return (
     <React.Fragment>
       <Helmet>
@@ -151,11 +175,11 @@ export function Page() {
             <FormControl>
               <FormLabel>Password</FormLabel>
               <Input
-                defaultValue=""
                 name="renamePasswoed"
-                type="password"
+                value={devicePassword}
+                type="text"
                 style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => setDevicePassword(e.target.value)}
               />
             </FormControl>
           </Stack>
@@ -164,7 +188,7 @@ export function Page() {
             <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
               Discard
             </Button>
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit" onClick={()=>updateDevicePassword()}>Save Changes</Button>
           </Stack>
         </Stack>
 

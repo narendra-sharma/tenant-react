@@ -24,7 +24,14 @@ const Popup = styled(Popper)({
   zIndex: 'var(--joy-zIndex-popup)',
 });
 
-export function OrganizationsPopover({ anchorEl, onChange, onClose, open, organizations = [] }) {
+
+
+
+
+export function OrganizationsPopover({ anchorEl, onChange, onClose, open,onDataFromChild, organizations = [] }) {
+  const handleTenant = (data)=>{
+    onDataFromChild(data)
+  }
   return (
     <Popup
       anchorEl={anchorEl}
@@ -57,9 +64,9 @@ export function OrganizationsPopover({ anchorEl, onChange, onClose, open, organi
 
               return (
                 <Box
-                  key={organization.id}
+                  key={organization._id}
                   onClick={() => {
-                    onChange?.(organization.id);
+                    onChange?.(organization._id);
                     onClose?.();
                   }}
                   role="button"
@@ -72,24 +79,13 @@ export function OrganizationsPopover({ anchorEl, onChange, onClose, open, organi
                     },
                   }}
                 >
-                  <Typography level="title-sm" textColor="inherit">
-                    {organization.name}
-                  </Typography>
-                  <Typography fontSize="xs" textColor="neutral.400">
-                    {environment}
+                  <Typography level="title-sm" textColor="inherit" onClick={()=>handleTenant(organization)}>
+                    {organization.tenant_name}
                   </Typography>
                 </Box>
               );
             })}
-            <Button
-              color="neutral"
-              size="sm"
-              startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
-              sx={{ borderColor: 'var(--joy-palette-neutral-700)', color: 'inherit' }}
-              variant="outlined"
-            >
-              Create Workspace
-            </Button>
+         
           </Stack>
         </Sheet>
       </ClickAwayListener>

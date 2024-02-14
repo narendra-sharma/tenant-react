@@ -38,7 +38,6 @@ export function DeviceCreateForm({ onDataFromChild }) {
       let data = state.device.devices.filter((res) => {
         if (res._id === id.deviceId) {
           onDataFromChild('edit');
-          console.log('Device Edit data::', res);
         //  const ans = {
         //     data: res?.tenant_ids
         // };
@@ -82,19 +81,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
   });
 
   const handleElementChange = (value, label) => {
-    console.log(value, label);
-    // if(label === 'tenant_ids'){
-    //   setDevices((prev) => ({
-    //     ...prev,
-    //     tenant_ids: prev?.tenant_ids?.includes(value)
-    //       ? prev.tenant_ids.filter((id) => id !== value)
-    //       : [...prev.tenant_ids, value],
-    //   }));
-      
-    // }else{
 
-    //   setDevices((prev) => ({ ...prev, [label]: value }));
-    // }
     setDevices((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,
@@ -118,21 +105,25 @@ export function DeviceCreateForm({ onDataFromChild }) {
   };
 
   const onSubmit = () => {
-    console.log(devices);
     if (checkAllErrors()) {
       return;
     }
+    const tempData = devices.tenant_ids
     if (id?.deviceId) {
       devices.device_id = id?.deviceId
+      devices.tenant_ids = [devices.tenant_ids[0]._id]
       update_device(devices, dispatch)
+      devices.tenant_ids = tempData
 
     }else{
+      devices.tenant_ids = [devices.tenant_ids[0]._id]
       create_devices(devices, dispatch);
+      devices.tenant_ids = tempData
     }
   };
 
   const onSelect = (selectedList, selectedItem) => {
-    handleElementChange(selectedList, 'tenant_ids');
+    handleElementChange(selectedList,'tenant_ids')
   };
 
   return (
@@ -214,7 +205,15 @@ export function DeviceCreateForm({ onDataFromChild }) {
                       options={tenatntList.data}
                       selectedValues={devices?.tenant_ids}
                       onSelect={onSelect}
+<<<<<<< Updated upstream
                       displayValue="tenant_name" style={{ borderColor:"#EAEEF6"}}
+=======
+                      displayValue="tenant_name"
+                      singleSelect={true}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
                     />
                   )}
                   {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}

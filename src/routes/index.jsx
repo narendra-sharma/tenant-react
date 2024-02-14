@@ -8,7 +8,7 @@ export const routes = [
   ...authRoutes,
   ...dashboardRoutes,
   {
-    path: 'device-rename',
+    path: 'rename-device/:serial_number',
     index:true,
     element: <DeviceRename />
   },
