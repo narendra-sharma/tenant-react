@@ -123,7 +123,7 @@ const Devices = ({devices,total}) => {
         </Grid>
  
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-          <div  className="scroll-table-container" onScroll={handleScroll}>
+          <div  className="scroll-table-container device-table" onScroll={handleScroll}>
             <DeviceTable rows={devices} />
           </div>
         </Card>

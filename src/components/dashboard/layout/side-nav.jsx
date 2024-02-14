@@ -60,13 +60,13 @@ export function SideNav({ items }) {
           height: '100%',
           pb: '100px', // footer height
           position: 'relative',
-          pt: '100px', // header height
+          pt: '200px', // header height
         }}
       >
         <Stack spacing={3} sx={{ left: 0, position: 'absolute', py: '16px', top: 0, width: '100%', zIndex: 2 }}>
           <div>
             <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block', fontSize: 0 }}>
-              <Logo color="light" height={45} width={143} />
+              <Logo color="light" height={78} width={253} />
             </Box>
           </div>
           <CurrentOrganization />
@@ -165,7 +165,7 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
   }, []);
 
   return (
-    <List data-depth={depth} sx={{ '--List-gap': '15px', '--List-padding': 0 }}>
+    <List data-depth={depth} sx={{ '--List-gap': '12px', '--List-padding': 0 }}>
       {children}
     </List>
   );

@@ -26,7 +26,7 @@ export const layoutConfig = {
         },
         {
           key: 'dashboard:admin',
-          title: 'Admin',
+          title: 'ADMIN',
           icon: 'buildings',
           items: [
             {
