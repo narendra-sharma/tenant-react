@@ -106,7 +106,7 @@ export function MainNav({ items }) {
               }}
             >
               <Avatar src={null}>
-                {getInitials(`${userData?.first_name} ${userData?.last_name}`)}
+                {`${userData?.first_name[0]}${userData?.last_name[0]}`}
               </Avatar>
             </Badge>
           </Stack>
