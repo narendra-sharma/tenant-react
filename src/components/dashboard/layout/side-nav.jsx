@@ -60,7 +60,7 @@ export function SideNav({ items }) {
           height: '100%',
           pb: '100px', // footer height
           position: 'relative',
-          pt: '200px', // header height
+          pt: '185px', // header height
         }}
       >
         <Stack spacing={3} sx={{ left: 0, position: 'absolute', py: '16px', top: 0, width: '100%', zIndex: 2 }}>
@@ -165,7 +165,7 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
   }, []);
 
   return (
-    <List data-depth={depth} sx={{ '--List-gap': '12px', '--List-padding': 0 }}>
+    <List data-depth={depth} sx={{ '--List-gap': '9px', '--List-padding': 0 }}>
       {children}
     </List>
   );

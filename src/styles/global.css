@@ -129,10 +129,23 @@ select.form-control {
   height:calc(100vh - 400px);
 }
 .device-table.scroll-table-container{
-  height: 200px; /* Adjust the height as needed */
+  height: 200px;
+  overflow: auto;
 }
+.scroll-table-container tr th{
+  position: sticky;
+  top:0;
+  z-index: 1;
+}
+nav ul li ul li ul li {
+  margin-top: 7px!important;
+}
+
 @media(max-width:1250px){
   .scroll-table-container{
     height:calc(100vh - 450px);
+  }
+  .scroll-table-container {
+    height: calc(100vh - 390px);
   }
 }
