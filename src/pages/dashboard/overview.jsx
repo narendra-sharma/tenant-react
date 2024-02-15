@@ -20,56 +20,24 @@ import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import dayjs from 'dayjs';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
+import { connect, useDispatch,useSelector } from 'react-redux';
+import { get_dashboard_devices } from '@/reduxData/devices/deviceAction';
 
-
-const customers = [
-  {
-    id: 'k5',
-    createdAt: dayjs().subtract(1, 'day').valueOf(), 
-    customerName: 'Chris Glasser',
-    reading: '25,40',
-    items: '13,04', 
-    reading: '1',
-    status: 'online',
-  },
-  {
-    id: 'k4',
-    createdAt: dayjs().subtract(1, 'day').valueOf(),
-    customerName: 'Iva Ryan',
-    reading:'25,40',
-    items: '13,04',
-    status: 'online',
-  },
-  {
-    id: 'k2',
-    createdAt: dayjs().subtract(3, 'day').subtract(3, 'hour').valueOf(),
-    customerName: 'Ricky Smith',
-    reading: '25,40',
-    items: '13,04',
-    status: 'offline',
-  },
-  {
-    id: 'k3',
-    createdAt: dayjs().subtract(3, 'day').valueOf(),
-    customerName: 'Kenneth Allen',
-    reading: '25,40',
-    items: '13,04',
-    status: 'online',
-  },
-  {
-    id: 'k1',
-    createdAt: dayjs().subtract(2, 'day').valueOf(),
-    customerName: 'Mary Freund',
-    reading: '25,40',
-    items: '13,04',
-    status: 'offline',
-  },
-];
 const metadata = {
   title: `Dashboard | ${config.site.name}`,
 };
 
-export function Page() {
+export  function Page() {
+
+  const dispatch = useDispatch()
+  React.useEffect(() => {
+      get_dashboard_devices(dispatch);
+  }, []);
+const [dashboardDevices, setDashboardDevices] = React.useState(null)
+const select = useSelector(state=>state.device.dashboardDevices)
+React.useEffect(()=>{
+  setDashboardDevices(select)
+},[select])
   return (
     <React.Fragment>
       <Helmet>
@@ -83,7 +51,7 @@ export function Page() {
                 DashBoard
               </Typography>
             </div>
-            <DeviceSummary active={268} canceled={4} completed={623} total={891} />
+            <DeviceSummary active={dashboardDevices?.water_meter_count} canceled={dashboardDevices?.offline_devices} completed={dashboardDevices?.electric_meter_count} total={dashboardDevices?.device_data_total} />
            
             <Grid container spacing={3}>
               <Grid lg={4}  xl={4} xs={12}>
@@ -113,7 +81,7 @@ export function Page() {
             </Grid>
              
             <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-              <DeviceTable rows={customers} />
+              <DeviceTable rows={dashboardDevices?.device_data} />
             </Card>
             <Grid container spacing={3}>
               <Grid lg={6} sx={{ '& > *': { height: '100%' } }} xl={8} xs={12}>
@@ -165,3 +133,5 @@ export function Page() {
     </React.Fragment>
   );
 }
+
+

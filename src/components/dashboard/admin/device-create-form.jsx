@@ -205,15 +205,11 @@ export function DeviceCreateForm({ onDataFromChild }) {
                       options={tenatntList.data}
                       selectedValues={devices?.tenant_ids}
                       onSelect={onSelect}
-<<<<<<< Updated upstream
+
                       displayValue="tenant_name" style={{ borderColor:"#EAEEF6"}}
-=======
-                      displayValue="tenant_name"
+
                       singleSelect={true}
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
                     />
                   )}
                   {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}

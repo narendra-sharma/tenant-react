@@ -11,6 +11,7 @@ import { CreateDevice } from '@/pages/dashboard/admin/create/device';
 import UpdateTenant from '@/pages/dashboard/admin/update/tenant';
 import UpdateUser from '@/pages/dashboard/admin/update/user';
 import UpdateDevices from '@/pages/dashboard/admin/update/devices';
+import Device_details from '@/pages/dashboard/admin/device_details';
 
 // Account pages
 
@@ -136,7 +137,17 @@ export const routes = [
       },
       {
         path: 'devices',
-        element: <DevicesPage />,
+        children: [
+          {
+            index: true,
+            element: <DevicesPage />,
+          },
+          {
+            path: ':tenantId',
+            element: <Device_details />,
+          },
+          
+        ],
       },
       {
         path: 'blank',

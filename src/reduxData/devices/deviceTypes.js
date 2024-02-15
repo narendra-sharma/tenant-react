@@ -1,1 +1,3 @@
 export const GET_DEVICES = 'GET_DEVICES';
+export const GET_DEVICE = 'GET_DEVICE'
+export const DASHBOARD_DEVICES = 'DASHBOARD_DEVICES'
