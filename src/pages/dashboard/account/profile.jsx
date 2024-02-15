@@ -148,7 +148,7 @@ const Page = ({ userData }) => {
       <Stack component="main" divider={<Divider />} spacing={5}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
           <Box sx={{ '--Avatar-size': '120px', position: 'relative' }} >
-            <Avatar src={imagePath}>{getInitials(`${cuser?.first_name} ${cuser?.last_name}`)}</Avatar>
+            <Avatar src={imagePath}>{`${cuser?.first_name && cuser?.first_name[0]}${cuser?.last_name && cuser?.last_name[0]}`}</Avatar>
             
           </Box>
           <div style={{textTransform:'capitalize'}}>

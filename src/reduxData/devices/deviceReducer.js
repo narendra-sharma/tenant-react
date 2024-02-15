@@ -1,8 +1,10 @@
-import { GET_DEVICES } from "./deviceTypes"; 
+import { DASHBOARD_DEVICES, GET_DEVICE, GET_DEVICES } from "./deviceTypes"; 
 
 const initialState = {
     devices: [],
-    total:0
+    total:0,
+    device:null,
+    dashboardDevices:null
   };
 
 export const deviceReducer = (state = initialState, action) => {
@@ -16,6 +18,18 @@ export const deviceReducer = (state = initialState, action) => {
           total:action.payload?.total || 0
         };
       
+        case GET_DEVICE:
+          return {
+            ...state,
+            device: action.payload,
+          };
+        
+        case DASHBOARD_DEVICES:
+          return {
+            ...state,
+            dashboardDevices:action.payload
+          }
+
       default:
         return state;
     }

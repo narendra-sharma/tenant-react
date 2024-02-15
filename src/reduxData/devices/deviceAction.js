@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from '@/components/core/toaster';
 
 import { start_loading, stop_loading } from '../rootAction';
-import { GET_DEVICES } from './deviceTypes';
+import { DASHBOARD_DEVICES, GET_DEVICE, GET_DEVICES } from './deviceTypes';
 
 const url = import.meta.env.VITE_API_URL;
 const headers = {
@@ -122,3 +122,42 @@ export const update_device_renaming = async (data, dispatch,isSave) => {
     dispatch(stop_loading());
   }
 };
+
+export const get_single_device = async (id, dispatch) => {
+  
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(`${url}admin/single_device?device_id=${id}`, headers);
+    if (res?.data?.status) {
+      toast.success(res?.data?.message);
+      dispatch({ type: GET_DEVICE, payload: res?.data.data });
+
+    } else {
+      toast.error(res?.data?.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const get_dashboard_devices = async (dispatch)=>{
+  dispatch(start_loading());
+  try{
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(`${url}admin/dashboard`,headers);
+    if(res?.data?.status){
+      toast.success(res?.data?.message);
+      dispatch({type:DASHBOARD_DEVICES , payload:res?.data})
+    }else {
+      toast.error(res?.data?.message)
+    }
+  }catch (error){
+    dispatch(catch_errors_handle(error, dispatch));
+  }finally{
+    dispatch(stop_loading());
+  }
+
+}

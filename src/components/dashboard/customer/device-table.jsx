@@ -4,15 +4,14 @@ import * as React from 'react';
 import Chip from '@mui/joy/Chip';
 import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
-import dayjs from 'dayjs';
-import { paths } from '@/paths';
 import Typography from '@mui/joy/Typography';
-import { getInitials } from '@/lib/get-initials';
-import { DataTable } from '@/components/core/data-table';
-import { RouterLink } from '@/components/core/link';
-import { IconButton } from '@mui/joy';
 import { Box } from '@mui/system';
 import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
+import dayjs from 'dayjs';
+
+import { paths } from '@/paths';
+import { DataTable } from '@/components/core/data-table';
+import { RouterLink } from '@/components/core/link';
 
 const statusMapping = {
   offline: {
@@ -32,7 +31,7 @@ const columns = [
         component={RouterLink}
         fontSize="sm"
         fontWeight="md"
-        href={paths['dashboard.orders.details']}
+        href={paths['dashboard.admin.device_details'](`${row._id}`)}
         underline="none"
       >
         {row.device_name}
@@ -50,26 +49,30 @@ const columns = [
           </Typography>
         </div>
       </Stack>
-    ),
+    ),  
     name: 'Client Name',
     width: '120px',
   },
   {
-    formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'),
+    formatter: (row) => (row?.meter_type == 'water' ? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : ''),
     name: 'Date Last Reading Water',
     width: '200px',
   },
-  { formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'), name: 'Last Reading Water (Liters)' ,  width: '220px',},
   {
-    formatter: (row) => dayjs(row.createdAt).format('YYYY-MM-DD'),
+    formatter: (row) => (row?.meter_type == 'water' ? row.last_reading : ''),
+    name: 'Last Reading Water (Liters)',
+    width: '220px',
+  },
+  {
+    formatter: (row) => (row?.meter_type == 'electricity' ? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : ''),
     name: 'Date Last Reading Electricity',
     width: '230px',
   },
- 
-  { field: 'last_reading_electricity_kwh', name: 'Last Reading Electricity (kWh)', width: '250px' },
+
+  { formatter: (row) => (row?.meter_type == 'electricity' ? row.last_reading : ''), name: 'Last Reading Electricity (kWh)', width: '250px' },
   {
     formatter: (row) => {
-      const { label, color } = statusMapping[row.status] ?? {
+      const { label, color } = statusMapping[row?.device_status] ?? {
         label: 'Online',
         color: 'green',
       };
@@ -86,13 +89,13 @@ const columns = [
   {
     formatter: (row) => (
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-         <Link
-        component={RouterLink}
-        fontSize="sm"
-        fontWeight="md"
-        href={paths['dashboard.admin.update.devices'](`${row._id}`)}
-        underline="none"
-      >
+        <Link
+          component={RouterLink}
+          fontSize="sm"
+          fontWeight="md"
+          href={paths['dashboard.admin.update.devices'](`${row._id}`)}
+          underline="none"
+        >
           <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
         </Link>
       </Box>
@@ -104,5 +107,5 @@ const columns = [
 ];
 
 export function DeviceTable({ rows }) {
-  return <DataTable columns={columns} rows={rows}  stripe="even" />;
+  return <DataTable columns={columns} rows={rows} stripe="even" />;
 }

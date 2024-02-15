@@ -49,8 +49,9 @@ export function Page() {
         console.error("Error in useEffect:", error);
       }
     };
-  
-    fetchData();
+    if(serialNumber){
+      fetchData();
+    }
   }, []);
 
   const loginHistory = useSelector((state) => state.user.loginHistory);
