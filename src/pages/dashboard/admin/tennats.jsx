@@ -17,6 +17,7 @@ import { RouterLink } from '@/components/core/link';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { get_tenants } from '@/reduxData/rootAction';
 import { connect, useDispatch } from 'react-redux';
+import Grid from '@mui/joy/Grid';
 import CustomPagination from '@/components/core/custom-pagination';
 
 const Tenants = ({tenants,total}) => {
@@ -82,8 +83,9 @@ const Tenants = ({tenants,total}) => {
             </Button>
           </Stack>
         </Stack>
-        <Stack direction={{ md: 'row' }} spacing={3} sx={{ alignvatId: 'BE0487248925start', flexWrap: 'wrap' }}>
-            <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
+        <Grid container spacing={3}  sx={{ alignvatId: 'BE0487248925start' }}>
+          <Grid lg={4}  xl={4} xs={12}>
+            <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
               <FormLabel>Tenant Name</FormLabel>
               <Input defaultValue={tenant} name="tenant" 
                 onChange={(e)=>window.setTimeout(() => {
@@ -91,15 +93,19 @@ const Tenants = ({tenants,total}) => {
                 }, 1000)}
               />
             </FormControl>
-            <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
-              <FormLabel>Company Name</FormLabel>
-              <Input defaultValue={company} name="company" 
-                onChange={(e)=>window.setTimeout(() => {
-                  setCompany(e.target.value)
-                }, 1000)}
-              />
+          </Grid>
+          <Grid lg={4}  xl={4} xs={12}>
+          <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+            <FormLabel>Company Name</FormLabel>
+            <Input defaultValue={company} name="company" 
+              onChange={(e)=>window.setTimeout(() => {
+                setCompany(e.target.value)
+              }, 1000)}
+            />
             </FormControl>
-            <FormControl sx={{ maxWidth: '300px', width: '100%' }}>
+          </Grid>
+          <Grid lg={4}  xl={4} xs={12}>
+            <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
               <FormLabel>Status</FormLabel>
               <select defaultValue={status} name="status" className="form-control" onChange={(e)=>setStatus(e.target.value)}>
                 <option value="">All</option>
@@ -107,7 +113,8 @@ const Tenants = ({tenants,total}) => {
                 <option value="offline">Offline</option>
               </select>
             </FormControl>
-          </Stack>
+          </Grid>
+        </Grid>
           <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
             <div  className="scroll-table-container" onScroll={handleScroll}>
               <DeviceTable rows={tenants} />
