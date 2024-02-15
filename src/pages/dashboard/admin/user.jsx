@@ -16,6 +16,7 @@ import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { RouterLink } from '@/components/core/link';
 import { UserTable } from '@/components/dashboard/admin/user-table';
+import Grid from '@mui/joy/Grid';
 
 const Users = ({ users, total }) => {
   const [user, setUser] = useState(null);
@@ -81,7 +82,9 @@ const Users = ({ users, total }) => {
             </Button>
           </Stack>
         </Stack>
-        <FormControl sx={{ maxWidth: '300px', mr: 'auto', width: '100%' }}>
+        <Grid container spacing={3}>
+          <Grid lg={4}  xl={4} xs={12}>
+            <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
             <FormLabel>User Name</FormLabel>
             <Input
               defaultValue={user}
@@ -93,8 +96,10 @@ const Users = ({ users, total }) => {
               }
             />
           </FormControl>
+          </Grid>
+          </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-        <div  className="scroll-table-container" onScroll={handleScroll}>
+        <div  className="scroll-table-container user-table" onScroll={handleScroll}>
           <UserTable rows={users} />
         </div>
         </Card>

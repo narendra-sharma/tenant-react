@@ -207,7 +207,6 @@ export function DeviceCreateForm({ onDataFromChild }) {
                       onSelect={onSelect}
 
                       displayValue="tenant_name" style={{ borderColor:"#EAEEF6"}}
-
                       singleSelect={true}
 
                     />
