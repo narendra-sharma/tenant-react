@@ -33,10 +33,11 @@ export function DeviceCreateForm({ onDataFromChild }) {
   const [tenatntList, setTenantList] = React.useState();
   const dispatch = useDispatch();
   const id = useParams();
+  console.log("OOOOO",id)
   React.useEffect(() => {
     if (id.deviceId) {
       let data = state.device.devices.filter((res) => {
-        if (res._id === id.deviceId) {
+        if (res.serial_number === id.deviceId) {
           onDataFromChild('edit');
         //  const ans = {
         //     data: res?.tenant_ids

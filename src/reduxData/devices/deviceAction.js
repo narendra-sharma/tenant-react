@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from '@/components/core/toaster';
 
 import { start_loading, stop_loading } from '../rootAction';
-import { DASHBOARD_DEVICES, GET_DEVICE, GET_DEVICES } from './deviceTypes';
+import { DASHBOARD_DEVICES, DEVICE_READING, GET_DASHBOARD_DEVICES, GET_DEVICE, GET_DEVICES } from './deviceTypes';
 
 const url = import.meta.env.VITE_API_URL;
 const headers = {
@@ -91,7 +91,7 @@ export const get_device_bySerialNumber = async (serialNumber,dispatch) => {
   try {
     const res = await axios.get(`${url}admin/device?serial_numer=${serialNumber}`);
     if (res?.data?.status) {
-      return res
+      dispatch({type:DASHBOARD_DEVICES , payload:res?.data})
     } else {
       toast.error(res?.data?.message);
     }
@@ -160,4 +160,46 @@ export const get_dashboard_devices = async (dispatch)=>{
     dispatch(stop_loading());
   }
 
+}
+
+export const get_today_device_reading = async (id, dispatch)=>{
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(
+      `${url}admin/current_date_reading?serial_number=${id}`,
+      headers
+    );
+    if (res?.data?.status) {
+      dispatch({ type: DEVICE_READING, payload: res?.data });
+    } else {
+      toast.error(res?.data?.message);
+    }
+    return res.data.data;
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+}
+
+export const get_dashboard_devices_reading = async (dispatch)=>{
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(
+      `${url}admin/all_devices_weekly`,
+      headers
+    );
+    if (res?.data?.status) {
+      dispatch({ type: GET_DASHBOARD_DEVICES, payload: res?.data });
+    } else {
+      toast.error(res?.data?.message);
+    }
+    return res.data.data;
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
 }

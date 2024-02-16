@@ -54,7 +54,7 @@ export function Device_details({ deviceData }) {
 
 const mapStateToProps = (state) => {
   return {
-    deviceData: state.device.device,
+    deviceData: state.device.dashboardDevices,
   };
 };
 
