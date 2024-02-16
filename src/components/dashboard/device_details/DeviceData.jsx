@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { get_single_device, update_device } from '@/reduxData/devices/deviceAction';
+import {
+  get_device_bySerialNumber,
+  get_single_device,
+  get_today_device_reading,
+  update_device,
+} from '@/reduxData/devices/deviceAction';
 import { FormControl } from '@mui/base';
-import { Avatar, Button, Divider, FormHelperText, FormLabel, Grid, Typography } from '@mui/joy';
+import { Avatar, Button, Divider, FormHelperText, FormLabel, Grid, Table, Typography } from '@mui/joy';
 import Input from '@mui/joy/Input';
 import { Box, Stack } from '@mui/system';
 import { connect, useDispatch, useSelector } from 'react-redux';
@@ -9,24 +14,37 @@ import { useParams } from 'react-router';
 
 import { MeterGraph } from './meterGraph';
 
-const DeviceData = ({ deviceData }) => {
+const DeviceData = ({ deviceData, todaysReading }) => {
+
   const dispatch = useDispatch();
   const { tenantId } = useParams();
   const serialNumber = tenantId;
   React.useEffect(() => {
     if (serialNumber) {
-      get_single_device(serialNumber, dispatch);
+      get_device_bySerialNumber(serialNumber, dispatch);
+      get_today_device_reading(serialNumber, dispatch);
     }
+
   }, [serialNumber]);
-console.log("userData",deviceData)
   const [device, setDevice] = React.useState({
     device_name: deviceData?.device_name,
     client_first_name: deviceData?.client_firstname,
     client_last_name: deviceData?.client_lastname,
     serial_number: deviceData?.serial_number,
-    water_reading: deviceData?.meter_type=="water"?deviceData?.last_reading:'',
-    electricity_reading:deviceData?.meter_type=="electricity"?deviceData?.last_reading:'',
+    water_reading: deviceData?.meter_type == 'water' ? deviceData?.last_reading : '',
+    electricity_reading: deviceData?.meter_type == 'electricity' ? deviceData?.last_reading : '',
   });
+
+  useEffect(()=>{
+    setDevice({
+      device_name: deviceData?.device_name,
+      client_first_name: deviceData?.client_firstname,
+      client_last_name: deviceData?.client_lastname,
+      serial_number: deviceData?.serial_number,
+      water_reading: deviceData?.meter_type == 'water' ? deviceData?.last_reading : '',
+      electricity_reading: deviceData?.meter_type == 'electricity' ? deviceData?.last_reading : '',
+    })
+  },[deviceData])
 
   const [errors, setErrors] = React.useState({
     device_name: '',
@@ -46,7 +64,7 @@ console.log("userData",deviceData)
     let err = false;
     let output = Object.entries(device);
     output.forEach(([key, value]) => {
-      if (!value && key!='electricity_reading' && key!='water_reading') {
+      if (!value && key != 'electricity_reading' && key != 'water_reading') {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       }
@@ -56,10 +74,8 @@ console.log("userData",deviceData)
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(device);
 
     if (checkAllErrors()) {
-      console.log("Enters in error block",errors)
       return;
     }
     let data = deviceData;
@@ -171,12 +187,7 @@ console.log("userData",deviceData)
                   <FormLabel value={device.electricity_reading} disabled>
                     Last Reading Electricity (kWh) <sup>*</sup>
                   </FormLabel>
-                  <Input
-                    name=""
-                    type="text"
-                    disabled={true}
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                  />
+                  <Input name="" type="text" disabled={true} style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />
                 </FormControl>
               </Grid>
             </Grid>
@@ -190,20 +201,36 @@ console.log("userData",deviceData)
         <Button onClick={(event) => handleSubmit(event)}>Save Changes</Button>
       </Stack>
 
-      <MeterGraph
+      <Grid container spacing={3}>
+        <Grid md={6} xs={12}>
+        <Typography level="4">Overview {deviceData?.meter_type} Usage</Typography>
+        <Table>
+          <thead>
+            <tr>
+              <th>Date Reading {deviceData?.meter_type}</th>
+              <th>Reading {deviceData?.meter_type} {deviceData?.meter_type=='electricity'?'(kWh)':'(Liters)'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {todaysReading && todaysReading.length > 0 ? (
+              todaysReading.map((reading) => (
+                <tr key={reading?._id}>
+                  <td>{new Date(reading?.updatedAt).toLocaleDateString()}</td>
+                  <td>{reading?.last_reading}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="2">No readings available for today</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+        </Grid>
+        <Grid md={6} xs={12}>
+        <MeterGraph
         data={[
-          { name: 'Jan', value: 578 },
-          { name: 'Feb', value: 610 },
-          { name: 'Mar', value: 605 },
-          { name: 'Apr', value: 622 },
-          { name: 'May', value: 628 },
-          { name: 'Jun', value: 607 },
-          { name: 'Jul', value: 583 },
-          { name: 'Aug', value: 600 },
-          { name: 'Sep', value: 630 },
-          { name: 'Oct', value: 608 },
-          { name: 'Nov', value: 659 },
-          { name: 'Dec', value: 678 },
+          todaysReading[0]
         ]}
         expenses="$57,139"
         expensesDiff="11"
@@ -211,14 +238,19 @@ console.log("userData",deviceData)
         income="$309,761"
         incomeDiff="14"
         incomeTrend="up"
-        label="Overview Water Usage"
+        label={`Overview ${deviceData?.meter_type} Usage`}
       />
+        </Grid>
+      </Grid>
+
+    
     </Box>
   );
 };
 const mapStateToProps = (state) => {
   return {
-    deviceData: state.device.device,
+    deviceData: state.device.dashboardDevices?.data,
+    todaysReading: state.device.deviceTodayReading,
   };
 };
 

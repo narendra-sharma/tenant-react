@@ -31,7 +31,7 @@ const columns = [
         component={RouterLink}
         fontSize="sm"
         fontWeight="md"
-        href={paths['dashboard.admin.device_details'](`${row._id}`)}
+        href={paths['dashboard.admin.device_details'](`${row.serial_number}`)}
         underline="none"
       >
         {row.device_name}
@@ -93,7 +93,7 @@ const columns = [
           component={RouterLink}
           fontSize="sm"
           fontWeight="md"
-          href={paths['dashboard.admin.update.devices'](`${row._id}`)}
+          href={paths['dashboard.admin.update.devices'](`${row.serial_number}`)}
           underline="none"
         >
           <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />

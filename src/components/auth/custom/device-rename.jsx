@@ -37,8 +37,8 @@ React.useEffect(() => {
           try {
             const data = await get_device_bySerialNumber(serialNumber,dispatch);
             setFormData({
-                serial_numer: data.data.data?.serial_number,
-                device_name: '',
+                serial_numer: data?.serial_number,
+                device_name: data?.device_name,
                 device_renaming:'' ,
             })
           } catch (error) {

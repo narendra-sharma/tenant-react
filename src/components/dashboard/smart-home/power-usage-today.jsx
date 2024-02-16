@@ -25,7 +25,7 @@ export function PowerUsageToday({ data = [] }) {
 
   return (
     <Card>
-      <Typography level="h4">Today&apos;s Total Usage</Typography>
+      <Typography level="h4">Today’s Power Usage</Typography>
       <NoSSR fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
         <ResponsiveContainer height={chartHeight} width="100%">
           <AreaChart data={data} margin={{ top: 0, right: -40, bottom: 0, left: -20 }}>
@@ -44,7 +44,7 @@ export function PowerUsageToday({ data = [] }) {
             <CartesianGrid stroke="var(--joy-palette-neutral-300)" strokeDasharray="1 4" vertical={false} />
             <XAxis
               axisLine={false}
-              dataKey="name"
+              dataKey="hour"
               interval={xTicksInterval}
               tick={{
                 fill: 'var(--joy-palette-text-secondary)',
@@ -55,7 +55,7 @@ export function PowerUsageToday({ data = [] }) {
             />
             <YAxis
               axisLine={false}
-              domain={[0, 1000]}
+              domain={[0, 100]}
               tick={{
                 fill: 'var(--joy-palette-text-secondary)',
                 fontSize: 'var(--joy-fontSize-xs)',
@@ -65,7 +65,7 @@ export function PowerUsageToday({ data = [] }) {
             />
             <Area
               animationDuration={300}
-              dataKey="v1"
+              dataKey="electricityReading"
               fill="url(#area1)"
               stroke="var(--joy-palette-warning-400)"
               strokeWidth={2}
@@ -73,7 +73,7 @@ export function PowerUsageToday({ data = [] }) {
             />
             <Area
               animationDuration={300}
-              dataKey="v2"
+              dataKey="waterReading"
               dot={<Dot active="10AM" />}
               fill="url(#area2)"
               fillOpacity={1}

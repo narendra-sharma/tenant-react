@@ -17,11 +17,10 @@ export function MeterGraph({
   expenses: expensesAmount,
   expensesDiff,
   expensesTrend,
-  data = [],
+  data=[] ,
   label
 }) {
   const chartHeight = 240;
-
   return (
     <Card sx={{ gap: 2 }}>
       <Typography level="h4">{label}</Typography>
@@ -40,17 +39,17 @@ export function MeterGraph({
         <NoSSR fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
           <ResponsiveContainer height={chartHeight} width="100%">
             <AreaChart data={data} margin={{ top: 0, right: 0, bottom: 0, left: -20 }}>
-              <defs>
+              {/* <defs>
                 <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
                   <stop offset="0" stopColor="var(--joy-palette-primary-400)" stopOpacity={0.1} />
                   <stop offset="100%" stopColor="var(--joy-palette-primary-100)" stopOpacity={0} />
                 </linearGradient>
-              </defs>
+              </defs> */}
               <CartesianGrid stroke="var(--joy-palette-neutral-300)" strokeDasharray="1 4" vertical={false} />
               <XAxis
                 axisLine={false}
-                dataKey="name"
-                interval={2}
+                dataKey="meter_type"
+                interval={0}
                 tick={{
                   fill: 'var(--joy-palette-text-secondary)',
                   fontSize: 'var(--joy-fontSize-xs)',
@@ -70,11 +69,10 @@ export function MeterGraph({
               />
               <Area
                 animationDuration={300}
-                dataKey="value"
+                dataKey="last_reading"
                 dot={<Dot />}
                 fill="url(#area)"
                 fillOpacity={1}
-                name="Income"
                 stroke="var(--joy-palette-primary-400)"
                 strokeWidth={2}
                 type="monotone"

@@ -13,12 +13,12 @@ import { NoSSR } from '@/components/core/no-ssr';
 const bars = [
   {
     name: 'Water',
-    dataKey: 'v1',
+    dataKey: 'electricityReading',
     color: 'var(--joy-palette-primary-solidBg)',
   },
   {
     name: 'Electricity',
-    dataKey: 'v2',
+    dataKey: 'waterReading',
     color: 'var(--joy-palette-primary-200)',
   },
 ];
@@ -28,7 +28,7 @@ export function Orders({ data = [] }) {
 
   return (
     <Card>
-      <Typography level="h4">This Week Total Usage</Typography>
+      <Typography level="h4">Current Week Usage</Typography>
       <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', justifyContent: 'flex-end' }}>
         {bars.map((bar) => (
           <Stack direction="row" key={bar.name} spacing={1} sx={{ alignItems: 'center' }}>
@@ -50,7 +50,7 @@ export function Orders({ data = [] }) {
             <CartesianGrid stroke="var(--joy-palette-neutral-300)" strokeDasharray="1 4" vertical={false} />
             <XAxis
               axisLine={false}
-              dataKey="name"
+              dataKey="day"
               tick={{
                 fill: 'var(--joy-palette-text-secondary)',
                 fontSize: 'var(--joy-fontSize-xs)',
