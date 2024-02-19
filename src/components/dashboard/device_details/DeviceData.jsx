@@ -10,7 +10,7 @@ import { Avatar, Button, Divider, FormHelperText, FormLabel, Grid, Table, Typogr
 import Input from '@mui/joy/Input';
 import { Box, Stack } from '@mui/system';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { MeterGraph } from './meterGraph';
 
@@ -51,7 +51,7 @@ const DeviceData = ({ deviceData, todaysReading }) => {
     client_first_name: '',
     client_last_name: '',
   });
-
+const navigate = useNavigate()
   const handleElementChange = (value, label) => {
     setDevice((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -79,9 +79,12 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       return;
     }
     let data = deviceData;
+    console.log("kjdsfjdhsf",deviceData)
     data.client_first_name = device.client_first_name;
     data.client_last_name = device.client_last_name;
     data.device_name = device.device_name;
+    data.device_id= deviceData?._id
+    delete data.key2
     update_device(data, dispatch);
   };
 

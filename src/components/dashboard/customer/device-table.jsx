@@ -28,6 +28,7 @@ const columns = [
   {
     formatter: (row) => (
       <Link
+      disabled={true}
         component={RouterLink}
         fontSize="sm"
         fontWeight="md"

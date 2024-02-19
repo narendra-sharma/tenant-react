@@ -19,7 +19,6 @@ import { connect,useDispatch } from 'react-redux';
 import { get_devices } from '@/reduxData/rootAction';
 
 const devices = ({devices,total}) => {
-  console.log("All Devices:",devices)
   const dispatch = useDispatch()
   const [device, setDevices] = useState(null);
   const [client, setClient] = useState(null);

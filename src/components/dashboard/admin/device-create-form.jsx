@@ -33,7 +33,6 @@ export function DeviceCreateForm({ onDataFromChild }) {
   const [tenatntList, setTenantList] = React.useState();
   const dispatch = useDispatch();
   const id = useParams();
-  console.log("OOOOO",id)
   React.useEffect(() => {
     if (id.deviceId) {
       let data = state.device.devices.filter((res) => {

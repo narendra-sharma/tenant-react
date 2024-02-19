@@ -110,7 +110,9 @@ export const update_device_renaming = async (data, dispatch,isSave) => {
     const res = await axios.put(`${url}admin/device_renaming`, data);
     if (res?.data?.status) {
       if(isSave){
-        localStorage.setItem('serial_number',data?.serial_numer)
+        const currentTimestamp = new Date().getTime();
+        localStorage.setItem('serial_number',data?.device_renaming)
+        localStorage.setItem('timestamp', currentTimestamp.toString());
       }
       toast.success(res?.data?.message);
     } else {
@@ -149,7 +151,7 @@ export const get_dashboard_devices = async (dispatch)=>{
     headers.headers['x-access-token'] = token();
     const res = await axios.get(`${url}admin/dashboard`,headers);
     if(res?.data?.status){
-      toast.success(res?.data?.message);
+      // toast.success(res?.data?.message);
       dispatch({type:DASHBOARD_DEVICES , payload:res?.data})
     }else {
       toast.error(res?.data?.message)

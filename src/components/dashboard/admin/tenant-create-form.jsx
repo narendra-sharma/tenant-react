@@ -350,7 +350,7 @@ export function TenantCreateForm({ onDataFromChild }) {
         </Stack>
 
         <Stack spacing={3}>
-          <Typography level="h4">Settings</Typography>
+          <Typography level="h4">Settings Database</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               {/* <Grid md={12} xs={12}>
@@ -360,9 +360,9 @@ export function TenantCreateForm({ onDataFromChild }) {
                  
                 </FormControl>
               </Grid> */}
-              <Grid md={6} xs={12}>
+              <Grid md={12} xs={12}>
                 <FormControl>
-                  <FormLabel>Connection String Azure Cosmos DB</FormLabel>
+                  <FormLabel>Azure Cosmos DB Endpoint URL</FormLabel>
                   <Input
                     name="azure_cosmos"
                     type="text"
@@ -374,7 +374,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Database Name</FormLabel>
+                  <FormLabel>Azure Cosmos DB Key </FormLabel>
                   <Input
                     name="database_name"
                     type="text"
@@ -384,7 +384,38 @@ export function TenantCreateForm({ onDataFromChild }) {
                   />
                 </FormControl>
               </Grid>
+            
               <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Azure Cosmos DB Database Name</FormLabel>
+                  <Input defaultValue="" name="zip" />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Azure Cosmos DB Container Name Water</FormLabel>
+                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Azure Cosmos DB Partion Key Path Water </FormLabel>
+                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Azure Cosmos DB Container Name Electricity</FormLabel>
+                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Azure Cosmos DB Partion Key Path Electricity</FormLabel>
+                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                </FormControl>
+              </Grid>
+              {/* <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Account Key</FormLabel>
                   <Input
@@ -395,29 +426,45 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'account_key')}
                   />
                 </FormControl>
+              </Grid> */}
+            </Grid>
+          </Box>
+        </Stack>
+
+        <Stack spacing={3}>
+          <Typography level="h4">Settings Timeframe Meters</Typography>
+          <Box sx={{ maxWidth: 'lg' }}>
+            <Grid container spacing={3}>
+              {/* <Grid md={12} xs={12}>
+                <FormControl>
+                  <FormLabel>Connection String Azure Cosmos DB</FormLabel>
+                  <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                 
+                </FormControl>
+              </Grid> */}
+         
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Water Meters Timeframe(Seconds)</FormLabel>
+                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                </FormControl>
+              </Grid>
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel> Electricity Meters Timeframe (Seconds)</FormLabel>
+                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                </FormControl>
               </Grid>
               {/* <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Container Name Water</FormLabel>
-                  <Input defaultValue="" name="zip" />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Azure Cosmos DB Partition Key Path Water</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={2} name="street" />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Azure Cosmos DB Container Name Electricityr</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={2} name="street" />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Azure Cosmos DB Partition Key Path Electricity</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={2} name="street" />
+                  <FormLabel>Account Key</FormLabel>
+                  <Input
+                    name="account_key"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    value={cuser.account_key}
+                    onChange={(e) => handleElementChange(e.target.value, 'account_key')}
+                  />
                 </FormControl>
               </Grid> */}
             </Grid>

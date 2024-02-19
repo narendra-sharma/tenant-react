@@ -82,6 +82,13 @@ export function UserCreateForm({onDataFromChild}) {
   }, []);
 
   const handleElementChange = (value, label) => {
+    if(value == 'Tenant Manager' && label == 'permission_profile'){
+      value = 'tenant_manager'
+    }else if(value=='Tenant User'  && label == 'permission_profile'){
+      value = 'tenant_user'
+    }else if(value=='Tenant'  && label == 'permission_profile'){
+      value = 'tenant'
+    }
     let ids = cuser?.tenant_ids || [];
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -107,6 +114,7 @@ export function UserCreateForm({onDataFromChild}) {
   };
 
   const onSubmit = () => {
+    console.log(cuser)
     if (checkAllErrors()) {
       return;
     }

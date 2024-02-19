@@ -33,13 +33,25 @@ const [errors, setErrors]=useState({
 const { serial_number } = useParams();
 const serialNumber = serial_number;
 React.useEffect(() => {
+
+  const storedTimestamp = localStorage.getItem('timestamp');
+  if (storedTimestamp) {
+    const elapsedTime = new Date().getTime() - parseInt(storedTimestamp, 10);
+    const oneHourInMillis = 60 * 60 * 1000; 
+  
+    if (elapsedTime >= oneHourInMillis) {
+      localStorage.removeItem('serial_number');
+      localStorage.removeItem('timestamp');
+    }
+  }
+
         const fetchData = async () => {
           try {
             const data = await get_device_bySerialNumber(serialNumber,dispatch);
             setFormData({
                 serial_numer: data?.serial_number,
                 device_name: data?.device_name,
-                device_renaming:'' ,
+                device_renaming:localStorage.getItem('serial_number') || '' ,
             })
           } catch (error) {
             console.error("Error in useEffect:", error);

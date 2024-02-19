@@ -3,17 +3,16 @@ import axios from 'axios';
 import { toast } from '@/components/core/toaster';
 
 import { start_loading, stop_loading } from '../rootAction';
-import { GET_USERS, GET_USER_PROFILE, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
+import { GET_USER_PROFILE, GET_USERS, LOGIN_HISTORY, USER_PERMISSIONS, USER_UPDATE } from './userTypes';
 
 const url = import.meta.env.VITE_API_URL;
 const headers = {
   headers: {
     'Content-Type': 'application/json',
-    'x-access-token':localStorage.getItem('custom-auth-token')
-
+    'x-access-token': localStorage.getItem('custom-auth-token'),
   },
 };
-const token =()=>{
+const token = () => {
   return localStorage.getItem('custom-auth-token');
 };
 export const catch_errors_handle = (error, dispatch) => {
@@ -23,7 +22,7 @@ export const catch_errors_handle = (error, dispatch) => {
       localStorage.removeItem('authUser');
       localStorage.removeItem('custom-auth-token');
       dispatch(set_update_user(''));
-    } 
+    }
   } else {
     toast.error(error.message);
   }
@@ -50,12 +49,12 @@ export const login = async (user, dispatch, navigate) => {
 export const update_profile_detail = async (data, dispatch) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] =token();
+    headers.headers['x-access-token'] = token();
     headers.headers['Content-Type'] = 'multipart/form-data';
     const res = await axios.put(url + 'profile/update', data, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated profile');
-      get_user_profile_details(dispatch)
+      get_user_profile_details(dispatch);
     } else {
       toast.error(res.data.message);
     }
@@ -75,7 +74,11 @@ export const set_update_user = (user) => {
 export const update_password = async (token, dispatch, newPassword) => {
   dispatch(start_loading());
   try {
-    const res = await axios.post(`${url}auth/reset-password/${token}`, { password: newPassword.newUserPassword }, Headers);
+    const res = await axios.post(
+      `${url}auth/reset-password/${token}`,
+      { password: newPassword.newUserPassword },
+      Headers
+    );
     if (res?.data?.status) {
       toast.success('password updated succesfully!');
       return res;
@@ -95,7 +98,7 @@ export const forgot_password = async (userEmail, dispatch, navigate, redirect) =
     const res = await axios.post(`${url}auth/forgot-password`, { email: userEmail }, Headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
-      (redirect && navigate) && navigate(`/reset-password-sent?email=${encodeURIComponent(userEmail)}`);
+      redirect && navigate && navigate(`/reset-password-sent?email=${encodeURIComponent(userEmail)}`);
       return res.data;
     } else {
       toast.error(res?.data?.message);
@@ -110,7 +113,7 @@ export const forgot_password = async (userEmail, dispatch, navigate, redirect) =
 export const change_password = async (dispatch, userData) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] =token();
+    headers.headers['x-access-token'] = token();
     const res = await axios.put(`${url}profile/change-password`, userData, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
@@ -125,25 +128,41 @@ export const change_password = async (dispatch, userData) => {
   }
 };
 
-export const get_permissions = async (dispatch) => {
+export const get_permissions = async (dispatch, userRole) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] =token();
+    headers.headers['x-access-token'] = token();
     const res = await axios.get(url + 'admin/permission', headers);
     if (res.data && res.data.status) {
-      const data=[
+      const data = [
         {
-          name:'Tenant Management',
-          permissions:res.data.data[0].permissions
+          name: 'Tenant Management',
+          permissions: res.data.data[0].permissions,
         },
         {
-          name:'ADMIN Management',
-          permissions:res.data.data[1].permissions
+          name: 'ADMIN Management',
+          permissions: res.data.data[1].permissions,
         },
-      ]
+      ];
+      const permissionsArray = data;
+      const makeObject = (key) => {
+        const resultObject = {};
+
+        permissionsArray.forEach((group) => {
+          resultObject[group.name] = group.permissions.reduce((acc, permission) => {
+            acc[permission.key] = permission[key];
+            return acc;
+          }, {});
+        });
+
+        return resultObject;
+      };
+
+      // Example usage:
+      const tenantUserObject = makeObject(userRole);
       dispatch({
         type: USER_PERMISSIONS,
-        payload: data,
+        payload: {a:tenantUserObject,b:data},
       });
     } else {
       toast.error(res.data.message);
@@ -158,11 +177,11 @@ export const get_permissions = async (dispatch) => {
 export const update_permissions = async (data, dispatch) => {
   try {
     dispatch(start_loading());
-    headers.headers['x-access-token'] =token();
-    const res = await axios.put(url + 'admin/edit-permission', {permission:data}, headers);
+    headers.headers['x-access-token'] = token();
+    const res = await axios.put(url + 'admin/edit-permission', { permission: data }, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated permissions!');
-      get_permissions(dispatch);
+      // get_permissions(dispatch);
     } else {
       toast.error(res.data.message);
     }
@@ -176,7 +195,7 @@ export const update_permissions = async (data, dispatch) => {
 export const get_login_history = async (dispatch) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] =token();
+    headers.headers['x-access-token'] = token();
     const res = await axios.get(`${url}profile/login-history`, headers);
     if (res?.data?.status) {
       dispatch({ type: LOGIN_HISTORY, payload: res?.data.data });
@@ -190,17 +209,22 @@ export const get_login_history = async (dispatch) => {
   }
 };
 
-export const get_users = async (dispatch,page,limit,user,company,status) => {
+export const get_users = async (dispatch, page, limit, user, company, status) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] =token();
-    const res = await axios.get(`${url}admin/user_list?page=${page}&limit=${limit}${user?'&user='+user:''}${company?'&company='+company:''}${status?'&status='+status:''}`, headers);
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(
+      `${url}admin/user_list?page=${page}&limit=${limit}${user ? '&user=' + user : ''}${
+        company ? '&company=' + company : ''
+      }${status ? '&status=' + status : ''}`,
+      headers
+    );
     if (res?.data?.status) {
       dispatch({ type: GET_USERS, payload: res?.data });
     } else {
       toast.error(res?.data?.message);
     }
-    return res.data.data
+    return res.data.data;
   } catch (error) {
     dispatch(catch_errors_handle(error, dispatch));
   } finally {
@@ -211,9 +235,10 @@ export const get_users = async (dispatch,page,limit,user,company,status) => {
 export const get_user_profile_details = async (dispatch) => {
   dispatch(start_loading());
   try {
-    if(token()){
-      headers.headers['x-access-token'] =token();
+    if (token()) {
+      headers.headers['x-access-token'] = token();
       const res = await axios.get(`${url}profile`, headers);
+      get_permissions(dispatch, res?.data?.data?.role);
       if (res?.data?.status) {
         dispatch(set_update_user({ ...res?.data?.data, token: token() }));
       } else {
@@ -227,10 +252,10 @@ export const get_user_profile_details = async (dispatch) => {
   }
 };
 
-export const create_user = async (data ,dispatch) => {
+export const create_user = async (data, dispatch) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] =token();
+    headers.headers['x-access-token'] = token();
     const res = await axios.post(`${url}admin/add_user`, data, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
@@ -245,12 +270,11 @@ export const create_user = async (data ,dispatch) => {
   }
 };
 
-
-export const update_user = async (data,dispatch)=>{
+export const update_user = async (data, dispatch) => {
   dispatch(start_loading());
   try {
-    headers.headers['x-access-token'] =token();
-    const res = await axios.put(`${url}admin/edit_user`,data, headers);
+    headers.headers['x-access-token'] = token();
+    const res = await axios.put(`${url}admin/edit_user`, data, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
       // get_tenants(dispatch)
@@ -262,6 +286,4 @@ export const update_user = async (data,dispatch)=>{
   } finally {
     dispatch(stop_loading());
   }
-}
-
-
+};

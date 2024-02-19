@@ -5,13 +5,15 @@ import Container from '@mui/joy/Container';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import { config } from '@/config';
 import { paths } from '@/paths';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import DeviceData from '@/components/dashboard/device_details/DeviceData';
+import { useParams } from 'react-router';
+import { get_device_bySerialNumber } from '@/reduxData/devices/deviceAction';
 
 const metadata = {
   title: `Create | Customers | Dashboard | ${config.site.name}`,
@@ -19,8 +21,22 @@ const metadata = {
 
 export function Device_details({ deviceData }) {
   const [meterStatus, setMeterStatus] = React.useState(
-    deviceData?.device_status == 'online' ? 'success' : deviceData?.device_status == 'offline' ? 'danger' : ''
+    deviceData?.data?.device_status == 'online' ? 'success' : deviceData?.data?.device_status == 'offline' ? 'danger' : ''
   );
+
+const [particularDeviceData,setParticularDeviceData] = React.useState(null)
+
+  const { tenantId } = useParams();
+  const serialNumber = tenantId;
+  const dispatch = useDispatch()
+
+  React.useEffect(() => {
+    if (serialNumber) {
+      get_device_bySerialNumber(serialNumber, dispatch);
+    }
+  }, [serialNumber]);
+
+
   return (
     <React.Fragment>
       <Helmet>
@@ -32,9 +48,9 @@ export function Device_details({ deviceData }) {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  Device Details {deviceData?.device_name}
+                  Device Details {deviceData.data?.device_name}
                   <Chip variant="success" color={meterStatus}>
-                    {deviceData?.device_status}
+                    {deviceData?.data?.device_status}
                   </Chip>
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
@@ -54,7 +70,7 @@ export function Device_details({ deviceData }) {
 
 const mapStateToProps = (state) => {
   return {
-    deviceData: state.device.dashboardDevices,
+    deviceData: state.device?.devices,
   };
 };
 
