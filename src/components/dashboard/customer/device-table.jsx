@@ -24,6 +24,9 @@ const statusMapping = {
   },
 };
 
+const userPermissions = JSON.parse(localStorage.getItem('permissions'));
+const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+
 const columns = [
   {
     formatter: (row) => (

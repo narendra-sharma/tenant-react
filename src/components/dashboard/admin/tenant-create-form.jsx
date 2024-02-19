@@ -42,6 +42,7 @@ export function TenantCreateForm({ onDataFromChild }) {
     azure_cosmos: '',
     database_name: '',
     account_key: '',
+    p_renaming: '',
   });
   const [countries, setCountries] = React.useState([]);
   const [errors, setErrors] = React.useState({
@@ -58,6 +59,7 @@ export function TenantCreateForm({ onDataFromChild }) {
     address: '',
     azure_cosmos: '',
     database_name: '',
+    p_renaming: '',
   });
 
   const id = useParams();
@@ -107,8 +109,11 @@ export function TenantCreateForm({ onDataFromChild }) {
 
   const onSubmit = React.useCallback(() => {
     if (checkAllErrors()) {
+      console.log("Errors",errors)
       return;
     }
+
+    localStorage.setItem('p_renaming', cuser?.p_renaming);
     const formData = new FormData();
     formData.append('company_name', cuser?.company_name);
     formData.append('tenant_name', cuser?.tenant_name);
@@ -127,14 +132,14 @@ export function TenantCreateForm({ onDataFromChild }) {
     if (id?.tenantId) {
       formData.append('tenant_id', id?.tenantId);
       update_tenant(formData, dispatch);
-      clearForm()
+      clearForm();
     } else {
       create_tenant(formData, dispatch);
-      clearForm()
+      clearForm();
     }
   });
 
-  const clearForm =()=>{
+  const clearForm = () => {
     setCuser({
       company_name: '',
       tenant_name: '',
@@ -149,9 +154,9 @@ export function TenantCreateForm({ onDataFromChild }) {
       address: '',
       azure_cosmos: '',
       database_name: '',
-      account_key: ''
+      account_key: '',
     });
-  }
+  };
 
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
@@ -269,6 +274,22 @@ export function TenantCreateForm({ onDataFromChild }) {
                   />
                 </FormControl>
               </Grid>
+
+              <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Password Renaming</FormLabel>
+                  <Input
+                    value={cuser.p_renaming}
+                    name="p_renaming"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'p_renaming')}
+                  />
+                  {errors.p_renaming && (
+                    <FormHelperText style={{ color: 'red' }}>Password Renaming is required.</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
             </Grid>
           </Box>
         </Stack>
@@ -374,18 +395,30 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Key </FormLabel>
+                  <FormLabel>Azure Cosmos DB Database Name</FormLabel>
                   <Input
+                    defaultValue=""
                     name="database_name"
-                    type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     value={cuser.database_name}
                     onChange={(e) => handleElementChange(e.target.value, 'database_name')}
                   />
                 </FormControl>
               </Grid>
-            
               <Grid md={6} xs={12}>
+                <FormControl>
+                  <FormLabel>Azure Cosmos DB Key </FormLabel>
+                  <Input
+                    name="account_key"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    value={cuser.account_key}
+                    onChange={(e) => handleElementChange(e.target.value, 'account_key')}
+                  />
+                </FormControl>
+              </Grid>
+
+              {/* <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Database Name</FormLabel>
                   <Input defaultValue="" name="zip" />
@@ -414,34 +447,15 @@ export function TenantCreateForm({ onDataFromChild }) {
                   <FormLabel>Azure Cosmos DB Partion Key Path Electricity</FormLabel>
                   <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
                 </FormControl>
-              </Grid>
-              {/* <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Account Key</FormLabel>
-                  <Input
-                    name="account_key"
-                    type="text"
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    value={cuser.account_key}
-                    onChange={(e) => handleElementChange(e.target.value, 'account_key')}
-                  />
-                </FormControl>
               </Grid> */}
             </Grid>
           </Box>
         </Stack>
-
+        {/* 
         <Stack spacing={3}>
           <Typography level="h4">Settings Timeframe Meters</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
-              {/* <Grid md={12} xs={12}>
-                <FormControl>
-                  <FormLabel>Connection String Azure Cosmos DB</FormLabel>
-                  <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
-                 
-                </FormControl>
-              </Grid> */}
          
               <Grid md={6} xs={12}>
                 <FormControl>
@@ -455,21 +469,9 @@ export function TenantCreateForm({ onDataFromChild }) {
                   <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
                 </FormControl>
               </Grid>
-              {/* <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Account Key</FormLabel>
-                  <Input
-                    name="account_key"
-                    type="text"
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    value={cuser.account_key}
-                    onChange={(e) => handleElementChange(e.target.value, 'account_key')}
-                  />
-                </FormControl>
-              </Grid> */}
             </Grid>
           </Box>
-        </Stack>
+        </Stack> */}
 
         {/* <Stack spacing={3}>
           <Typography level="h4">Settings Timeframe Meters
