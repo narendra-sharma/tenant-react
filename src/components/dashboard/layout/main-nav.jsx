@@ -19,6 +19,7 @@ import { UserPopover } from './user-popover';
 
 export function MainNav({ items }) {
   const userData = useSelector((state) => state.user.user);
+  console.log("userData",userData)
   const url = import.meta.env.VITE_APP_ASSET_URL;
   const [openNav, setOpenNav] = React.useState(false);
   const notificationsPopover = usePopover();

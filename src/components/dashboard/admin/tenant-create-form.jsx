@@ -239,7 +239,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                   <Input
                     value={cuser.company_phone_number}
                     name="company_phone_number"
-                    type="text"
+                    type="number"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
                   />
@@ -418,7 +418,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                 </FormControl>
               </Grid>
 
-              {/* <Grid md={6} xs={12}>
+              <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Database Name</FormLabel>
                   <Input defaultValue="" name="zip" />
@@ -447,7 +447,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                   <FormLabel>Azure Cosmos DB Partion Key Path Electricity</FormLabel>
                   <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
                 </FormControl>
-              </Grid> */}
+              </Grid>
             </Grid>
           </Box>
         </Stack>
