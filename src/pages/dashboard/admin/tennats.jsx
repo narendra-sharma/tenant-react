@@ -29,6 +29,7 @@ const Tenants = ({tenants,total}) => {
   const [limit, setLimit] = useState(50);
   useEffect(()=>{
     get_tenants(dispatch,page,limit,tenant,company,status);
+    console.log(tenants)
   },[page,limit,tenant,company,status]);
 
 
