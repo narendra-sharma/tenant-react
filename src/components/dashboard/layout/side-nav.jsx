@@ -18,7 +18,6 @@ import { Logo } from '@/components/core/logo';
 import { NoSSR } from '@/components/core/no-ssr';
 
 import { ColorSchemeSwitch } from './color-scheme-switch';
-import { CurrentOrganization } from './current-organization';
 import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
 import { useSelector } from 'react-redux';
@@ -69,7 +68,6 @@ export function SideNav({ items }) {
               <Logo color="light" height={78} width={253} />
             </Box>
           </div>
-          <CurrentOrganization />
         </Stack>
         <Box
           component="nav"
@@ -120,7 +118,7 @@ export function SideNav({ items }) {
 function renderNavGroups({ items, pathname }) {
   const children = items.reduce((acc, curr) => {
     acc.push(
-      <ListItem 
+      <ListItem
         key={curr.key}
         sx={{
           '--ListItem-paddingRight': 0,
@@ -128,7 +126,7 @@ function renderNavGroups({ items, pathname }) {
           '--ListItem-paddingY': 0,
         }}
       >
-        <ListItemContent >
+        <ListItemContent>
           {curr.title ? (
             <Box sx={{ py: '12px' }}>
               <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">
@@ -158,23 +156,13 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
       ? Boolean(childItems.find((childItem) => childItem.href && pathname.startsWith(childItem.href)))
       : false;
 
-      if(userRole =='admin'){
-        console.log("test 1",renderNavItems({ depth: depth + 1, pathname, items: childItems }) )
-        acc.push(
-          <NavItem  depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
-            {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}
-          </NavItem>
-        );
-      }else{
-        // console.log("test 2")
-        acc.push(
-          <NavItem  depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
-            {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}
-          </NavItem>
-        );
-      }
 
-  
+    acc.push(
+      <NavItem depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
+        {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}
+      </NavItem>
+    );
+
 
   
     return acc;
