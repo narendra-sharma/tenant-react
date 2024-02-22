@@ -140,7 +140,16 @@ select.form-control {
 nav ul li ul li ul li {
   margin-top: 7px!important;
 }
-
+.toaster-button button {
+  opacity: 1!important;
+  right: 0!important;
+  top: 13px!important;
+  left: unset!important;
+}
+.toaster-button button svg{
+  width:15px;
+  height: 15px;
+}
 @media(max-width:1250px){
   .scroll-table-container{
     height:calc(100vh - 450px);
