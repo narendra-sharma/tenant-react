@@ -61,7 +61,7 @@ export function Page() {
               total={dashboardDevices?.device_data_total}
             />
 
-            {(userRole == 'admin' || userPermissions['Tenant Management']?.can_view_devices) && (
+            {/* {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && ( */}
               <Box>
                 <Grid container spacing={3}>
                   <Grid lg={4} xl={4} xs={12}>
@@ -92,7 +92,7 @@ export function Page() {
                   <DeviceTable rows={dashboardDevices?.device_data} />
                 </Card>
               </Box>
-            )}
+            {/* )} */}
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <PowerUsageToday data={graphData?.readingHpurlyResponse} />

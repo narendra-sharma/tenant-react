@@ -20,10 +20,10 @@ import { NoSSR } from '@/components/core/no-ssr';
 import { ColorSchemeSwitch } from './color-scheme-switch';
 import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
+import { useSelector } from 'react-redux';
 
 export function SideNav({ items }) {
   const pathname = usePathname();
-
   return (
     <Box
       sx={{
@@ -146,6 +146,9 @@ function renderNavGroups({ items, pathname }) {
 }
 
 function renderNavItems({ depth = 0, pathname, items = [] }) {
+  const select = useSelector(state=>state)
+  const permissions = select?.user?.permissions;
+  const userRole = select?.user?.user.role
   const children = items.reduce((acc, curr) => {
     const { items: childItems, key, ...item } = curr;
 
@@ -153,12 +156,15 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
       ? Boolean(childItems.find((childItem) => childItem.href && pathname.startsWith(childItem.href)))
       : false;
 
+
     acc.push(
       <NavItem depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
         {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}
       </NavItem>
     );
 
+
+  
     return acc;
   }, []);
 
@@ -170,6 +176,9 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
 }
 
 function NavItem({ children, depth, disabled, external, forceOpen = false, href, icon, matcher, pathname, title }) {
+  const select = useSelector(state=>state)
+  const permissions = select?.user?.permissions;
+  const userRole = select?.user?.user.role
   const [open, setOpen] = React.useState(forceOpen);
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const Icon = icon ? icons[icon] : null;

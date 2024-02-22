@@ -43,6 +43,12 @@ export function TenantCreateForm({ onDataFromChild }) {
     database_name: '',
     account_key: '',
     p_renaming: '',
+    ac_db_water: '',
+    ac_db_water_key: '',
+    ac_db_electricity: '',
+    ac_db_electricity_key: '',
+    watermeter_timeframes: '',
+    electricity_timeframes: '',
   });
   const [countries, setCountries] = React.useState([]);
   const [errors, setErrors] = React.useState({
@@ -109,7 +115,7 @@ export function TenantCreateForm({ onDataFromChild }) {
 
   const onSubmit = React.useCallback(() => {
     if (checkAllErrors()) {
-      console.log("Errors",errors)
+      console.log('Errors', errors);
       return;
     }
 
@@ -129,12 +135,13 @@ export function TenantCreateForm({ onDataFromChild }) {
     formData.append('connection_string', cuser?.azure_cosmos);
     formData.append('db_name', cuser?.database_name);
     formData.append('account_key', cuser?.account_key);
+    // formData.app
     if (id?.tenantId) {
       formData.append('tenant_id', id?.tenantId);
       update_tenant(formData, dispatch);
       clearForm();
     } else {
-      create_tenant(formData, dispatch);
+      create_tenant(cuser, dispatch);
       clearForm();
     }
   });
@@ -155,9 +162,16 @@ export function TenantCreateForm({ onDataFromChild }) {
       azure_cosmos: '',
       database_name: '',
       account_key: '',
+      p_renaming: '',
+      
     });
   };
-
+  // ac_db_water: '',
+  // ac_db_water_key: '',
+  // ac_db_electricity: '',
+  // ac_db_electricity_key: '',
+  // watermeter_timeframes: '',
+  // electricity_timeframes: '',
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -391,6 +405,9 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.azure_cosmos}
                     onChange={(e) => handleElementChange(e.target.value, 'azure_cosmos')}
                   />
+                  {errors.azure_cosmos && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Endpoint URL is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -403,6 +420,9 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.database_name}
                     onChange={(e) => handleElementChange(e.target.value, 'database_name')}
                   />
+                     {errors.database_name && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Database Name is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -415,83 +435,114 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.account_key}
                     onChange={(e) => handleElementChange(e.target.value, 'account_key')}
                   />
+                    {errors.account_key && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Key is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
 
-              <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Azure Cosmos DB Database Name</FormLabel>
-                  <Input defaultValue="" name="zip" />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
+              {/* <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Container Name Water</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                  <Input
+                    value={cuser.ac_db_water}
+                    maxRows={3}
+                    minRows={1}
+                    name="ac_db_water"
+                    onChange={(e) => handleElementChange(e.target.value, 'ac_db_water')}
+                  />
+                  {errors.ac_db_water && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Container Name Water is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Partion Key Path Water </FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                  <Input
+                    value={cuser.ac_db_water_key}
+                    maxRows={3}
+                    minRows={1}
+                    name="ac_db_water_key"
+                    onChange={(e) => handleElementChange(e.target.value, 'ac_db_water_key')}
+                  />
+                  {errors.ac_db_water_key && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Partion Key Path Water is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Container Name Electricity</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                  <Input
+                    value={cuser.ac_db_electricity}
+                    maxRows={3}
+                    minRows={1}
+                    name="ac_db_electricity"
+                    onChange={(e) => handleElementChange(e.target.value, 'ac_db_electricity')}
+                  />
+                    {errors.ac_db_electricity && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Container Name Electricity is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Partion Key Path Electricity</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
+                  <Input
+                    value={cuser.ac_db_electricity_key}
+                    maxRows={3}
+                    minRows={1}
+                    name="ac_db_electricity_key"
+                    onChange={(e) => handleElementChange(e.target.value, 'ac_db_electricity_key')}
+                  />
+                     {errors.ac_db_electricity_key && (
+                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Partion Key Path Electricity is required.</FormHelperText>
+                  )}
                 </FormControl>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Stack>
-        {/* 
-        <Stack spacing={3}>
+ 
+        {/* <Stack spacing={3}>
           <Typography level="h4">Settings Timeframe Meters</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
-         
               <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>Water Meters Timeframe(Seconds)</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
-                </FormControl>
-              </Grid>
-              <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel> Electricity Meters Timeframe (Seconds)</FormLabel>
-                  <Textarea defaultValue="" maxRows={3} minRows={1} name="street" />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Box>
-        </Stack> */}
-
-        {/* <Stack spacing={3}>
-          <Typography level="h4">Settings Timeframe Meters
-          </Typography>
-          <Box sx={{ maxWidth: 'lg' }}>
-            <Grid container spacing={3}>
-              <Grid md={12} xs={12}>
                 <FormControl>
                   <FormLabel>Watermeters Timeframe (Seconds)</FormLabel>
-                  <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
-                 
+                  <Input
+                    value={cuser.watermeter_timeframes}
+                    maxRows={3}
+                    minRows={1}
+                    name="watermeter_timeframes"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'watermeter_timeframes')}
+                  />
+                  {errors.watermeter_timeframes && (
+                    <FormHelperText style={{ color: 'red' }}>Watermeters Timeframe (Seconds) is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Electricitymeters Timeframe (Seconds)</FormLabel>
-                  <Input defaultValue="" name="state" type="text" style={{borderColor:'#EAEEF6' , fontSize:'14px'}}  />
+                  <Input
+                    value={cuser.electricity_timeframes}
+                    maxRows={3}
+                    minRows={1}
+                    name="electricity_timeframes"
+                    type="text"
+                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                    onChange={(e) => handleElementChange(e.target.value, 'electricity_timeframes')}
+                  />
+                    {errors.electricity_timeframes && (
+                    <FormHelperText style={{ color: 'red' }}>Electricitymeters Timeframe (Seconds) is required.</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
-              
             </Grid>
           </Box>
         </Stack> */}

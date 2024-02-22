@@ -5,8 +5,6 @@ import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Grid from '@mui/joy/Grid';
 import Typography from '@mui/joy/Typography';
@@ -14,7 +12,6 @@ import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { paths } from '@/paths';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
-import CustomPagination from '@/components/core/custom-pagination';
 import { connect,useDispatch } from 'react-redux';
 import { get_devices } from '@/reduxData/rootAction';
 
