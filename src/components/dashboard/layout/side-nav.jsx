@@ -9,6 +9,8 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { CaretDown as CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
 import { CaretUp as CaretUpIcon } from '@phosphor-icons/react/dist/ssr/CaretUp';
+import { Trans, useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import { paths } from '@/paths';
 import { isNavItemActive } from '@/lib/is-nav-item-active';
@@ -20,10 +22,14 @@ import { NoSSR } from '@/components/core/no-ssr';
 import { ColorSchemeSwitch } from './color-scheme-switch';
 import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
-import { useSelector } from 'react-redux';
 
 export function SideNav({ items }) {
   const pathname = usePathname();
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
   return (
     <Box
       sx={{
@@ -62,6 +68,9 @@ export function SideNav({ items }) {
           pt: '185px', // header height
         }}
       >
+        <button onClick={() => changeLanguage('es')}>es</button>
+        <button onClick={() => changeLanguage('en')}>en</button>
+        <h1 className="text-white">{t('dashboard')}</h1>
         <Stack spacing={3} sx={{ left: 0, position: 'absolute', py: '16px', top: 0, width: '100%', zIndex: 2 }}>
           <div>
             <Box component={RouterLink} href={paths['home']} sx={{ display: 'inline-block', fontSize: 0 }}>
@@ -116,6 +125,7 @@ export function SideNav({ items }) {
 }
 
 function renderNavGroups({ items, pathname }) {
+  const { t, i18n } = useTranslation();
   const children = items.reduce((acc, curr) => {
     acc.push(
       <ListItem
@@ -130,7 +140,7 @@ function renderNavGroups({ items, pathname }) {
           {curr.title ? (
             <Box sx={{ py: '12px' }}>
               <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">
-                {curr.title}
+                {t(curr.title)}
               </Typography>
             </Box>
           ) : null}
@@ -146,9 +156,9 @@ function renderNavGroups({ items, pathname }) {
 }
 
 function renderNavItems({ depth = 0, pathname, items = [] }) {
-  const select = useSelector(state=>state)
+  const select = useSelector((state) => state);
   const permissions = select?.user?.permissions;
-  const userRole = select?.user?.user.role
+  const userRole = select?.user?.user.role;
   const children = items.reduce((acc, curr) => {
     const { items: childItems, key, ...item } = curr;
 
@@ -156,15 +166,12 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
       ? Boolean(childItems.find((childItem) => childItem.href && pathname.startsWith(childItem.href)))
       : false;
 
-
     acc.push(
       <NavItem depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
         {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}
       </NavItem>
     );
 
-
-  
     return acc;
   }, []);
 
@@ -176,9 +183,9 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
 }
 
 function NavItem({ children, depth, disabled, external, forceOpen = false, href, icon, matcher, pathname, title }) {
-  const select = useSelector(state=>state)
+  const select = useSelector((state) => state);
   const permissions = select?.user?.permissions;
-  const userRole = select?.user?.user.role
+  const userRole = select?.user?.user.role;
   const [open, setOpen] = React.useState(forceOpen);
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const Icon = icon ? icons[icon] : null;
@@ -186,6 +193,7 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
   const isBranch = children && !href;
   const isLeaf = !children && href;
   const showChildren = Boolean(children && open);
+  const { t, i18n } = useTranslation();
 
   if (!(isBranch || isLeaf)) {
     throw new Error('Children or href required');
@@ -255,7 +263,7 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
           ) : null}
           <Box sx={{ flexGrow: 1 }}>
             <Typography component="span" fontSize="sm" fontWeight="md" textColor="inherit">
-              {title}
+              {t(title)}
             </Typography>
           </Box>
           {isBranch ? <ExpandIcon style={{ fontSize: 'var(--joy-fontSize-sm)' }} weight="bold" /> : null}

@@ -5,6 +5,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
+import './i18n';
+
 import store from './reduxData/store';
 
 const root = createRoot(document.getElementById('root'));
