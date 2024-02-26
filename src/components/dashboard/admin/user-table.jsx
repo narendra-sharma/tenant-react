@@ -43,9 +43,9 @@ const columns = [
     formatter: (row) => (
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
-          <Typography>{row.tenant}</Typography>
-          <Typography level="body-xs">{row.tenant1}</Typography>
-          <Typography level="body-xs">{row.tenant2}</Typography>
+          <Typography>{row?.tenant_ids.map(data=>data?.tenant_name+", " )}</Typography>
+          {/* <Typography level="body-xs">{row.tenant1}</Typography>
+          <Typography level="body-xs">{row.tenant2}</Typography> */}
         </div>
       </Stack>
     ),
@@ -57,8 +57,8 @@ const columns = [
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
           <Typography>{row.company_name}</Typography>
-          <Typography level="body-xs">{row.company_name}</Typography>
-          <Typography level="body-xs">{row.company_name}</Typography>
+          {/* <Typography level="body-xs">{row.company_name}</Typography>
+          <Typography level="body-xs">{row.company_name}</Typography> */}
         </div>
       </Stack>
     ),

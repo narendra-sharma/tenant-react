@@ -12,12 +12,12 @@ import { NoSSR } from '@/components/core/no-ssr';
 
 const bars = [
   {
-    name: 'Water',
+    name: 'Electricity',
     dataKey: 'electricityReading',
     color: 'var(--joy-palette-primary-solidBg)',
   },
   {
-    name: 'Electricity',
+    name: 'Water',
     dataKey: 'waterReading',
     color: 'var(--joy-palette-primary-200)',
   },
