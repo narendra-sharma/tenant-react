@@ -31,7 +31,7 @@ const columns = [
       <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
         <div>
           <Typography level="body-sm" textColor="text.primary">
-            {row.tenant_company_name}
+            {row.company_name}
           </Typography>
           <Typography level="body-xs">{row.companyEmail}</Typography>
         </div>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get_dashboard_devices, get_dashboard_devices_reading } from '@/reduxData/devices/deviceAction';
+import { get_dashboard_devices, get_dashboard_devices_reading, get_devices } from '@/reduxData/devices/deviceAction';
 import { Box } from '@mui/joy';
 import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
@@ -26,10 +26,21 @@ const metadata = {
 
 export function Page() {
   const dispatch = useDispatch();
+  const [device, setDevices] = React.useState(null);
+  const [client, setClient] = React.useState(null);
+  const [status, setStatus] = React.useState('');
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(50);
+
   React.useEffect(() => {
-    get_dashboard_devices(dispatch);
+    // get_dashboard_devices(dispatch, page, limit,device,client, status);
     get_dashboard_devices_reading(dispatch);
   }, []);
+
+  React.useEffect(() => {
+    get_dashboard_devices(dispatch, page, limit, device, client, status);
+  }, [page, limit, device, client, status]);
+
   const [dashboardDevices, setDashboardDevices] = React.useState(null);
   const [graphData, setGraphData] = React.useState(null);
   const select = useSelector((state) => state);
@@ -40,7 +51,6 @@ export function Page() {
 
   const userPermissions = JSON.parse(localStorage.getItem('permissions'));
   const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
-  // console.log(userPermissions,userRole)
   return (
     <React.Fragment>
       <Helmet>
@@ -61,38 +71,59 @@ export function Page() {
               total={dashboardDevices?.device_data_total}
             />
 
-            {/* {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && ( */}
-              <Box>
-                <Grid container spacing={3}>
-                  <Grid lg={4} xl={4} xs={12}>
-                    <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                      <FormLabel>Device Name</FormLabel>
-                      <Input defaultValue="" name="orderId" />
-                    </FormControl>
-                  </Grid>
-                  <Grid lg={4} xl={4} xs={12}>
-                    <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                      <FormLabel>Client Name</FormLabel>
-                      <Input defaultValue="" name="customer" />
-                    </FormControl>
-                  </Grid>
-                  <Grid lg={4} xl={4} xs={12}>
-                    <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                      <FormLabel>Status</FormLabel>
-                      <Select defaultValue="all" name="status">
-                        <Option value="all">All</Option>
-                        <Option value="active">Online</Option>
-                        <Option value="canceled">Offline</Option>
-                      </Select>
-                    </FormControl>
-                  </Grid>
+            {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && (
+            <Box>
+              <Grid container spacing={3}>
+                <Grid lg={4} xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>Device Name</FormLabel>
+                    <Input
+                      defaultValue={device}
+                      name="device"
+                      onChange={(e) =>
+                        window.setTimeout(() => {
+                          setDevices(e.target.value);
+                        }, 1000)
+                      }
+                    />
+                  </FormControl>
                 </Grid>
+                <Grid lg={4} xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>Client Name</FormLabel>
+                    <Input
+                      defaultValue={client}
+                      onChange={(e) =>
+                        window.setTimeout(() => {
+                          setClient(e.target.value);
+                        }, 1000)
+                      }
+                      name="customer"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid lg={4} xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>Status</FormLabel>
+                    <select
+                      defaultValue={status}
+                      name="status"
+                      onChange={(e) => setStatus(e.target.value)}
+                      className="form-control"
+                    >
+                      <option value="">All</option>
+                      <option value="online">Online</option>
+                      <option value="offline">Offline</option>
+                    </select>
+                  </FormControl>
+                </Grid>
+              </Grid>
 
-                <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-                  <DeviceTable rows={dashboardDevices?.device_data} />
-                </Card>
-              </Box>
-            {/* )} */}
+              <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
+                <DeviceTable rows={dashboardDevices?.device_data} />
+              </Card>
+            </Box>
+     )} 
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <PowerUsageToday data={graphData?.readingHpurlyResponse} />

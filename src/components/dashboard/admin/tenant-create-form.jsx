@@ -43,13 +43,15 @@ export function TenantCreateForm({ onDataFromChild }) {
     database_name: '',
     account_key: '',
     p_renaming: '',
-    ac_db_water: '',
-    ac_db_water_key: '',
-    ac_db_electricity: '',
-    ac_db_electricity_key: '',
-    watermeter_timeframes: '',
-    electricity_timeframes: '',
+
   });
+
+  // ac_db_water: '',
+  // ac_db_water_key: '',
+  // ac_db_electricity: '',
+  // ac_db_electricity_key: '',
+  // watermeter_timeframes: '',
+  // electricity_timeframes: '',
   const [countries, setCountries] = React.useState([]);
   const [errors, setErrors] = React.useState({
     company_name: '',
@@ -253,7 +255,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                   <Input
                     value={cuser.company_phone_number}
                     name="company_phone_number"
-                    type="number"
+                    type="tel"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_phone_number')}
                   />

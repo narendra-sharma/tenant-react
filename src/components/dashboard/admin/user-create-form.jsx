@@ -114,7 +114,6 @@ export function UserCreateForm({onDataFromChild}) {
   };
 
   const onSubmit = () => {
-    console.log(cuser)
     if (checkAllErrors()) {
       return;
     }

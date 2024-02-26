@@ -79,7 +79,6 @@ const navigate = useNavigate()
       return;
     }
     let data = deviceData;
-    console.log("kjdsfjdhsf",deviceData)
     data.client_first_name = device.client_first_name;
     data.client_last_name = device.client_last_name;
     data.device_name = device.device_name;

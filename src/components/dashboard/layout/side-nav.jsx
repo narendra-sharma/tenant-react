@@ -156,7 +156,6 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
       ? Boolean(childItems.find((childItem) => childItem.href && pathname.startsWith(childItem.href)))
       : false;
 
-
     acc.push(
       <NavItem depth={depth} forceOpen={forceOpen} key={key} pathname={pathname} {...item}>
         {childItems ? renderNavItems({ depth: depth + 1, pathname, items: childItems }) : null}

@@ -22,6 +22,8 @@ const devices = ({devices,total}) => {
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
+  const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role
+  const permissions = JSON.parse(localStorage.getItem('permissions'))
 
   useEffect(() => {
     get_devices(dispatch, page, limit,device,client, status);
@@ -53,8 +55,8 @@ const devices = ({devices,total}) => {
         enableWindowScroll();
       };
     }, []);
-  return (  
-      <Container maxWidth={false} sx={{ py: 3 }}>
+  return (  <>
+      {(currentUserRole=='admin' || permissions['Tenant Management']?.can_view_devices) && <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
         <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
           Devices
@@ -103,7 +105,8 @@ const devices = ({devices,total}) => {
         </Card>
           
        </Stack>
-      </Container>
+      </Container>}
+      </>
   );
 }
 const mapStateToProps = (state) => {

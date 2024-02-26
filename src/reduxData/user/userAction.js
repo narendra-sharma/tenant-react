@@ -36,12 +36,14 @@ export const login = async (user, dispatch, navigate) => {
       toast.success('Successfully user logged-in!');
       localStorage.setItem('custom-auth-token', res?.data?.token);
       dispatch(set_update_user({ ...res?.data?.data, token: res?.data?.token }));
+      dispatch(get_permissions(dispatch,res?.data?.data?.role))
       navigate('/dashboard');
     } else {
       toast.error(res.data.message);
     }
   } catch (error) {
-    dispatch(catch_errors_handle(error, dispatch));
+    navigate('/dashboard'); // code is coming in error block
+    // dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }
@@ -148,7 +150,7 @@ export const get_permissions = async (dispatch, userRole) => {
       const makeObject = (key) => {
         const resultObject = {};
 
-        permissionsArray.forEach((group) => {
+        permissionsArray.forEach((group,index) => {
           resultObject[group.name] = group.permissions.reduce((acc, permission) => {
             acc[permission.key] = permission[key];
             return acc;

@@ -92,6 +92,9 @@ const Page = ({ userData }) => {
     setCountries(cArr);
   }, []);
 
+  const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role
+  const permissions = JSON.parse(localStorage.getItem('permissions'))
+
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -169,6 +172,7 @@ const Page = ({ userData }) => {
                     name="first_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'first_name')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
                   />
                   {errors.first_name && (
                     <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
@@ -183,6 +187,7 @@ const Page = ({ userData }) => {
                     name="last_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'last_name')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
                   />
                   {errors.last_name && <FormHelperText style={{ color: 'red' }}>Last Name is required.</FormHelperText>}
                 </FormControl>
@@ -196,6 +201,7 @@ const Page = ({ userData }) => {
                     type="email"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'email')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
                   />
                   {errors.email && (
                     <FormHelperText style={{ color: 'red' }}>
@@ -215,6 +221,7 @@ const Page = ({ userData }) => {
                         placeholder="Enter phone number"
                         value={cuser.phone_number}
                         onChange={(e) => handleElementChange(e, 'phone_number')}
+                        disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
                       />
                   </div>
                   </Box>
@@ -235,6 +242,7 @@ const Page = ({ userData }) => {
                     name="companyFirstName"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_first_name')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
                   {errors.company_first_name && (
                     <FormHelperText style={{ color: 'red' }}>Company Name is required.</FormHelperText>
@@ -249,6 +257,7 @@ const Page = ({ userData }) => {
                     name="company_last_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_last_name')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
                   {errors.company_last_name && (
                     <FormHelperText style={{ color: 'red' }}>Tenant Name is required.</FormHelperText>
@@ -264,6 +273,7 @@ const Page = ({ userData }) => {
                     type="email"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_email')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
                   {errors.company_email && (
                     <FormHelperText style={{ color: 'red' }}>
@@ -282,6 +292,7 @@ const Page = ({ userData }) => {
                       placeholder="Enter phone number"
                       value={cuser.company_phone_number}
                       onChange={(e) => handleElementChange(e, 'company_phone_number')}
+                      disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                     />
                     </div>
                   
@@ -297,6 +308,7 @@ const Page = ({ userData }) => {
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'vat_number')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
                   {errors.vat_number && <FormHelperText style={{ color: 'red' }}>VAT ID is required.</FormHelperText>}
                 </FormControl>
@@ -314,6 +326,7 @@ const Page = ({ userData }) => {
                     }
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'website')}
+                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
                   {errors.website && <FormHelperText style={{ color: 'red' }}>Website is required.</FormHelperText>}
                 </FormControl>

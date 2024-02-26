@@ -24,13 +24,14 @@ const statusMapping = {
   },
 };
 
-const userPermissions = JSON.parse(localStorage.getItem('permissions'));
-const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role
+const permissions = JSON.parse(localStorage.getItem('permissions'))
 
 const columns = [
   {
     formatter: (row) => (
       <Link
+        disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_view_device_detail}
         component={RouterLink}
         fontSize="sm"
         fontWeight="md"
@@ -98,8 +99,9 @@ const columns = [
           fontWeight="md"
           href={paths['dashboard.admin.update.devices'](`${row.serial_number}`)}
           underline="none"
+          disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_device_detail}
         >
-          <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
+          <PenIcon  style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
         </Link>
       </Box>
     ),
