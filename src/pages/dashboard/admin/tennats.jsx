@@ -29,7 +29,6 @@ const Tenants = ({tenants,total}) => {
   const [limit, setLimit] = useState(50);
   useEffect(()=>{
     get_tenants(dispatch,page,limit,tenant,company,status);
-    console.log(tenants)
   },[page,limit,tenant,company,status]);
 
 
@@ -66,12 +65,12 @@ const Tenants = ({tenants,total}) => {
         <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
           <Stack spacing={1} sx={{ flexGrow: 1 }}>
             <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-              Tennants
+            Tenants
             </Typography>
             <Breadcrumbs separator={<BreadcrumbsSeparator />}>
               <BreadcrumbsItem href={paths['dashboard']} type="start" />
               <BreadcrumbsItem href={paths['dashboard.admin']}>ADMIN</BreadcrumbsItem>
-              <BreadcrumbsItem type="end">Tennants</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">Tenants</BreadcrumbsItem>
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>

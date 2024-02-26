@@ -18,7 +18,7 @@ import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
 import { Country } from 'country-state-city';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
@@ -39,16 +39,10 @@ export function TenantCreateForm({ onDataFromChild }) {
     city: '',
     zip_code: '',
     address: '',
-    azure_cosmos: '',
-    database_name: '',
+    connection_string: '',
+    db_name: '',
     account_key: '',
-    p_renaming: '',
-    ac_db_water: '',
-    ac_db_water_key: '',
-    ac_db_electricity: '',
-    ac_db_electricity_key: '',
-    watermeter_timeframes: '',
-    electricity_timeframes: '',
+    device_renaming: ''
   });
   const [countries, setCountries] = React.useState([]);
   const [errors, setErrors] = React.useState({
@@ -63,11 +57,11 @@ export function TenantCreateForm({ onDataFromChild }) {
     city: '',
     zip_code: '',
     address: '',
-    azure_cosmos: '',
-    database_name: '',
-    p_renaming: '',
+    connection_string: '',
+    db_name: '',
+    device_renaming: '',
   });
-
+  const navigate = useNavigate()
   const id = useParams();
   React.useEffect(() => {
     if (id.tenantId) {
@@ -75,7 +69,7 @@ export function TenantCreateForm({ onDataFromChild }) {
         if (res._id === id.tenantId) {
           onDataFromChild('edit');
           setCuser({
-            company_name: res?.tenant_company_name,
+            company_name: res?.company_name,
             tenant_name: res?.tenant_name,
             company_email: res?.comapny_email,
             company_phone_number: res?.company_phone_number,
@@ -86,8 +80,8 @@ export function TenantCreateForm({ onDataFromChild }) {
             city: res?.company_city,
             zip_code: res?.company_zip_code,
             address: res?.company_address,
-            azure_cosmos: res?.setting_endpoint_uri,
-            database_name: res?.setting_database_name,
+            connection_string: res?.setting_endpoint_uri,
+            db_name: res?.setting_database_name,
             account_key: res?.setting_key,
           });
         }
@@ -115,11 +109,10 @@ export function TenantCreateForm({ onDataFromChild }) {
 
   const onSubmit = React.useCallback(() => {
     if (checkAllErrors()) {
-      console.log('Errors', errors);
       return;
     }
 
-    localStorage.setItem('p_renaming', cuser?.p_renaming);
+    localStorage.setItem('device_renaming', cuser?.device_renaming);
     const formData = new FormData();
     formData.append('company_name', cuser?.company_name);
     formData.append('tenant_name', cuser?.tenant_name);
@@ -132,17 +125,19 @@ export function TenantCreateForm({ onDataFromChild }) {
     formData.append('country', cuser?.country);
     formData.append('address', cuser?.address);
     formData.append('zipcode', cuser?.zip_code);
-    formData.append('connection_string', cuser?.azure_cosmos);
-    formData.append('db_name', cuser?.database_name);
+    formData.append('connection_string', cuser?.connection_string);
+    formData.append('db_name', cuser?.db_name);
     formData.append('account_key', cuser?.account_key);
     // formData.app
     if (id?.tenantId) {
       formData.append('tenant_id', id?.tenantId);
       update_tenant(formData, dispatch);
       clearForm();
+      navigate("../../../admin/tennants")
     } else {
       create_tenant(cuser, dispatch);
       clearForm();
+      navigate("../../../admin/tennants")
     }
   });
 
@@ -159,19 +154,14 @@ export function TenantCreateForm({ onDataFromChild }) {
       city: '',
       zip_code: '',
       address: '',
-      azure_cosmos: '',
-      database_name: '',
+      connection_string: '',
+      db_name: '',
       account_key: '',
-      p_renaming: '',
+      device_renaming: '',
       
     });
   };
-  // ac_db_water: '',
-  // ac_db_water_key: '',
-  // ac_db_electricity: '',
-  // ac_db_electricity_key: '',
-  // watermeter_timeframes: '',
-  // electricity_timeframes: '',
+
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -293,13 +283,13 @@ export function TenantCreateForm({ onDataFromChild }) {
                 <FormControl>
                   <FormLabel>Password Renaming</FormLabel>
                   <Input
-                    value={cuser.p_renaming}
-                    name="p_renaming"
+                    value={cuser.device_renaming}
+                    name="device_renaming"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'p_renaming')}
+                    onChange={(e) => handleElementChange(e.target.value, 'device_renaming')}
                   />
-                  {errors.p_renaming && (
+                  {errors.device_renaming && (
                     <FormHelperText style={{ color: 'red' }}>Password Renaming is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -399,13 +389,13 @@ export function TenantCreateForm({ onDataFromChild }) {
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Endpoint URL</FormLabel>
                   <Input
-                    name="azure_cosmos"
+                    name="connection_string"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    value={cuser.azure_cosmos}
-                    onChange={(e) => handleElementChange(e.target.value, 'azure_cosmos')}
+                    value={cuser.connection_string}
+                    onChange={(e) => handleElementChange(e.target.value, 'connection_string')}
                   />
-                  {errors.azure_cosmos && (
+                  {errors.connection_string && (
                     <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Endpoint URL is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -415,12 +405,12 @@ export function TenantCreateForm({ onDataFromChild }) {
                   <FormLabel>Azure Cosmos DB Database Name</FormLabel>
                   <Input
                     defaultValue=""
-                    name="database_name"
+                    name="db_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    value={cuser.database_name}
-                    onChange={(e) => handleElementChange(e.target.value, 'database_name')}
+                    value={cuser.db_name}
+                    onChange={(e) => handleElementChange(e.target.value, 'db_name')}
                   />
-                     {errors.database_name && (
+                     {errors.db_name && (
                     <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Database Name is required.</FormHelperText>
                   )}
                 </FormControl>

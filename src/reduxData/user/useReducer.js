@@ -39,6 +39,22 @@ const initialState = {
           admin: true,
         },
         {
+          key: 'can_export_device_data',
+          name: 'Can export device data',
+          tenant_read_only: false,
+          tenant_user: true,
+          tenant_manager: true,
+          admin: true,
+        },
+        {
+          key: 'can_create_new_tenant_users',
+          name: 'Can create new tenant users',
+          tenant_read_only: false,
+          tenant_user: true,
+          tenant_manager: true,
+          admin: true,
+        },
+        {
           key: 'can_change_device_rename_password',
           name: 'Can change device rename password',
           tenant_read_only: false,

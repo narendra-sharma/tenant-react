@@ -15,7 +15,7 @@ import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Multiselect from 'multiselect-react-dropdown';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
@@ -26,13 +26,14 @@ export function DeviceCreateForm({ onDataFromChild }) {
     serial_number: '',
     client_firstname: '',
     client_lastname: '',
-    tenant_ids: [],
+    tenant_ids: null,
     device_status: 'pt',
   });
   const state = useSelector((state) => state);
   const [tenatntList, setTenantList] = React.useState();
   const dispatch = useDispatch();
   const id = useParams();
+  const navigate = useNavigate()
   React.useEffect(() => {
     if (id.deviceId) {
       let data = state.device.devices.filter((res) => {
@@ -76,7 +77,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     serial_number: '',
     client_firstname: '',
     client_lastname: '',
-    tenant_ids: '',
+    tenant_ids: null,
     device_status: '',
   });
 
@@ -85,7 +86,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     setDevices((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,
-      [label]: !value && (label!=='client_firstname') && (label!=='client_lastname')
+      [label]: !value 
         ? 'required'
         :
            '',
@@ -96,7 +97,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     let err = false;
     let output = Object.entries(devices);
     output.forEach(([key, value]) => {
-      if (!value && (key!=='client_firstname') && (key!=='client_lastname')) {
+      if (!value) {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       }
@@ -114,11 +115,12 @@ export function DeviceCreateForm({ onDataFromChild }) {
       devices.tenant_ids = [devices.tenant_ids[0]._id]
       update_device(devices, dispatch)
       devices.tenant_ids = tempData
-
+      navigate('../../../admin/devices')
     }else{
       devices.tenant_ids = [devices.tenant_ids[0]._id]
       create_devices(devices, dispatch);
       devices.tenant_ids = tempData
+      navigate('../../../admin/devices')
     }
   };
 
@@ -177,9 +179,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e?.target?.value, 'client_firstname')}
                   />
-                  {/* {errors.client_firstname && (
+                  {errors.client_firstname && (
                     <FormHelperText style={{ color: 'red' }}>Client First Name is required.</FormHelperText>
-                  )} */}
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -192,9 +194,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e?.target?.value, 'client_lastname')}
                   />
-                  {/* {errors.client_lastname && (
+                  {errors.client_lastname && (
                     <FormHelperText style={{ color: 'red' }}>Client Last Name is required.</FormHelperText>
-                  )} */}
+                  )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>

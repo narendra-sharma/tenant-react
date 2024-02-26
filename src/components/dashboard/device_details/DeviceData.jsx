@@ -15,7 +15,6 @@ import { useNavigate, useParams } from 'react-router';
 import { MeterGraph } from './meterGraph';
 
 const DeviceData = ({ deviceData, todaysReading }) => {
-
   const dispatch = useDispatch();
   const { tenantId } = useParams();
   const serialNumber = tenantId;
@@ -24,7 +23,6 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       get_device_bySerialNumber(serialNumber, dispatch);
       get_today_device_reading(serialNumber, dispatch);
     }
-
   }, [serialNumber]);
   const [device, setDevice] = React.useState({
     device_name: deviceData?.device_name,
@@ -35,7 +33,7 @@ const DeviceData = ({ deviceData, todaysReading }) => {
     electricity_reading: deviceData?.meter_type == 'electricity' ? deviceData?.last_reading : '',
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     setDevice({
       device_name: deviceData?.device_name,
       client_first_name: deviceData?.client_firstname,
@@ -43,15 +41,15 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       serial_number: deviceData?.serial_number,
       water_reading: deviceData?.meter_type == 'water' ? deviceData?.last_reading : '',
       electricity_reading: deviceData?.meter_type == 'electricity' ? deviceData?.last_reading : '',
-    })
-  },[deviceData])
+    });
+  }, [deviceData]);
 
   const [errors, setErrors] = React.useState({
     device_name: '',
     client_first_name: '',
     client_last_name: '',
   });
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleElementChange = (value, label) => {
     setDevice((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -79,12 +77,11 @@ const navigate = useNavigate()
       return;
     }
     let data = deviceData;
-    console.log("kjdsfjdhsf",deviceData)
     data.client_first_name = device.client_first_name;
     data.client_last_name = device.client_last_name;
     data.device_name = device.device_name;
-    data.device_id= deviceData?._id
-    delete data.key2
+    data.device_id = deviceData?._id;
+    delete data.key2;
     update_device(data, dispatch);
   };
 
@@ -135,7 +132,7 @@ const navigate = useNavigate()
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl value={device?.client_first_name}>
+                <FormControl value={device?.client_first_name || ''}>
                   <FormLabel>
                     Client First Name <sup>*</sup>
                   </FormLabel>
@@ -153,7 +150,7 @@ const navigate = useNavigate()
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl value={device?.client_last_name}>
+                <FormControl value={device?.client_last_name || ''}>
                   <FormLabel>
                     Client Last Name <sup>*</sup>
                   </FormLabel>
@@ -177,7 +174,7 @@ const navigate = useNavigate()
                   </FormLabel>
                   <Input
                     disabled={true}
-                    value={device.water_reading}
+                    value={device.water_reading || ''}
                     name="water_reading"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
@@ -187,7 +184,7 @@ const navigate = useNavigate()
 
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel value={device.electricity_reading} disabled>
+                  <FormLabel value={device.electricity_reading || ''} disabled>
                     Last Reading Electricity (kWh) <sup>*</sup>
                   </FormLabel>
                   <Input name="" type="text" disabled={true} style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />
@@ -206,47 +203,45 @@ const navigate = useNavigate()
 
       <Grid container spacing={3}>
         <Grid md={6} xs={12}>
-        <Typography level="4">Overview {deviceData?.meter_type} Usage</Typography>
-        <Table>
-          <thead>
-            <tr>
-              <th>Date Reading {deviceData?.meter_type}</th>
-              <th>Reading {deviceData?.meter_type} {deviceData?.meter_type=='electricity'?'(kWh)':'(Liters)'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {todaysReading && todaysReading.length > 0 ? (
-              todaysReading.map((reading) => (
-                <tr key={reading?._id}>
-                  <td>{new Date(reading?.updatedAt).toLocaleDateString()}</td>
-                  <td>{reading?.last_reading}</td>
-                </tr>
-              ))
-            ) : (
+          <Typography level="4">Overview {deviceData?.meter_type} Usage</Typography>
+          <Table>
+            <thead>
               <tr>
-                <td colSpan="2">No readings available for today</td>
+                <th>Date Reading {deviceData?.meter_type}</th>
+                <th>
+                  Reading {deviceData?.meter_type} {deviceData?.meter_type == 'electricity' ? '(kWh)' : '(Liters)'}
+                </th>
               </tr>
-            )}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {todaysReading && todaysReading.length > 0 ? (
+                todaysReading.map((reading) => (
+                  <tr key={reading?._id}>
+                    <td>{new Date(reading?.updatedAt).toLocaleDateString()}</td>
+                    <td>{reading?.last_reading}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="2">No readings available for today</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
         </Grid>
         <Grid md={6} xs={12}>
-        <MeterGraph
-        data={[
-          todaysReading[0]
-        ]}
-        expenses="$57,139"
-        expensesDiff="11"
-        expensesTrend="down"
-        income="$309,761"
-        incomeDiff="14"
-        incomeTrend="up"
-        label={`Overview ${deviceData?.meter_type} Usage`}
-      />
+          <MeterGraph
+            data={[todaysReading[0]]}
+            expenses="$57,139"
+            expensesDiff="11"
+            expensesTrend="down"
+            income="$309,761"
+            incomeDiff="14"
+            incomeTrend="up"
+            label={`Overview ${deviceData?.meter_type} Usage`}
+          />
         </Grid>
       </Grid>
-
-    
     </Box>
   );
 };
