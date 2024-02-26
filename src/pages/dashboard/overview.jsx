@@ -12,6 +12,7 @@ import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
 
 import { config } from '@/config';
@@ -26,6 +27,7 @@ const metadata = {
 
 export function Page() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   React.useEffect(() => {
     get_dashboard_devices(dispatch);
     get_dashboard_devices_reading(dispatch);
@@ -51,7 +53,7 @@ export function Page() {
           <Stack spacing={3}>
             <div>
               <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                DashBoard
+                {t('Dashboard')}
               </Typography>
             </div>
             <DeviceSummary
@@ -62,36 +64,36 @@ export function Page() {
             />
 
             {/* {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && ( */}
-              <Box>
-                <Grid container spacing={3}>
-                  <Grid lg={4} xl={4} xs={12}>
-                    <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                      <FormLabel>Device Name</FormLabel>
-                      <Input defaultValue="" name="orderId" />
-                    </FormControl>
-                  </Grid>
-                  <Grid lg={4} xl={4} xs={12}>
-                    <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                      <FormLabel>Client Name</FormLabel>
-                      <Input defaultValue="" name="customer" />
-                    </FormControl>
-                  </Grid>
-                  <Grid lg={4} xl={4} xs={12}>
-                    <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                      <FormLabel>Status</FormLabel>
-                      <Select defaultValue="all" name="status">
-                        <Option value="all">All</Option>
-                        <Option value="active">Online</Option>
-                        <Option value="canceled">Offline</Option>
-                      </Select>
-                    </FormControl>
-                  </Grid>
+            <Box>
+              <Grid container spacing={3}>
+                <Grid lg={4} xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>{t('DeviceName')}</FormLabel>
+                    <Input defaultValue="" name="orderId" />
+                  </FormControl>
                 </Grid>
+                <Grid lg={4} xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>{t('ClientName')}</FormLabel>
+                    <Input defaultValue="" name="customer" />
+                  </FormControl>
+                </Grid>
+                <Grid lg={4} xl={4} xs={12}>
+                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                    <FormLabel>{t('Status')}</FormLabel>
+                    <Select defaultValue="all" name="status">
+                      <Option value="all">All</Option>
+                      <Option value="active">Online</Option>
+                      <Option value="canceled">Offline</Option>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
 
-                <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-                  <DeviceTable rows={dashboardDevices?.device_data} />
-                </Card>
-              </Box>
+              <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
+                <DeviceTable rows={dashboardDevices?.device_data} />
+              </Card>
+            </Box>
             {/* )} */}
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>

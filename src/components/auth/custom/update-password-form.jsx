@@ -7,6 +7,7 @@ import FormHelperText from '@mui/joy/FormHelperText';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -16,6 +17,7 @@ export function UpdatePasswordForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     newpassword: '',
     confirmpassword: '',
@@ -77,7 +79,7 @@ export function UpdatePasswordForm() {
       <Stack spacing={3}>
         <Stack spacing={2}>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t('Password')}</FormLabel>
             <Input type="password" name="newpassword" onChange={(e) => handleChange(e.target.value, 'newpassword')} />
 
             {errors.newpassword && (
@@ -89,7 +91,7 @@ export function UpdatePasswordForm() {
             )}
           </FormControl>
           <FormControl>
-            <FormLabel>Confirm Password</FormLabel>
+            <FormLabel>{t('ConfirmPass')}</FormLabel>
             <Input
               type="password"
               name="confirmpassword"
@@ -102,7 +104,7 @@ export function UpdatePasswordForm() {
             ) : null}
           </FormControl>
           <Button fullWidth type="submit" onClick={(e) => handleSubmit(e)}>
-            Update Password
+            {t('UpdatePass')}
           </Button>
         </Stack>
       </Stack>

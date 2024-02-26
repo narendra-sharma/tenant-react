@@ -6,12 +6,14 @@ import Card from '@mui/joy/Card';
 import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
+import { useTranslation } from 'react-i18next';
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { useCurrentBreakpoint } from '@/hooks/use-current-breakpoint';
 import { NoSSR } from '@/components/core/no-ssr';
 
 export function PowerUsageToday({ data = [] }) {
+  const { t } = useTranslation();
   const breakpoint = useCurrentBreakpoint();
   const chartHeight = 300;
   const xTicksInterval =
@@ -25,7 +27,7 @@ export function PowerUsageToday({ data = [] }) {
 
   return (
     <Card>
-      <Typography level="h4">Today’s Power Usage</Typography>
+      <Typography level="h4">{t('TodayPowerUsage')}</Typography>
       <NoSSR fallback={<Box sx={{ height: `${chartHeight}px` }} />}>
         <ResponsiveContainer height={chartHeight} width="100%">
           <AreaChart data={data} margin={{ top: 0, right: -40, bottom: 0, left: -20 }}>

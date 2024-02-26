@@ -68,8 +68,8 @@ export function SideNav({ items }) {
           pt: '185px', // header height
         }}
       >
-        <button onClick={() => changeLanguage('es')}>es</button>
-        <button onClick={() => changeLanguage('en')}>en</button>
+        {/* <button onClick={() => changeLanguage('es')}>es</button>
+        <button onClick={() => changeLanguage('en')}>en</button> */}
         <h1 className="text-white">{t('dashboard')}</h1>
         <Stack spacing={3} sx={{ left: 0, position: 'absolute', py: '16px', top: 0, width: '100%', zIndex: 2 }}>
           <div>

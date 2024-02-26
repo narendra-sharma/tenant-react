@@ -1,13 +1,22 @@
 import * as React from 'react';
+import Card from '@mui/joy/Card';
 import Container from '@mui/joy/Container';
+import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
 import Grid from '@mui/joy/Grid';
+import Input from '@mui/joy/Input';
+import Option from '@mui/joy/Option';
+import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { CoinVertical as CoinVerticalIcon } from '@phosphor-icons/react/dist/ssr/CoinVertical';
 import { ShoppingCart as ShoppingCartIcon } from '@phosphor-icons/react/dist/ssr/ShoppingCart';
 import { UsersThree as UsersThreeIcon } from '@phosphor-icons/react/dist/ssr/UsersThree';
+import dayjs from 'dayjs';
 import { Helmet } from 'react-helmet-async';
+
 import { config } from '@/config';
+import { DeviceTable } from '@/components/dashboard/customer/device-table';
 import { Inbox } from '@/components/dashboard/overview/inbox';
 import { Orders } from '@/components/dashboard/overview/orders';
 import { SessionsByDevice } from '@/components/dashboard/overview/sessions-by-device';
@@ -15,23 +24,14 @@ import { Stats } from '@/components/dashboard/overview/stats';
 import { Tasks } from '@/components/dashboard/overview/tasks';
 import { UsersRealtime } from '@/components/dashboard/overview/users-realtime';
 import { PowerUsageToday } from '@/components/dashboard/smart-home/power-usage-today';
-import Card from '@mui/joy/Card';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
-import dayjs from 'dayjs';
-import { DeviceTable } from '@/components/dashboard/customer/device-table';
-
 
 const customers = [
   {
     id: 'k5',
-    createdAt: dayjs().subtract(1, 'day').valueOf(), 
+    createdAt: dayjs().subtract(1, 'day').valueOf(),
     customerName: 'Chris Glasser',
     reading: '25,40',
-    items: '13,04', 
+    items: '13,04',
     reading: '1',
     status: 'online',
   },
@@ -39,7 +39,7 @@ const customers = [
     id: 'k4',
     createdAt: dayjs().subtract(1, 'day').valueOf(),
     customerName: 'Iva Ryan',
-    reading:'25,40',
+    reading: '25,40',
     items: '13,04',
     status: 'online',
   },
@@ -137,10 +137,8 @@ export function Page() {
                   <Option value="all">All</Option>
                   <Option value="active">Online</Option>
                   <Option value="canceled">Offline</Option>
-                  
                 </Select>
               </FormControl>
-              
             </Stack>
             <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
               <DeviceTable rows={customers} />
