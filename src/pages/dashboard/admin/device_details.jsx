@@ -6,6 +6,7 @@ import Container from '@mui/joy/Container';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -20,7 +21,6 @@ const metadata = {
 };
 
 export function Device_details({ deviceData }) {
-  
   const [meterStatus, setMeterStatus] = React.useState(
     deviceData?.data?.device_status == 'online'
       ? 'success'
@@ -33,20 +33,20 @@ export function Device_details({ deviceData }) {
 
   const { tenantId } = useParams();
   const serialNumber = tenantId;
-  const dispatch = useDispatch()
-  const [deviceDetails, setDeviceDetails] = React.useState()
+  const dispatch = useDispatch();
+  const [deviceDetails, setDeviceDetails] = React.useState();
 
   React.useEffect(() => {
     if (serialNumber) {
       get_device_bySerialNumber(serialNumber, dispatch);
-      deviceData.map(res=>{
-        if(res.serial_number == serialNumber){
-            setDeviceDetails(res)
+      deviceData.map((res) => {
+        if (res.serial_number == serialNumber) {
+          setDeviceDetails(res);
         }
-      })
-
+      });
     }
   }, [serialNumber]);
+  const { t } = useTranslation();
 
   return (
     <React.Fragment>
@@ -73,7 +73,7 @@ export function Device_details({ deviceData }) {
             </Stack>
           </Stack>
         </Container>
-        <DeviceData data = {deviceDetails}/>
+        <DeviceData data={deviceDetails} />
       </main>
     </React.Fragment>
   );
