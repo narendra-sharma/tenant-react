@@ -25,7 +25,6 @@ const devices = ({ devices, total }) => {
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
-
   useEffect(() => {
     get_devices(dispatch, page, limit, device, client, status);
   }, [page, limit, device, client, status]);
@@ -113,7 +112,13 @@ const devices = ({ devices, total }) => {
         </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container" onScroll={handleScroll}>
-            <DeviceTable rows={devices} />
+            {devices && devices.length ? (
+              <DeviceTable rows={devices} />
+            ) : (
+              <Typography fontSize={{ xs: 'xl0', lg: 'xl0' }} level="h4">
+                No Devices Found
+              </Typography>
+            )}
           </div>
         </Card>
       </Stack>

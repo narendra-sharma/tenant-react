@@ -48,7 +48,6 @@ export function Page() {
         setDevicePassword(data.data.data.device_renaming);
         setDeviceName(data.data.data.device_name);
       } catch (error) {
-        console.error('Error in useEffect:', error);
       }
     };
     if (serialNumber) {

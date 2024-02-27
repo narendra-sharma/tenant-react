@@ -137,7 +137,13 @@ const Devices = ({ devices, total }) => {
 
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container device-table" onScroll={handleScroll}>
-            <DeviceTable rows={devices} />
+            {devices && devices.length ? (
+              <DeviceTable rows={devices} />
+            ) : (
+              <Typography fontSize={{ xs: 'xl0', lg: 'xl0' }} level="h4">
+                No Devices Found
+              </Typography>
+            )}
           </div>
         </Card>
       </Stack>

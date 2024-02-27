@@ -48,7 +48,7 @@ export function App() {
                   </Helmet>
                   {element}
                   <SettingsButton />
-                  <Toaster position="top-right" />
+                  <Toaster position="top-right" className="toaster-button" closeButton/>
                   <NProgress />
                   <LoadingSpinner/>
                 </ThemeRegistry>

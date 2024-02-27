@@ -42,7 +42,6 @@ export function Page() {
 
   const userPermissions = JSON.parse(localStorage.getItem('permissions'));
   const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
-  // console.log(userPermissions,userRole)
   return (
     <React.Fragment>
       <Helmet>

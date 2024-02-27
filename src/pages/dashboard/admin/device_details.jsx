@@ -20,6 +20,7 @@ const metadata = {
 };
 
 export function Device_details({ deviceData }) {
+  
   const [meterStatus, setMeterStatus] = React.useState(
     deviceData?.data?.device_status == 'online'
       ? 'success'
@@ -32,11 +33,18 @@ export function Device_details({ deviceData }) {
 
   const { tenantId } = useParams();
   const serialNumber = tenantId;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const [deviceDetails, setDeviceDetails] = React.useState()
 
   React.useEffect(() => {
     if (serialNumber) {
       get_device_bySerialNumber(serialNumber, dispatch);
+      deviceData.map(res=>{
+        if(res.serial_number == serialNumber){
+            setDeviceDetails(res)
+        }
+      })
+
     }
   }, [serialNumber]);
 
@@ -51,9 +59,9 @@ export function Device_details({ deviceData }) {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  Device Details {deviceData.data?.device_name}
+                  Device Details {deviceDetails && deviceDetails?.device_name}
                   <Chip variant="success" color={meterStatus}>
-                    {deviceData?.data?.device_status}
+                    {deviceDetails && deviceDetails.device_status}
                   </Chip>
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
@@ -65,7 +73,7 @@ export function Device_details({ deviceData }) {
             </Stack>
           </Stack>
         </Container>
-        <DeviceData />
+        <DeviceData data = {deviceDetails}/>
       </main>
     </React.Fragment>
   );
