@@ -59,7 +59,8 @@ export function Device_details({ deviceData }) {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  Device Details {deviceDetails && deviceDetails?.device_name}
+                  {t('DeviceDetails')}
+                  {deviceDetails && deviceDetails?.device_name}
                   <Chip variant="success" color={meterStatus}>
                     {deviceDetails && deviceDetails.device_status}
                   </Chip>
