@@ -67,7 +67,7 @@ const columns = [
     width: '220px',
   },
   {
-    formatter: (row) => (row?.meter_type == 'electricity' ? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : ''),
+    formatter: (row) => (row?.meter_type == 'electricity' && row?.last_reading_date? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : 'Meter installation pending'),
     name: 'Date Last Reading Electricity',
     width: '230px',
   },

@@ -36,7 +36,7 @@ export const get_devices = async (dispatch, page, limit, device, client, status)
     const res = await axios.get(
       `${url}admin/device_list?page=${page}&limit=${limit}${device ? '&device=' + device : ''}${
         client ? '&client=' + client : ''
-      }${status == 'online' ? '&status=' + true :status == 'offline'? '&status=' + false :''}`,
+      }${'&status='+status}`,
       headers
     );
     if (res?.data?.status) {

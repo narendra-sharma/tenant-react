@@ -63,8 +63,8 @@ const [particularDeviceData,setParticularDeviceData] = React.useState(null)
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
-                  <BreadcrumbsItem href={paths['dashboard.admin.devices']}>Devices</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end"> {deviceData?.device_name}</BreadcrumbsItem>
+                  <BreadcrumbsItem href={paths['dashboard.devices']}>Devices</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end"> {deviceDetails && deviceDetails?.device_name}</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
             </Stack>
