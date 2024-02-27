@@ -71,8 +71,8 @@ const Tenants = ({ tenants, total }) => {
             </Typography>
             <Breadcrumbs separator={<BreadcrumbsSeparator />}>
               <BreadcrumbsItem href={paths['dashboard']} type="start" />
-              <BreadcrumbsItem href={paths['dashboard.admin']}>ADMIN</BreadcrumbsItem>
-              <BreadcrumbsItem type="end">Tennants</BreadcrumbsItem>
+              <BreadcrumbsItem href={paths['dashboard.admin']}>{t('Admin')}</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">{t('Tennants')}</BreadcrumbsItem>
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>

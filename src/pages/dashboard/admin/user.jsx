@@ -71,7 +71,7 @@ const Users = ({ users, total }) => {
             </Typography>
             <Breadcrumbs separator={<BreadcrumbsSeparator />}>
               <BreadcrumbsItem href={paths['dashboard']} type="start" />
-              <BreadcrumbsItem href={paths['dashboard.admin']}>ADMIN</BreadcrumbsItem>
+              <BreadcrumbsItem href={paths['dashboard.admin']}>{t('Admin')}</BreadcrumbsItem>
               <BreadcrumbsItem type="end">{t('User')}</BreadcrumbsItem>
             </Breadcrumbs>
           </Stack>

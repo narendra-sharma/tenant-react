@@ -156,9 +156,7 @@ export function UserCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'first_name')}
                   />
-                  {errors.first_name && (
-                    <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
-                  )}
+                  {errors.first_name && <FormHelperText style={{ color: 'red' }}>{t('FirstNameError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -171,7 +169,7 @@ export function UserCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'last_name')}
                   />
-                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>Last Name is required.</FormHelperText>}
+                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>{t('LastNameError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -184,7 +182,7 @@ export function UserCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'email')}
                   />
-                  {errors.email && <FormHelperText style={{ color: 'red' }}>Email is required. </FormHelperText>}
+                  {errors.email && <FormHelperText style={{ color: 'red' }}>{t('EmailError')} </FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -210,12 +208,12 @@ export function UserCreateForm({ onDataFromChild }) {
                       displayValue="tenant_name"
                     />
                   )}
-                  {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
+                  {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>{t('TenantError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Permision</FormLabel>
+                  <FormLabel>{t('Permission')}</FormLabel>
                   <Select
                     placeholder="Select a permission"
                     defaultValue={cuser.permission_profile}
@@ -227,7 +225,7 @@ export function UserCreateForm({ onDataFromChild }) {
                     <Option value="tenant">Tenant</Option>
                   </Select>
                   {errors.permission_profile && (
-                    <FormHelperText style={{ color: 'red' }}>Permission is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('PermissionError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>

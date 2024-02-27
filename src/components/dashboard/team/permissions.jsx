@@ -1,14 +1,16 @@
 import * as React from 'react';
-import Button from '@mui/joy/Button';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
+import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import Checkbox from '@mui/joy/Checkbox';
 import Stack from '@mui/joy/Stack';
 import Table from '@mui/joy/Table';
 import Typography from '@mui/joy/Typography';
+import { t } from 'i18next';
+
+import { paths } from '@/paths';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
-import { paths } from '@/paths';
 
 const columns = [
   { name: 'Actions', width: '300px' },
@@ -22,12 +24,12 @@ export function Permissions({ groups = [] }) {
   return (
     <Stack spacing={3}>
       <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-       Permissions
+        {t('Permissions')}
       </Typography>
       <Breadcrumbs separator={<BreadcrumbsSeparator />}>
         <BreadcrumbsItem href={paths['dashboard']} type="start" />
         <BreadcrumbsItem href={paths['dashboard.team']}>team</BreadcrumbsItem>
-        <BreadcrumbsItem type="end">Permissions</BreadcrumbsItem>
+        <BreadcrumbsItem type="end">{t('Permissions')}</BreadcrumbsItem>
       </Breadcrumbs>
       <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
         <Table
@@ -69,7 +71,13 @@ export function Permissions({ groups = [] }) {
                       { id: 'admin', value: permission.admin },
                     ].map((role) => (
                       <td key={role.id}>
-                        <Checkbox color="neutral" defaultChecked={role.value} readOnly variant="outlined" className='checkboxs' />
+                        <Checkbox
+                          color="neutral"
+                          defaultChecked={role.value}
+                          readOnly
+                          variant="outlined"
+                          className="checkboxs"
+                        />
                       </td>
                     ))}
                   </tr>

@@ -64,7 +64,7 @@ const devices = ({ devices, total }) => {
         </Typography>
         <Breadcrumbs separator={<BreadcrumbsSeparator />}>
           <BreadcrumbsItem href={paths['dashboard']} type="start" />
-          <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
+          <BreadcrumbsItem type="end">{t('Devices')}</BreadcrumbsItem>
         </Breadcrumbs>
         <Grid container spacing={3}>
           <Grid lg={4} xl={4} xs={12}>

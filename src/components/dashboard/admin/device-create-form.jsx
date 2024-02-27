@@ -14,6 +14,7 @@ import Option from '@mui/joy/Option';
 import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Multiselect from 'multiselect-react-dropdown';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
@@ -21,6 +22,7 @@ import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
 
 export function DeviceCreateForm({ onDataFromChild }) {
+  const { t } = useTranslation();
   const [devices, setDevices] = React.useState({
     device_name: '',
     serial_number: '',
@@ -38,9 +40,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
       let data = state.device.devices.filter((res) => {
         if (res.serial_number === id.deviceId) {
           onDataFromChild('edit');
-        //  const ans = {
-        //     data: res?.tenant_ids
-        // };
+          //  const ans = {
+          //     data: res?.tenant_ids
+          // };
           setDevices({
             device_name: res?.device_name,
             serial_number: res?.serial_number,
@@ -81,14 +83,10 @@ export function DeviceCreateForm({ onDataFromChild }) {
   });
 
   const handleElementChange = (value, label) => {
-
     setDevices((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,
-      [label]: !value && (label!=='client_firstname') && (label!=='client_lastname')
-        ? 'required'
-        :
-           '',
+      [label]: !value && label !== 'client_firstname' && label !== 'client_lastname' ? 'required' : '',
     }));
   };
 
@@ -96,7 +94,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     let err = false;
     let output = Object.entries(devices);
     output.forEach(([key, value]) => {
-      if (!value && (key!=='client_firstname') && (key!=='client_lastname')) {
+      if (!value && key !== 'client_firstname' && key !== 'client_lastname') {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       }
@@ -108,22 +106,21 @@ export function DeviceCreateForm({ onDataFromChild }) {
     if (checkAllErrors()) {
       return;
     }
-    const tempData = devices.tenant_ids
+    const tempData = devices.tenant_ids;
     if (id?.deviceId) {
-      devices.device_id = id?.deviceId
-      devices.tenant_ids = [devices.tenant_ids[0]._id]
-      update_device(devices, dispatch)
-      devices.tenant_ids = tempData
-
-    }else{
-      devices.tenant_ids = [devices.tenant_ids[0]._id]
+      devices.device_id = id?.deviceId;
+      devices.tenant_ids = [devices.tenant_ids[0]._id];
+      update_device(devices, dispatch);
+      devices.tenant_ids = tempData;
+    } else {
+      devices.tenant_ids = [devices.tenant_ids[0]._id];
       create_devices(devices, dispatch);
-      devices.tenant_ids = tempData
+      devices.tenant_ids = tempData;
     }
   };
 
   const onSelect = (selectedList, selectedItem) => {
-    handleElementChange(selectedList,'tenant_ids')
+    handleElementChange(selectedList, 'tenant_ids');
   };
 
   return (
@@ -139,7 +136,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Device Name</FormLabel>
+                  <FormLabel>{t('DeviceName')}</FormLabel>
                   <Input
                     value={devices?.device_name}
                     name="device_name"
@@ -148,13 +145,13 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e?.target?.value, 'device_name')}
                   />
                   {errors.device_name && (
-                    <FormHelperText style={{ color: 'red' }}>Device Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('DeviceNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Serial Number</FormLabel>
+                  <FormLabel>{t('SerialNumber')}</FormLabel>
                   <Input
                     value={devices?.serial_number}
                     name="serial_number"
@@ -163,13 +160,13 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e?.target?.value, 'serial_number')}
                   />
                   {errors.serial_number && (
-                    <FormHelperText style={{ color: 'red' }}>Serial Number is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('SerialNumberError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Client First Name</FormLabel>
+                  <FormLabel>{t('ClientName')}</FormLabel>
                   <Input
                     value={devices?.client_firstname}
                     name="client_firstname"
@@ -184,7 +181,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Client Last Name</FormLabel>
+                  <FormLabel>{t('ClientLastName')}</FormLabel>
                   <Input
                     value={devices?.client_lastname}
                     name="client_lastname"
@@ -199,36 +196,33 @@ export function DeviceCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Tenant(s)</FormLabel>
+                  <FormLabel>{t('Tenants')}</FormLabel>
                   {tenatntList && (
                     <Multiselect
                       options={tenatntList.data}
                       selectedValues={devices?.tenant_ids}
                       onSelect={onSelect}
-
-                      displayValue="tenant_name" style={{ borderColor:"#EAEEF6"}}
+                      displayValue="tenant_name"
+                      style={{ borderColor: '#EAEEF6' }}
                       singleSelect={true}
-
                     />
                   )}
-                  {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>Tenant is required.</FormHelperText>}
+                  {errors.tenant_ids && <FormHelperText style={{ color: 'red' }}>{t('TenantError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>{t('Status')}</FormLabel>
                   <select
                     name="device_status"
                     value={devices?.device_status}
-                    
-                    onChange={(e) => handleElementChange(e?.target.value, 'device_status')} className="form-control"
+                    onChange={(e) => handleElementChange(e?.target.value, 'device_status')}
+                    className="form-control"
                   >
                     <option value="pt">Publish to Tenant</option>
                     {/* <option value="pu">Publish to user</option> */}
                   </select>
-                  {errors.device_status && (
-                    <FormHelperText style={{ color: 'red' }}>Status is required.</FormHelperText>
-                  )}
+                  {errors.device_status && <FormHelperText style={{ color: 'red' }}>{t('StatusError')}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>
@@ -237,9 +231,11 @@ export function DeviceCreateForm({ onDataFromChild }) {
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.devices']} variant="outlined">
-            Cancel
+            {t('Cancel')}
           </Button>
-          <Button type="submit">{id?.deviceId ? 'Update' : 'Create'} Device</Button>
+          <Button type="submit">
+            {id?.deviceId ? t('Update') : t('Create')} {t('Device')}
+          </Button>
         </Stack>
       </Stack>
     </form>

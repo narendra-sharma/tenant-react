@@ -212,7 +212,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'company_name')}
                   />
                   {errors.company_name && (
-                    <FormHelperText style={{ color: 'red' }}>Company Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('CompanyNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -227,7 +227,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'tenant_name')}
                   />
                   {errors.tenant_name && (
-                    <FormHelperText style={{ color: 'red' }}>Tenant Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('TenantNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -243,7 +243,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                   />
                   {errors.company_email && (
                     <FormHelperText style={{ color: 'red' }}>
-                      {errors.company_email === 'required' ? 'Company Email is required' : 'Enter valid email id.'}
+                      {errors.company_email === 'required' ? t('CompanyEmailError') : t('ValidEmailError')}
                     </FormHelperText>
                   )}
                 </FormControl>
@@ -270,7 +270,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'tax_id')}
                   />
-                  {errors.tax_id && <FormHelperText style={{ color: 'red' }}>TAX ID is required.</FormHelperText>}
+                  {errors.tax_id && <FormHelperText style={{ color: 'red' }}>{t('TaxIdError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -301,7 +301,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'p_renaming')}
                   />
                   {errors.p_renaming && (
-                    <FormHelperText style={{ color: 'red' }}>Password Renaming is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('PasswordrenamingError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -329,7 +329,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                         </Option>
                       ))}
                   </Select>
-                  {errors.country && <FormHelperText style={{ color: 'red' }}>Country is required.</FormHelperText>}
+                  {errors.country && <FormHelperText style={{ color: 'red' }}>{t('CountryError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -354,7 +354,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'city')}
                   />
-                  {errors.city && <FormHelperText style={{ color: 'red' }}>City is required.</FormHelperText>}
+                  {errors.city && <FormHelperText style={{ color: 'red' }}>{t('CityError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -365,7 +365,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.zip_code}
                     onChange={(e) => handleElementChange(e.target.value, 'zip_code')}
                   />
-                  {errors.zip_code && <FormHelperText style={{ color: 'red' }}>Zip Code is required.</FormHelperText>}
+                  {errors.zip_code && <FormHelperText style={{ color: 'red' }}>{t('ZipError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -378,7 +378,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.address}
                     onChange={(e) => handleElementChange(e.target.value, 'address')}
                   />
-                  {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
+                  {errors.address && <FormHelperText style={{ color: 'red' }}>{t('AddressError')}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>
@@ -407,7 +407,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'azure_cosmos')}
                   />
                   {errors.azure_cosmos && (
-                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Endpoint URL is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('AzureCompassDbError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -422,7 +422,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'database_name')}
                   />
                   {errors.database_name && (
-                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Database Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('AzureCompassDbNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -437,7 +437,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e.target.value, 'account_key')}
                   />
                   {errors.account_key && (
-                    <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Key is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('AzureCompassDbKeyError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>

@@ -185,9 +185,7 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'first_name')}
                   />
-                  {errors.first_name && (
-                    <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
-                  )}
+                  {errors.first_name && <FormHelperText style={{ color: 'red' }}>{t('FirstNameError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -201,7 +199,7 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'last_name')}
                   />
-                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>Last Name is required.</FormHelperText>}
+                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>{t('LastNameError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -267,7 +265,7 @@ const Page = ({ userData }) => {
                     onChange={(e) => handleElementChange(e.target.value, 'company_first_name')}
                   />
                   {errors.company_first_name && (
-                    <FormHelperText style={{ color: 'red' }}>Company Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('CompanyNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -283,7 +281,7 @@ const Page = ({ userData }) => {
                     onChange={(e) => handleElementChange(e.target.value, 'company_last_name')}
                   />
                   {errors.company_last_name && (
-                    <FormHelperText style={{ color: 'red' }}>Tenant Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('TenantNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -343,7 +341,7 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'vat_number')}
                   />
-                  {errors.vat_number && <FormHelperText style={{ color: 'red' }}>VAT ID is required.</FormHelperText>}
+                  {errors.vat_number && <FormHelperText style={{ color: 'red' }}>{t('VatIdError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -360,7 +358,7 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'website')}
                   />
-                  {errors.website && <FormHelperText style={{ color: 'red' }}>Website is required.</FormHelperText>}
+                  {errors.website && <FormHelperText style={{ color: 'red' }}>{t('WebsiteError')}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>
@@ -392,7 +390,7 @@ const Page = ({ userData }) => {
                           </Option>
                         ))}
                     </Select>
-                    {errors.country && <FormHelperText style={{ color: 'red' }}>Country is required.</FormHelperText>}
+                    {errors.country && <FormHelperText style={{ color: 'red' }}>{t('CountryError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
@@ -417,7 +415,7 @@ const Page = ({ userData }) => {
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'city')}
                     />
-                    {errors.city && <FormHelperText style={{ color: 'red' }}>City is required.</FormHelperText>}
+                    {errors.city && <FormHelperText style={{ color: 'red' }}>{t('CityError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
@@ -432,7 +430,7 @@ const Page = ({ userData }) => {
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'zipcode')}
                     />
-                    {errors.zipcode && <FormHelperText style={{ color: 'red' }}>Zip Code is required.</FormHelperText>}
+                    {errors.zipcode && <FormHelperText style={{ color: 'red' }}>{t('ZipError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
@@ -446,7 +444,7 @@ const Page = ({ userData }) => {
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'address')}
                     />
-                    {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
+                    {errors.address && <FormHelperText style={{ color: 'red' }}>{t('AddressError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
               </Grid>

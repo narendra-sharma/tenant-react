@@ -5,6 +5,7 @@ import Container from '@mui/joy/Container';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { ArrowLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/ArrowLeft';
+import { t } from 'i18next';
 import { Helmet } from 'react-helmet-async';
 
 import { config } from '@/config';
@@ -12,7 +13,7 @@ import { paths } from '@/paths';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
 import { BreadcrumbsSeparator } from '@/components/core/breadcrumbs-separator';
 import { RouterLink } from '@/components/core/link';
-import { DeviceCreateForm} from '@/components/dashboard/admin/device-create-form';
+import { DeviceCreateForm } from '@/components/dashboard/admin/device-create-form';
 
 const metadata = {
   title: `Create | Customers | Dashboard | ${config.site.name}`,
@@ -34,13 +35,16 @@ export function CreateDevice() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                {dataFromChild==='edit'?'Update':'Create'} Device
+                  {dataFromChild === 'edit' ? 'Update' : 'Create'} {t('Device')}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
                   <BreadcrumbsItem type="end">Admin</BreadcrumbsItem>
-                  <BreadcrumbsItem href={paths['dashboard.admin.devices']}>Device</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end">{dataFromChild==='edit'?'Update':'Create'} Device</BreadcrumbsItem>
+                  <BreadcrumbsItem href={paths['dashboard.admin.devices']}>{t('Devices')}</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">
+                    {dataFromChild === 'edit' ? 'Update' : 'Create'}
+                    {t('Device')}
+                  </BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
             </Stack>

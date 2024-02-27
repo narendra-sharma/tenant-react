@@ -131,7 +131,7 @@ export function Page() {
                   onChange={(e) => handleChange(e.target.value, 'oldPassword')}
                 />
                 {errors?.oldPassword ? (
-                  <FormHelperText style={{ color: 'red' }}>Current password is required.</FormHelperText>
+                  <FormHelperText style={{ color: 'red' }}>{t('CurrPassError')}</FormHelperText>
                 ) : null}
               </FormControl>
               <FormControl>
@@ -144,9 +144,7 @@ export function Page() {
                 />
                 {errors.newPassword && (
                   <FormHelperText style={{ color: 'red' }}>
-                    {errors.newPassword === 'required'
-                      ? 'New password is required'
-                      : 'Your new password must be more than 12 characters including 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol.'}
+                    {errors.newPassword === 'required' ? t('NewPassError') : t('PassRegexError')}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -161,9 +159,7 @@ export function Page() {
                 />
                 {errors?.confirmPassword && (
                   <FormHelperText style={{ color: 'red' }}>
-                    {errors?.confirmPassword === 'required'
-                      ? 'Confirm password is required'
-                      : 'Password does not match'}
+                    {errors?.confirmPassword === 'required' ? t('ConfirmPassError') : t('PassworNotMathcError')}
                   </FormHelperText>
                 )}
               </FormControl>

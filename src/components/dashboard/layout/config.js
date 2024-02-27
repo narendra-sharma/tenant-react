@@ -4,7 +4,7 @@ export const layoutConfig = {
   navItems: [
     {
       key: 'dashboards',
-      title: 'Dashboards',
+      title: 'Dashboard',
       items: [
         {
           key: 'dashboard:overview',
@@ -51,7 +51,7 @@ export const layoutConfig = {
             },
           ],
         },
-        
+
       ],
     },
   ],
