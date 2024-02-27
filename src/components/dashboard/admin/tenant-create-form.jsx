@@ -17,6 +17,7 @@ import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
 import { Country } from 'country-state-city';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -26,6 +27,7 @@ import { RouterLink } from '@/components/core/link';
 export function TenantCreateForm({ onDataFromChild }) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const [cuser, setCuser] = React.useState({
     company_name: '',
@@ -163,7 +165,6 @@ export function TenantCreateForm({ onDataFromChild }) {
       database_name: '',
       account_key: '',
       p_renaming: '',
-      
     });
   };
   // ac_db_water: '',
@@ -198,12 +199,12 @@ export function TenantCreateForm({ onDataFromChild }) {
     >
       <Stack divider={<Divider />} spacing={5}>
         <Stack spacing={3}>
-          <Typography level="h4">Account Information</Typography>
+          <Typography level="h4">{t('AccountInfo')}</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Name</FormLabel>
+                  <FormLabel>{t('CompanyName')}</FormLabel>
                   <Input
                     value={cuser?.company_name}
                     name="company_name"
@@ -217,7 +218,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Tenant Name</FormLabel>
+                  <FormLabel>{t('TenantName')}</FormLabel>
                   <Input
                     name="tenant_name"
                     value={cuser.tenant_name}
@@ -232,7 +233,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Email</FormLabel>
+                  <FormLabel>{t('CompanyEmail')}</FormLabel>
                   <Input
                     value={cuser.company_email}
                     name="company_email"
@@ -249,7 +250,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Phone Number</FormLabel>
+                  <FormLabel>{t('CompanyPhoneNumber')}</FormLabel>
                   <Input
                     value={cuser.company_phone_number}
                     name="company_phone_number"
@@ -261,7 +262,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>TAX ID</FormLabel>
+                  <FormLabel>{t('TaxId')}</FormLabel>
                   <Input
                     value={cuser.tax_id}
                     name="tax_id"
@@ -274,7 +275,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Website</FormLabel>
+                  <FormLabel>{t('Website')}</FormLabel>
                   <Input
                     value={cuser.website}
                     name="website"
@@ -291,7 +292,7 @@ export function TenantCreateForm({ onDataFromChild }) {
 
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Password Renaming</FormLabel>
+                  <FormLabel>{t('PasswordRenaming')}</FormLabel>
                   <Input
                     value={cuser.p_renaming}
                     name="p_renaming"
@@ -309,12 +310,12 @@ export function TenantCreateForm({ onDataFromChild }) {
         </Stack>
 
         <Stack spacing={3}>
-          <Typography level="h4">Address</Typography>
+          <Typography level="h4">{t('Address')}</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>{t('Country')}</FormLabel>
                   <Select
                     name="country"
                     value={cuser?.country}
@@ -333,7 +334,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>State</FormLabel>
+                  <FormLabel>{t('State')}</FormLabel>
                   <Input
                     name="state"
                     value={cuser.state}
@@ -345,7 +346,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>{t('City')}</FormLabel>
                   <Input
                     name="city"
                     type="text"
@@ -358,7 +359,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Zip Code</FormLabel>
+                  <FormLabel>{t('ZipCode')}</FormLabel>
                   <Input
                     name="zip_code"
                     value={cuser.zip_code}
@@ -369,7 +370,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>{t('Address')}</FormLabel>
                   <Textarea
                     maxRows={3}
                     minRows={2}
@@ -385,7 +386,7 @@ export function TenantCreateForm({ onDataFromChild }) {
         </Stack>
 
         <Stack spacing={3}>
-          <Typography level="h4">Settings Database</Typography>
+          <Typography level="h4">{t('SettingsDB')}</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               {/* <Grid md={12} xs={12}>
@@ -397,7 +398,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid> */}
               <Grid md={12} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Endpoint URL</FormLabel>
+                  <FormLabel>{t('AzureCosomosDb')}</FormLabel>
                   <Input
                     name="azure_cosmos"
                     type="text"
@@ -412,7 +413,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Database Name</FormLabel>
+                  <FormLabel>{t('AzureCosomosDbName')}</FormLabel>
                   <Input
                     defaultValue=""
                     name="database_name"
@@ -420,14 +421,14 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.database_name}
                     onChange={(e) => handleElementChange(e.target.value, 'database_name')}
                   />
-                     {errors.database_name && (
+                  {errors.database_name && (
                     <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Database Name is required.</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Azure Cosmos DB Key </FormLabel>
+                  <FormLabel>{t('AzureCosmosDbKey')}</FormLabel>
                   <Input
                     name="account_key"
                     type="text"
@@ -435,7 +436,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.account_key}
                     onChange={(e) => handleElementChange(e.target.value, 'account_key')}
                   />
-                    {errors.account_key && (
+                  {errors.account_key && (
                     <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Key is required.</FormHelperText>
                   )}
                 </FormControl>
@@ -504,7 +505,7 @@ export function TenantCreateForm({ onDataFromChild }) {
             </Grid>
           </Box>
         </Stack>
- 
+
         {/* <Stack spacing={3}>
           <Typography level="h4">Settings Timeframe Meters</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
@@ -549,9 +550,11 @@ export function TenantCreateForm({ onDataFromChild }) {
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.tennats']} variant="outlined">
-            Cancel
+            {t('Cancel')}
           </Button>
-          <Button type="submit">{id?.tenantId ? 'Update' : 'Create'} Tenant</Button>
+          <Button type="submit">
+            {id?.tenantId ? t('Update') : t('Create')} {t('Tenant')}
+          </Button>
         </Stack>
       </Stack>
     </form>

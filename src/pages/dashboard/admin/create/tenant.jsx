@@ -6,6 +6,7 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { ArrowLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/ArrowLeft';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { config } from '@/config';
 import { paths } from '@/paths';
@@ -20,9 +21,10 @@ const metadata = {
 
 export function CreateTennant() {
   const [dataFromChild, setDataFromChild] = React.useState(null);
-    const handleDataFromChild = (data) => {
-      setDataFromChild(data);
-    };
+  const handleDataFromChild = (data) => {
+    setDataFromChild(data);
+  };
+  const { t } = useTranslation();
   return (
     <React.Fragment>
       <Helmet>
@@ -34,16 +36,15 @@ export function CreateTennant() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  {dataFromChild==='edit'?'Update':'Create'} Tenant
+                  {dataFromChild === 'edit' ? t('Update') : t('Create')} {t('Tenant')}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
                   <BreadcrumbsItem type="end">Admin</BreadcrumbsItem>
                   <BreadcrumbsItem href={paths['dashboard.admin.tennats']}>Tenants</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end">{dataFromChild==='edit'?'Update':'Create'} Tenant</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">{dataFromChild === 'edit' ? 'Update' : 'Create'} Tenant</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
-              
             </Stack>
             <TenantCreateForm onDataFromChild={handleDataFromChild} />
           </Stack>
