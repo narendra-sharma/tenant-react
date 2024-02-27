@@ -130,6 +130,7 @@ export default {
         "PermissionError": "Permission is required.",
         "Light": "Light",
         "Dark": "Dark",
-        "Customers": "Customers"
+        "Customers": "Customers",
+        "DeviceDetails": "Device Details  "
     }
 }
