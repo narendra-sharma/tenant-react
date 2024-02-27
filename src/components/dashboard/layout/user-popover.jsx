@@ -83,6 +83,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
 
   return (
     <Popup anchorEl={anchorEl} disablePortal open={open} placement="bottom-end" role={undefined}>
+      <div style={{boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',zIndex:999}}>
       <ClickAwayListener onClickAway={() => onClose?.()}>
         <Sheet
           sx={{
@@ -159,6 +160,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
           </Stack>
         </Sheet>
       </ClickAwayListener>
+      </div>
     </Popup>
   );
 }

@@ -83,6 +83,7 @@ export function TenantCreateForm({ onDataFromChild }) {
             connection_string: res?.setting_endpoint_uri,
             db_name: res?.setting_database_name,
             account_key: res?.setting_key,
+            device_renaming:res?.device_renaming
           });
         }
       });
@@ -112,7 +113,7 @@ export function TenantCreateForm({ onDataFromChild }) {
       return;
     }
 
-    localStorage.setItem('device_renaming', cuser?.device_renaming);
+    // localStorage.setItem('device_renaming', cuser?.device_renaming);
     const formData = new FormData();
     formData.append('company_name', cuser?.company_name);
     formData.append('tenant_name', cuser?.tenant_name);
@@ -128,6 +129,7 @@ export function TenantCreateForm({ onDataFromChild }) {
     formData.append('connection_string', cuser?.connection_string);
     formData.append('db_name', cuser?.db_name);
     formData.append('account_key', cuser?.account_key);
+    formData.append('device_renaming',cuser?.device_renaming)
     // formData.app
     if (id?.tenantId) {
       formData.append('tenant_id', id?.tenantId);
@@ -163,6 +165,7 @@ export function TenantCreateForm({ onDataFromChild }) {
   };
 
   const handleElementChange = (value, label) => {
+    console.log("###",value,label)
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,

@@ -77,18 +77,20 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       return;
     }
     let data = deviceData;
-    data.client_first_name = device.client_first_name;
-    data.client_last_name = device.client_last_name;
+    data.client_firstname = device.client_first_name;
+    data.client_lastname = device.client_last_name;
     data.device_name = device.device_name;
-    data.device_id = deviceData?._id;
+    data.serial_number = serialNumber;
     delete data.key2;
     update_device(data, dispatch);
+    navigate('/devices')
+
   };
 
   return (
     <Box padding={3}>
       <Stack direction="row" padding={3} sx={{ alignItems: 'center' }}>
-        <Box sx={{ '--Avatar-size': '120px', position: 'relative' }}>
+        <Box sx={{ '--Avatar-size': '120px', position: 'relative',marginRight:'10px' }}>
           <Avatar src="">{`${deviceData && deviceData?.client_firstname[0]}${
             deviceData && deviceData?.client_lastname[0]
           }`}</Avatar>
@@ -100,7 +102,7 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       </Stack>
 
       <Stack component="main" divider={<Divider />} padding={3}>
-        <Typography level="h4">My details</Typography>
+        {/* <Typography level="h4">My details</Typography> */}
         <Box sx={{ maxWidth: 'lg', alignItems: 'center' }}>
           <form>
             <Grid container spacing={3}>
@@ -168,12 +170,12 @@ const DeviceData = ({ deviceData, todaysReading }) => {
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl>
+                <FormControl disabled={true}>
                   <FormLabel>
                     Last Reading Water (Liters) <sup>*</sup>
                   </FormLabel>
                   <Input
-                    disabled={true}
+                   
                     value={device.water_reading || ''}
                     name="water_reading"
                     type="text"
@@ -183,7 +185,7 @@ const DeviceData = ({ deviceData, todaysReading }) => {
               </Grid>
 
               <Grid md={6} xs={12}>
-                <FormControl>
+                <FormControl disabled={true}>
                   <FormLabel value={device.electricity_reading || ''} disabled>
                     Last Reading Electricity (kWh) <sup>*</sup>
                   </FormLabel>

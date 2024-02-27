@@ -51,7 +51,7 @@ React.useEffect(() => {
             setFormData({
                 serial_numer: data?.serial_number,
                 device_name: data?.device_name,
-                device_renaming:localStorage.getItem('p_renaming') || '' ,
+                device_renaming:'' ,
             })
           } catch (error) {
             console.error("Error in useEffect:", error);
@@ -78,11 +78,11 @@ const checkAllErrors = () => {
         return;
       }
     
-    if(formData?.device_renaming == localStorage.getItem('p_renaming')){
+    // if(formData?.device_renaming == localStorage.getItem('p_renaming')){
       update_device_renaming(formData, dispatch,isChecked)
-    }else{
-      alert("Password does't match")
-    }
+    // }else{
+    //   alert("Password does't match")
+    // }
   };
 
   const handleElementChange = (value, label) => {
