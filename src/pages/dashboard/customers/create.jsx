@@ -5,6 +5,7 @@ import Container from '@mui/joy/Container';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { ArrowLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/ArrowLeft';
+import { t } from 'i18next';
 import { Helmet } from 'react-helmet-async';
 
 import { config } from '@/config';
@@ -34,7 +35,7 @@ export function Page() {
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
-                  <BreadcrumbsItem href={paths['dashboard.customers']}>Customers</BreadcrumbsItem>
+                  <BreadcrumbsItem href={paths['dashboard.customers']}>{t('Customers')}</BreadcrumbsItem>
                   <BreadcrumbsItem type="end">Create</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
@@ -46,7 +47,7 @@ export function Page() {
                   startDecorator={<ArrowLeftIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
                   variant="outlined"
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </Stack>
             </Stack>

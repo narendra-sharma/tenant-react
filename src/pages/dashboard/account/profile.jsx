@@ -17,11 +17,15 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Country } from 'country-state-city';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+
 import { config } from '@/config';
 import { getInitials } from '@/lib/get-initials';
+
 import 'react-phone-number-input/style.css';
+
 import { PhoneInput } from '@/components/core/phone-input';
 
 const url = import.meta.env.VITE_APP_ASSET_URL;
@@ -30,6 +34,7 @@ const metadata = {
 };
 const Page = ({ userData }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const [countries, setCountries] = React.useState([]);
   const [imagePath, setimagePath] = useState('');
@@ -96,18 +101,23 @@ const Page = ({ userData }) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,
-      [label]: !value && (label!=='phone_number') && (label!=='company_phone_number') && (label!=='state') && (label!=='website')
-        ? 'required'
-        : (label === 'email' || label === 'comapnyEmail') && !emailRegex.test(value)
-          ? 'invalid'
-          : '',
+      [label]:
+        !value &&
+        label !== 'phone_number' &&
+        label !== 'company_phone_number' &&
+        label !== 'state' &&
+        label !== 'website'
+          ? 'required'
+          : (label === 'email' || label === 'comapnyEmail') && !emailRegex.test(value)
+            ? 'invalid'
+            : '',
     }));
   };
   const checkAllErrors = () => {
     let err = false;
     let output = Object.entries(cuser);
     output.forEach(([key, value]) => {
-      if (!value && (key!=='phone_number') && (key!=='company_phone_number') && (key!=='state') && (key!=='website')) {
+      if (!value && key !== 'phone_number' && key !== 'company_phone_number' && key !== 'state' && key !== 'website') {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       } else if (value && (key === 'email' || key === 'companyEmail') && !emailRegex.test(value)) {
@@ -147,49 +157,56 @@ const Page = ({ userData }) => {
       </Helmet>
       <Stack component="main" divider={<Divider />} spacing={5}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
-          <Box sx={{ '--Avatar-size': '120px', position: 'relative' }} >
-            <Avatar src={imagePath}>{`${cuser?.first_name && cuser?.first_name[0]}${cuser?.last_name && cuser?.last_name[0]}`}</Avatar>
-            
+          <Box sx={{ '--Avatar-size': '120px', position: 'relative' }}>
+            <Avatar src={imagePath}>{`${cuser?.first_name && cuser?.first_name[0]}${
+              cuser?.last_name && cuser?.last_name[0]
+            }`}</Avatar>
           </Box>
-          <div style={{textTransform:'capitalize'}}>
-            <Typography level="h4">{cuser.first_name} {cuser.last_name}</Typography>
+          <div style={{ textTransform: 'capitalize' }}>
+            <Typography level="h4">
+              {cuser.first_name} {cuser.last_name}
+            </Typography>
             <Typography level="body-sm">{cuser.company_first_name}</Typography>
           </div>
         </Stack>
         {errors.profile_pic && <FormHelperText style={{ color: 'red' }}>{errors?.profile_pic}</FormHelperText>}
         <Stack spacing={3}>
-          <Typography level="h4">My details</Typography>
+          <Typography level="h4">{t('MyDetails')}</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>First Name <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('FirstName')} <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.first_name}
                     name="first_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'first_name')}
                   />
-                  {errors.first_name && (
-                    <FormHelperText style={{ color: 'red' }}>First Name is required.</FormHelperText>
-                  )}
+                  {errors.first_name && <FormHelperText style={{ color: 'red' }}>{t('FirstNameError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Last Name <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('LastName')} <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.last_name}
                     name="last_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'last_name')}
                   />
-                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>Last Name is required.</FormHelperText>}
+                  {errors.last_name && <FormHelperText style={{ color: 'red' }}>{t('LastNameError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Email <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('Email')} <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.email}
                     name="email"
@@ -206,9 +223,18 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>My Phone Number</FormLabel>
+                  <FormLabel>{t('MyPhoneNumber')}</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                  <div className="phoneNumberContainer"  style={{borderRadius:'5px',boxShadow: 'var(--joy-shadow-xs)', border: 'solid 1px #EAEEF6', fontSize: '14px', width: '100%' }} >
+                    <div
+                      className="phoneNumberContainer"
+                      style={{
+                        borderRadius: '5px',
+                        boxShadow: 'var(--joy-shadow-xs)',
+                        border: 'solid 1px #EAEEF6',
+                        fontSize: '14px',
+                        width: '100%',
+                      }}
+                    >
                       <PhoneInput
                         international
                         maxLength="15"
@@ -216,7 +242,7 @@ const Page = ({ userData }) => {
                         value={cuser.phone_number}
                         onChange={(e) => handleElementChange(e, 'phone_number')}
                       />
-                  </div>
+                    </div>
                   </Box>
                 </FormControl>
               </Grid>
@@ -224,12 +250,14 @@ const Page = ({ userData }) => {
           </Box>
         </Stack>
         <Stack spacing={3}>
-          <Typography level="h4">Company details</Typography>
+          <Typography level="h4">{t('CompanyDetails')}</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Name <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('CompanyName')} <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.company_first_name}
                     name="companyFirstName"
@@ -237,13 +265,15 @@ const Page = ({ userData }) => {
                     onChange={(e) => handleElementChange(e.target.value, 'company_first_name')}
                   />
                   {errors.company_first_name && (
-                    <FormHelperText style={{ color: 'red' }}>Company Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('CompanyNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Tenant Name <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('TenantName')} <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.company_last_name}
                     name="company_last_name"
@@ -251,13 +281,15 @@ const Page = ({ userData }) => {
                     onChange={(e) => handleElementChange(e.target.value, 'company_last_name')}
                   />
                   {errors.company_last_name && (
-                    <FormHelperText style={{ color: 'red' }}>Tenant Name is required.</FormHelperText>
+                    <FormHelperText style={{ color: 'red' }}>{t('TenantNameError')}</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Email <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('CompanyEmail')} <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.company_email}
                     name="company_email"
@@ -274,23 +306,34 @@ const Page = ({ userData }) => {
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Company Phone Number</FormLabel>
+                  <FormLabel>{t('CompanyPhoneNumber')}</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                  <div className="phoneNumberContainer"  style={{borderRadius:'5px',boxShadow: 'var(--joy-shadow-xs)', border: 'solid 1px #EAEEF6', fontSize: '14px', width: '100%' }} >
-                  <PhoneInput
-                      maxLength="15"
-                      placeholder="Enter phone number"
-                      value={cuser.company_phone_number}
-                      onChange={(e) => handleElementChange(e, 'company_phone_number')}
-                    />
+                    <div
+                      className="phoneNumberContainer"
+                      style={{
+                        borderRadius: '5px',
+                        boxShadow: 'var(--joy-shadow-xs)',
+                        border: 'solid 1px #EAEEF6',
+                        fontSize: '14px',
+                        width: '100%',
+                      }}
+                    >
+                      <PhoneInput
+                        maxLength="15"
+                        placeholder="Enter phone number"
+                        value={cuser.company_phone_number}
+                        onChange={(e) => handleElementChange(e, 'company_phone_number')}
+                      />
                     </div>
-                  
                   </Box>
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>VAT ID <sup>*</sup></FormLabel>
+                  <FormLabel>
+                    {t('VATID')}
+                    <sup>*</sup>
+                  </FormLabel>
                   <Input
                     value={cuser?.vat_number}
                     name="vat_number"
@@ -298,12 +341,12 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'vat_number')}
                   />
-                  {errors.vat_number && <FormHelperText style={{ color: 'red' }}>VAT ID is required.</FormHelperText>}
+                  {errors.vat_number && <FormHelperText style={{ color: 'red' }}>{t('VatIdError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Website </FormLabel>
+                  <FormLabel>{t('Website')}</FormLabel>
                   <Input
                     value={cuser?.website}
                     name="website"
@@ -315,7 +358,7 @@ const Page = ({ userData }) => {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'website')}
                   />
-                  {errors.website && <FormHelperText style={{ color: 'red' }}>Website is required.</FormHelperText>}
+                  {errors.website && <FormHelperText style={{ color: 'red' }}>{t('WebsiteError')}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>
@@ -323,12 +366,14 @@ const Page = ({ userData }) => {
         </Stack>
         <Stack spacing={3}>
           <Stack spacing={3}>
-            <Typography level="h4">Company Address</Typography>
+            <Typography level="h4">{t('CompanyAddress')}</Typography>
             <Box sx={{ maxWidth: 'lg' }}>
               <Grid container spacing={3}>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>Country <sup>*</sup></FormLabel>
+                    <FormLabel>
+                      {t('Country')} <sup>*</sup>
+                    </FormLabel>
                     <Select
                       value={cuser?.country}
                       name="country"
@@ -345,54 +390,61 @@ const Page = ({ userData }) => {
                           </Option>
                         ))}
                     </Select>
-                    {errors.country && <FormHelperText style={{ color: 'red' }}>Country is required.</FormHelperText>}
+                    {errors.country && <FormHelperText style={{ color: 'red' }}>{t('CountryError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>State</FormLabel>
+                    <FormLabel>{t('State')}</FormLabel>
                     <Input
-                    value={cuser?.state}
-                    name="state"
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'state')}
-                  />
+                      value={cuser?.state}
+                      name="state"
+                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                      onChange={(e) => handleElementChange(e.target.value, 'state')}
+                    />
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>City <sup>*</sup></FormLabel>
+                    <FormLabel>
+                      {t('City')} <sup>*</sup>
+                    </FormLabel>
                     <Input
-                    value={cuser?.city}
-                    name="city"
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'city')}
-                  />
-                    {errors.city && <FormHelperText style={{ color: 'red' }}>City is required.</FormHelperText>}
+                      value={cuser?.city}
+                      name="city"
+                      style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
+                      onChange={(e) => handleElementChange(e.target.value, 'city')}
+                    />
+                    {errors.city && <FormHelperText style={{ color: 'red' }}>{t('CityError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>Zip Code <sup>*</sup></FormLabel>
+                    <FormLabel>
+                      {t('ZipCode')}
+                      <sup>*</sup>
+                    </FormLabel>
                     <Input
                       value={cuser?.zipcode}
                       name="zip"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'zipcode')}
                     />
-                    {errors.zipcode && <FormHelperText style={{ color: 'red' }}>Zip Code is required.</FormHelperText>}
+                    {errors.zipcode && <FormHelperText style={{ color: 'red' }}>{t('ZipError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
                 <Grid md={6} xs={12}>
                   <FormControl>
-                    <FormLabel>Address <sup>*</sup></FormLabel>
+                    <FormLabel>
+                      {t('Address')} <sup>*</sup>
+                    </FormLabel>
                     <Input
                       value={cuser?.address}
                       name="address"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'address')}
                     />
-                    {errors.address && <FormHelperText style={{ color: 'red' }}>Address is required.</FormHelperText>}
+                    {errors.address && <FormHelperText style={{ color: 'red' }}>{t('AddressError')}</FormHelperText>}
                   </FormControl>
                 </Grid>
               </Grid>
@@ -402,9 +454,9 @@ const Page = ({ userData }) => {
 
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
           <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
-            Discard
+            {t('Discard')}
           </Button>
-          <Button onClick={(event) => handleSubmit(event)}>Save Changes</Button>
+          <Button onClick={(event) => handleSubmit(event)}>{t('SaveChanges')}</Button>
         </Stack>
       </Stack>
     </React.Fragment>

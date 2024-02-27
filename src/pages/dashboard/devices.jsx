@@ -9,6 +9,7 @@ import Grid from '@mui/joy/Grid';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
+import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 
 import { paths } from '@/paths';
@@ -18,6 +19,7 @@ import { DeviceTable } from '@/components/dashboard/customer/device-table';
 
 const devices = ({ devices, total }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [device, setDevices] = useState(null);
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState('');
@@ -57,11 +59,11 @@ const devices = ({ devices, total }) => {
     <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
         <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-          Devices
+          {t('Devices')}
         </Typography>
         <Breadcrumbs separator={<BreadcrumbsSeparator />}>
           <BreadcrumbsItem href={paths['dashboard']} type="start" />
-          <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
+          <BreadcrumbsItem type="end">{t('Devices')}</BreadcrumbsItem>
         </Breadcrumbs>
         <Grid container spacing={3}>
           <Grid lg={4} xl={4} xs={12}>

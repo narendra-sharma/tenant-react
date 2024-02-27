@@ -1,39 +1,39 @@
 import * as React from 'react';
+import { update_permissions } from '@/reduxData/user/userAction';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import Checkbox from '@mui/joy/Checkbox';
 import Stack from '@mui/joy/Stack';
 import Table from '@mui/joy/Table';
 import Typography from '@mui/joy/Typography';
-import { update_permissions } from '@/reduxData/user/userAction';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
-const columns = [
-  { name: 'Action', width: '300px' },
-  { name: 'Tenant Read Only' },
-  { name: 'Tenant User' },
-  { name: 'Tenant Manager' },
-  { name: 'ADMIN' },
-];
-
 export function Permissions({ groups = [] }) {
-  const dispatch=useDispatch();
-  const [permissions,setPermissions]=React.useState([]);
-  React.useEffect(()=>{
+  const { t } = useTranslation();
+  const columns = [
+    { name: t('Action'), width: '300px' },
+    { name: t('Tenant Read Only') },
+    { name: t('Tenant User') },
+    { name: t('Tenant Manager') },
+    { name: t('ADMIN') },
+  ];
+  const dispatch = useDispatch();
+  const [permissions, setPermissions] = React.useState([]);
+  React.useEffect(() => {
     setPermissions([...groups]);
-  },[groups])
-  const saveCahnges=()=>{
-    permissions[0].name='tenant_management';
-    permissions[1].name='admin_manangement';
-    update_permissions(permissions,dispatch);
-  }
-  const changeCheck=(gindex,pindex,role)=>{
-    let allPermissions=[...permissions];
-    allPermissions[gindex].permissions[pindex][role.id]=!role.value;
-    setPermissions([...permissions])
-  }
+  }, [groups]);
+  const saveCahnges = () => {
+    permissions[0].name = 'tenant_management';
+    permissions[1].name = 'admin_manangement';
+    update_permissions(permissions, dispatch);
+  };
+  const changeCheck = (gindex, pindex, role) => {
+    let allPermissions = [...permissions];
+    allPermissions[gindex].permissions[pindex][role.id] = !role.value;
+    setPermissions([...permissions]);
+  };
   return (
-   
     <Stack spacing={3}>
       <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
         <Table
@@ -58,14 +58,14 @@ export function Permissions({ groups = [] }) {
             </tr>
           </thead>
           <tbody>
-            {groups.map((group,gindex) => (
+            {groups.map((group, gindex) => (
               <React.Fragment key={group.name}>
                 <tr>
                   <td colSpan={5}>
                     <Typography level="title-sm">{group.name}</Typography>
                   </td>
                 </tr>
-                {group.permissions.map((permission,pindex) => (
+                {group.permissions.map((permission, pindex) => (
                   <tr key={permission.name}>
                     <td>{permission.name}</td>
                     {[
@@ -74,8 +74,15 @@ export function Permissions({ groups = [] }) {
                       { id: 'tenant_manager', value: permission.tenant_manager },
                       { id: 'admin', value: permission.admin },
                     ].map((role) => (
-                      <td key={role.id+pindex}>
-                        <Checkbox color="neutral" defaultChecked={role.value} variant="outlined" disabled={role.id==='admin'} className='checkboxs' onChange={()=>changeCheck(gindex,pindex,role)}/>
+                      <td key={role.id + pindex}>
+                        <Checkbox
+                          color="neutral"
+                          defaultChecked={role.value}
+                          variant="outlined"
+                          disabled={role.id === 'admin'}
+                          className="checkboxs"
+                          onChange={() => changeCheck(gindex, pindex, role)}
+                        />
                       </td>
                     ))}
                   </tr>
@@ -87,11 +94,10 @@ export function Permissions({ groups = [] }) {
       </Card>
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
         <Button color="neutral" variant="outlined">
-          Discard
+          {t('Discard')}
         </Button>
-        <Button onClick={()=>saveCahnges()}>Save Changes</Button>
+        <Button onClick={() => saveCahnges()}>{t('SaveChanges')}</Button>
       </Stack>
     </Stack>
-  
   );
 }

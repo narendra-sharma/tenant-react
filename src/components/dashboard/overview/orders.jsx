@@ -6,29 +6,30 @@ import Card from '@mui/joy/Card';
 import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
+import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { NoSSR } from '@/components/core/no-ssr';
 
-const bars = [
-  {
-    name: 'Electricity',
-    dataKey: 'electricityReading',
-    color: 'var(--joy-palette-primary-solidBg)',
-  },
-  {
-    name: 'Water',
-    dataKey: 'waterReading',
-    color: 'var(--joy-palette-primary-200)',
-  },
-];
-
 export function Orders({ data = [] }) {
   const chartHeight = 440;
+  const { t } = useTranslation();
+  const bars = [
+    {
+      name: t('Water'),
+      dataKey: 'electricityReading',
+      color: 'var(--joy-palette-primary-solidBg)',
+    },
+    {
+      name: t('Electricity'),
+      dataKey: 'waterReading',
+      color: 'var(--joy-palette-primary-200)',
+    },
+  ];
 
   return (
     <Card>
-      <Typography level="h4">Current Week Usage</Typography>
+      <Typography level="h4">{t('CurrentWeekUsage')}</Typography>
       <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', justifyContent: 'flex-end' }}>
         {bars.map((bar) => (
           <Stack direction="row" key={bar.name} spacing={1} sx={{ alignItems: 'center' }}>

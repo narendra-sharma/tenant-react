@@ -13,6 +13,7 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 
 import { paths } from '@/paths';
@@ -25,6 +26,7 @@ import { DeviceTable } from '@/components/dashboard/customer/device-table';
 
 const Devices = ({ devices, total }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [device, setDevices] = useState(null);
   const [client, setClient] = useState(null);
   const [status, setStatus] = useState('');
@@ -69,12 +71,12 @@ const Devices = ({ devices, total }) => {
         <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
           <Stack spacing={1} sx={{ flexGrow: 1 }}>
             <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-              Devices
+              {t('Devices')}
             </Typography>
             <Breadcrumbs separator={<BreadcrumbsSeparator />}>
               <BreadcrumbsItem href={paths['dashboard']} type="start" />
-              <BreadcrumbsItem type="end"> ADMIN</BreadcrumbsItem>
-              <BreadcrumbsItem type="end">Devices</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">{t('Admin')}</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">{t('Devices')}</BreadcrumbsItem>
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
@@ -83,7 +85,7 @@ const Devices = ({ devices, total }) => {
               href={paths['dashboard.admin.create.device']}
               startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
             >
-              Create
+              {t('Create')}
             </Button>
           </Stack>
         </Stack>
@@ -118,7 +120,7 @@ const Devices = ({ devices, total }) => {
           </Grid>
           <Grid lg={4} xl={4} xs={12}>
             <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-              <FormLabel>Status</FormLabel>
+              <FormLabel>{t('Status')}</FormLabel>
               <select
                 defaultValue={status}
                 name="status"
