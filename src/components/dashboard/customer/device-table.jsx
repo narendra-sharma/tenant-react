@@ -50,7 +50,7 @@ export function DeviceTable({ rows }) {
         <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
           <div>
             <Typography level="body-sm" textColor="text.primary">
-              {row.client_firstname}
+              {row.client_firstname} {row.client_lastname}
             </Typography>
           </div>
         </Stack>

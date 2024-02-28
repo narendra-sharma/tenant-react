@@ -27,7 +27,7 @@ export function DeviceTable({ rows }) {
           {row.tenant_name}
         </Link>
       ),
-      name: t(''),
+      name: t('TenantName'),
       width: '150px',
     },
     {
