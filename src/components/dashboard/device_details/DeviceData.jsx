@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router';
 import { MeterGraph } from './meterGraph';
 
 const DeviceData = ({ deviceData, todaysReading }) => {
+  // console.log("OOOOOOOOO",deviceData)
   const dispatch = useDispatch();
   const { tenantId } = useParams();
   const serialNumber = tenantId;
@@ -170,13 +171,11 @@ const DeviceData = ({ deviceData, todaysReading }) => {
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl disabled={true}>
+                <FormControl disabled={true} value={device.water_reading || ''}>
                   <FormLabel>
                     Last Reading Water (Liters) <sup>*</sup>
                   </FormLabel>
                   <Input
-                   
-                    value={device.water_reading || ''}
                     name="water_reading"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
@@ -185,8 +184,8 @@ const DeviceData = ({ deviceData, todaysReading }) => {
               </Grid>
 
               <Grid md={6} xs={12}>
-                <FormControl disabled={true}>
-                  <FormLabel value={device.electricity_reading || ''} disabled>
+                <FormControl disabled={true} value={device.electricity_reading || ''}>
+                  <FormLabel>
                     Last Reading Electricity (kWh) <sup>*</sup>
                   </FormLabel>
                   <Input name="" type="text" disabled={true} style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />

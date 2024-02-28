@@ -68,7 +68,7 @@ export function Device_details({ deviceData }) {
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
                   <BreadcrumbsItem href={paths['dashboard.admin.devices']}>{t('Devices')}</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end"> {deviceData?.device_name}</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end"> {deviceDetails && deviceDetails?.device_name}</BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
             </Stack>
