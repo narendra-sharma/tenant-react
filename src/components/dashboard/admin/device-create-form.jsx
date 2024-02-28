@@ -114,14 +114,14 @@ export function DeviceCreateForm({ onDataFromChild }) {
     if (id?.deviceId) {
       devices.device_id = id?.deviceId
       devices.tenant_ids = [devices.tenant_ids[0]._id]
-      update_device(devices, dispatch)
+      update_device(devices, dispatch,navigate)
       devices.tenant_ids = tempData
-      navigate('../../../admin/devices')
+      // navigate('../../../admin/devices')
     }else{
       devices.tenant_ids = [devices.tenant_ids[0]._id]
-      create_devices(devices, dispatch);
+      create_devices(devices, dispatch,navigate);
       devices.tenant_ids = tempData
-      navigate('../../../admin/devices')
+      // navigate('../../../admin/devices')
     }
   };
 

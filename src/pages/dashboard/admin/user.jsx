@@ -103,7 +103,11 @@ const Users = ({ users, total }) => {
         </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container user-table" onScroll={handleScroll}>
-            <UserTable rows={users} />
+            {users && users.length ? (
+              <UserTable rows={users} />
+            ) : (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Tenants Found</div>
+            )}
           </div>
         </Card>
       </Stack>

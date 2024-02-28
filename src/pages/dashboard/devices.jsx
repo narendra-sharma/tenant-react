@@ -115,9 +115,7 @@ const devices = ({ devices, total }) => {
             {devices && devices.length ? (
               <DeviceTable rows={devices} />
             ) : (
-              <Typography fontSize={{ xs: 'xl0', lg: 'xl0' }} level="h4">
-                No Devices Found
-              </Typography>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Devices Found</div>
             )}
           </div>
         </Card>

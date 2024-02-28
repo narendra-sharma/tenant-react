@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Chip } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
@@ -46,13 +47,13 @@ export function UserTable({ rows }) {
       formatter: (row) => (
         <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
           <div>
-            <Typography>{row.tenant}</Typography>
-            <Typography level="body-xs">{row.tenant1}</Typography>
-            <Typography level="body-xs">{row.tenant2}</Typography>
+            {row.tenant_ids.map((res) => (
+              <Typography>{res?.tenant_name}</Typography>
+            ))}
           </div>
         </Stack>
       ),
-      name: t('Tenants'),
+      name: t('Tenant'),
       width: '150px',
     },
     {

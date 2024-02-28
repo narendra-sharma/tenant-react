@@ -15,7 +15,6 @@ import { useNavigate, useParams } from 'react-router';
 import { MeterGraph } from './meterGraph';
 
 const DeviceData = ({ deviceData, todaysReading }) => {
-  // console.log("OOOOOOOOO",deviceData)
   const dispatch = useDispatch();
   const { tenantId } = useParams();
   const serialNumber = tenantId;
@@ -83,8 +82,8 @@ const DeviceData = ({ deviceData, todaysReading }) => {
     data.device_name = device.device_name;
     data.serial_number = serialNumber;
     delete data.key2;
-    update_device(data, dispatch);
-    navigate('/devices')
+    update_device(data, dispatch,navigate);
+    // navigate('/devices')
 
   };
 

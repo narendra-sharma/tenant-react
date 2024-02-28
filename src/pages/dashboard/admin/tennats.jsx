@@ -29,9 +29,9 @@ const Tenants = ({ tenants, total }) => {
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
-  useEffect(()=>{
-    get_tenants(dispatch,page,limit,tenant,company,status);
-  },[page,limit,tenant,company,status]);
+  useEffect(() => {
+    get_tenants(dispatch, page, limit, tenant, company, status);
+  }, [page, limit, tenant, company, status]);
 
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -131,7 +131,11 @@ const Tenants = ({ tenants, total }) => {
         </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container" onScroll={handleScroll}>
-            <DeviceTable rows={tenants} />
+            {tenants && tenants.length ? (
+              <DeviceTable rows={tenants} />
+            ) : (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Tenants Found</div>
+            )}
           </div>
         </Card>
       </Stack>

@@ -64,7 +64,7 @@ export default {
         "UserEmail": "User Email",
         "Phone Number": "Phone Number",
         "Tenants": "Tenant(s)",
-        "Tenant": "Tenants",
+        "Tenant": "Tenant",
         "Company": 'Company',
         "Permission": "Permission",
         "Permissions": "Permissions",

@@ -12,7 +12,12 @@ const WIDTH = 60;
 export function Logo({ color = 'dark', height = HEIGHT, width = WIDTH }) {
   const url = color === 'light' ? '/assets/logo.svg' : '/assets/logo.svg';
 
-  return <img alt="logo" height={height} src={url} width={width} />;
+  return (
+    <>
+      <h1>Heloo</h1>
+      <img alt="logo" height={height} src={url} width={width} />
+    </>
+  );
 }
 
 export function DynamicLogo({ colorDark = 'light', colorLight = 'dark', height = HEIGHT, width = WIDTH, ...props }) {
