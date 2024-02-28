@@ -71,7 +71,7 @@ const Tenants = ({ tenants, total }) => {
             <Breadcrumbs separator={<BreadcrumbsSeparator />}>
               <BreadcrumbsItem href={paths['dashboard']} type="start" />
               <BreadcrumbsItem href={paths['dashboard.admin']}>{t('Admin')}</BreadcrumbsItem>
-              <BreadcrumbsItem type="end">{t('Tennants')}</BreadcrumbsItem>
+              <BreadcrumbsItem type="end">{t('Tenant')}</BreadcrumbsItem>
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
