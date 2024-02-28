@@ -166,7 +166,6 @@ export function TenantCreateForm({ onDataFromChild }) {
   };
 
   const handleElementChange = (value, label) => {
-    console.log("###",value,label)
     setCuser((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
       ...prev,

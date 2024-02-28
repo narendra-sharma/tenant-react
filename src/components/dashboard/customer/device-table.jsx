@@ -28,6 +28,7 @@ const statusMapping = {
 const userPermissions = JSON.parse(localStorage.getItem('permissions'));
 const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
 export function DeviceTable({ rows }) {
+  // console.log('DDDDDDD',rows)
   const { t } = useTranslation();
   const columns = [
     {
@@ -50,12 +51,12 @@ export function DeviceTable({ rows }) {
         <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
           <div>
             <Typography level="body-sm" textColor="text.primary">
-              {row.client_firstname} {row.client_lastname}
+              {row?.tenant_ids[0]?.tenant_name}
             </Typography>
           </div>
         </Stack>
       ),
-      name: t('ClientName'),
+      name: t('Tenant'),
       width: '120px',
     },
     {

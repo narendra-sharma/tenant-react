@@ -12,7 +12,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { NoSSR } from '@/components/core/no-ssr';
 
 export function Orders({ data = [] }) {
-  const chartHeight = 440;
+  const chartHeight = 265;
   const { t } = useTranslation();
   const bars = [
     {

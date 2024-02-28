@@ -52,13 +52,14 @@ export const get_devices = async (dispatch, page, limit, device, client, status)
   }
 };
 
-export const create_devices = async (data, dispatch) => {
+export const create_devices = async (data, dispatch,navigate) => {
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
     const res = await axios.post(`${url}admin/add_device`, data, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
+      navigate('../../../admin/devices')
     } else {
       toast.error(res?.data?.message);
     }
@@ -69,13 +70,14 @@ export const create_devices = async (data, dispatch) => {
   }
 };
 
-export const update_device = async (data, dispatch) => {
+export const update_device = async (data, dispatch,navigate) => {
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
     const res = await axios.put(`${url}admin/edit_device`, data, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
+      navigate('../')
     } else {
       toast.error(res?.data?.message);
     }

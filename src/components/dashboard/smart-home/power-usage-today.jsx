@@ -121,13 +121,13 @@ function TooltipContent({ active, payload }) {
         <Typography level="title-lg">{time}</Typography>
         <Stack spacing={1}>
           <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-            <Typography level="body-sm">Yesterday</Typography>
+            <Typography level="body-sm">Electricity</Typography>
             <Typography fontWeight="md" textColor="text.primary">
               {yesterday}kWh
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-            <Typography level="body-sm">Today</Typography>
+            <Typography level="body-sm">Water</Typography>
             <Typography fontWeight="md" textColor="text.primary">
               {today}kWh
             </Typography>
