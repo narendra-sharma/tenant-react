@@ -33,15 +33,13 @@ export function DeviceTable({ rows }) {
     {
       formatter: (row) => (
         <Link
-          disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_view_device_detail}
+          disabled={userRole=='admin'?false: !permissions['Tenant Management']?.can_view_device_detail}
           component={RouterLink}
           fontSize="sm"
           fontWeight="md"
           href={paths['dashboard.admin.device_details'](`${row.serial_number}`)}
           underline="none"
-          disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_device_detail}
         >
-          <PenIcon  style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
           {row.device_name}
         </Link>
       ),

@@ -51,20 +51,16 @@ const devices = ({ devices, total }) => {
       element.style.overflow = 'auto';
     });
   };
-  useEffect(() => {
-    disableWindowScroll();
-    return () => {
-      enableWindowScroll();
-    };
+ 
     useEffect(() => {
       disableWindowScroll();
       return () => {
         enableWindowScroll();
       };
     }, []);
-  return (  <>
-      {(currentUserRole=='admin' || permissions['Tenant Management']?.can_view_devices) && <Container maxWidth={false} sx={{ py: 3 }}>
-
+  return ( 
+    (currentUserRole === 'admin' || permissions['Tenant Management']?.can_view_devices) && (
+      <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
         <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
           {t('Devices')}
@@ -128,9 +124,8 @@ const devices = ({ devices, total }) => {
           </div>
         </Card>
       </Stack>
-    </Container>
-  );
-};
+    </Container>))}
+
 const mapStateToProps = (state) => {
   return {
     devices: state.device.devices,

@@ -25,7 +25,7 @@ const metadata = {
   title: `Dashboard | ${config.site.name}`,
 };
 
-export function Page({ devices }) {
+export function Page({ devices,total }) {
   const dispatch = useDispatch();
   const [device, setDevices] = React.useState(null);
   const [client, setClient] = React.useState(null);
@@ -46,11 +46,6 @@ export function Page({ devices }) {
   const [graphData, setGraphData] = React.useState(null);
   const select = useSelector((state) => state);
 
-  const [device, setDevices] = React.useState(null);
-  const [client, setClient] = React.useState(null);
-  const [status, setStatus] = React.useState('');
-  const [page, setPage] = React.useState(1);
-  const [limit, setLimit] = React.useState(50);
   const [filteredData, setFilteredData] = React.useState(null);
 
   React.useEffect(() => {
@@ -78,10 +73,10 @@ export function Page({ devices }) {
     }
   };
   const disableWindowScroll = () => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'auto';
     const elements = document.querySelectorAll('.body-pan');
     elements.forEach((element) => {
-      element.style.overflow = 'hidden';
+      element.style.overflow = 'auto';
     });
   };
   const enableWindowScroll = () => {
@@ -119,72 +114,75 @@ export function Page({ devices }) {
               completed={dashboardDevices?.electric_meter_count}
               total={dashboardDevices?.device_data_total}
             />
-            {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && (
-            <Box>
-              <Grid container spacing={3}>
-                <Grid lg={4} xl={4} xs={12}>
-                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                    <FormLabel>{t('DeviceName')}</FormLabel>
-                    <Input
-                      defaultValue={device}
-                      name="device"
-                      onChange={(e) =>
-                        window.setTimeout(() => {
-                          setDevices(e.target.value);
-                        }, 1000)
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid lg={4} xl={4} xs={12}>
-                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                    <FormLabel>{t('Tenant')}</FormLabel>
-                    <Input
-                      defaultValue={client}
-                      name="client"
-                      onChange={(e) =>
-                        window.setTimeout(() => {
-                          setClient(e.target.value);
-                        }, 1000)
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid lg={4} xl={4} xs={12}>
-                  <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                    <FormLabel>{t('Status')}</FormLabel>
-                    <select
-                      defaultValue={status}
-                      name="status"
-                      onChange={(e) => setStatus(e.target.value)}
-                      className="form-control"
-                    >
-                      <option value="">All</option>
-                      <option value="online">Online</option>
-                      <option value="offline">Offline</option>
-                    </select>
-                  </FormControl>
-                </Grid>
-              </Grid>
+            {(userRole == 'admin' || (userPermissions && userPermissions['Tenant Management']?.can_view_devices)) && (
+              <>
+                <Box>
+                  <Grid container spacing={3}>
+                    <Grid lg={4} xl={4} xs={12}>
+                      <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                        <FormLabel>{t('DeviceName')}</FormLabel>
+                        <Input
+                          defaultValue={device}
+                          name="device"
+                          onChange={(e) =>
+                            window.setTimeout(() => {
+                              setDevices(e.target.value);
+                            }, 1000)
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid lg={4} xl={4} xs={12}>
+                      <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                        <FormLabel>{t('Tenant')}</FormLabel>
+                        <Input
+                          defaultValue={client}
+                          name="client"
+                          onChange={(e) =>
+                            window.setTimeout(() => {
+                              setClient(e.target.value);
+                            }, 1000)
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid lg={4} xl={4} xs={12}>
+                      <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
+                        <FormLabel>{t('Status')}</FormLabel>
+                        <select
+                          defaultValue={status}
+                          name="status"
+                          onChange={(e) => setStatus(e.target.value)}
+                          className="form-control"
+                        >
+                          <option value="">All</option>
+                          <option value="online">Online</option>
+                          <option value="offline">Offline</option>
+                        </select>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
 
-              <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-                <div className="scroll-table-container device-table" onScroll={handleScroll}>
-                  {filteredData && filteredData?.length ? (
-                    <DeviceTable rows={filteredData} />
-                  ) : (
-                    <div style={{ textAlign: 'center', marginTop: '20px' }}>No Dashboard Devices Found</div>
-                  )}
-                </div>
-              </Card>
-            </Box>
-            <Grid container spacing={3}>
-              <Grid md={6} xs={12}>
-                <PowerUsageToday data={graphData?.readingHpurlyResponse} />
-              </Grid>
-              <Grid md={6} xs={12}>
-                <Orders data={graphData?.data} />
-              </Grid>
-            </Grid>
+                  <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
+                    <div className="scroll-table-container device-table" onScroll={handleScroll}>
+                      {filteredData && filteredData?.length ? (
+                        <DeviceTable rows={filteredData} />
+                      ) : (
+                        <div style={{ textAlign: 'center', marginTop: '20px' }}>No Dashboard Devices Found</div>
+                      )}
+                    </div>
+                  </Card>
+                </Box>
+                <Grid container spacing={3}>
+                  <Grid md={6} xs={12}>
+                    <PowerUsageToday data={graphData?.readingHpurlyResponse} />
+                  </Grid>
+                  <Grid md={6} xs={12}>
+                    <Orders data={graphData?.data} />
+                  </Grid>
+                </Grid>
+              </>
+            )}
           </Stack>
         </Container>
       </main>

@@ -77,10 +77,10 @@ const Page = ({ userData }) => {
         first_name: userData?.first_name,
         last_name: userData?.last_name,
         email: userData?.email,
-        phone_number: userData?.phone_number,
-        website: userData?.website,
+        phone_number: userData?.company_phone_number,
+        website: userData?.company_website,
         country: userData?.country,
-        state: userData?.state,
+        state: userData?.company_state,
         city: userData?.city,
         zipcode: userData?.zipcode,
         address: userData?.address,
@@ -131,6 +131,8 @@ const Page = ({ userData }) => {
     return err;
   };
   const handleSubmit = (event) => {
+    console.log("We have user data",cuser)
+
     event.preventDefault();
     if (checkAllErrors()) {
       return;

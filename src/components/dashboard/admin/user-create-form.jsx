@@ -222,6 +222,7 @@ export function UserCreateForm({ onDataFromChild }) {
                   <select
                     placeholder="Select a permission"
                     defaultValue={cuser?.permission_profile}
+                    className="form-control"
                     // sx={{ width: 240 }}
                     onChange={(value) => value && handleElementChange(value.target.value, 'permission_profile')}
                   >
