@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
+import { login } from '@/reduxData/rootAction';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
@@ -17,6 +18,7 @@ import Typography from '@mui/joy/Typography';
 import { Eye as EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
 import { EyeSlash as EyeSlashIcon } from '@phosphor-icons/react/dist/ssr/EyeSlash';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
@@ -27,8 +29,6 @@ import { useUser } from '@/hooks/use-user';
 import { Image } from '@/components/core/image';
 import { RouterLink } from '@/components/core/link';
 import { toast } from '@/components/core/toaster';
-import { login } from '@/reduxData/rootAction';
-
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
@@ -45,6 +45,7 @@ export function SignInForm() {
     email: '',
     password: '',
   });
+  const { t, i18n } = useTranslation();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -58,13 +59,13 @@ export function SignInForm() {
 
     if (formData.password === '') {
       setPassworderror('Password is Required');
-      return
+      return;
     } else {
       setPassworderror(null);
     }
 
     if (formData.email !== '' && formData.password !== '' && !emailerror) {
-      await login(formData, dispatch,navigate);
+      await login(formData, dispatch, navigate);
     }
   };
 
@@ -91,20 +92,27 @@ export function SignInForm() {
     }
   };
 
+  const changeLanguage = (lng, e) => {
+    e.preventDefault();
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <form className="authform">
       <Stack spacing={3}>
+        {/* <button onClick={(e) => changeLanguage('en', e)}>en</button>
+        <button onClick={(e) => changeLanguage('es', e)}>es</button> */}
         <Stack spacing={2}>
           <Typography level="h3" textAlign="center">
-            Sign In 
+            {t('SignIn')}
           </Typography>
           <FormControl>
-            <FormLabel>Email Address</FormLabel>
+            <FormLabel>{t('EmailAddr')}</FormLabel>
             <Input type="email" name="email" onChange={(e) => handleInputChange(e)} />
             {emailerror && <FormHelperText style={{ color: 'red' }}>{emailerror}</FormHelperText>}
           </FormControl>
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t('Password')}</FormLabel>
             <Input
               endDecorator={
                 <IconButton
@@ -127,7 +135,7 @@ export function SignInForm() {
           </FormControl>
           <div>
             <Link component={RouterLink} href={paths['auth.custom.reset-password']}>
-              Forgot password?
+              {t('ForgotPass')}
             </Link>
           </div>
           <Button

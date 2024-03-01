@@ -11,6 +11,7 @@ import FormHelperText from '@mui/joy/FormHelperText';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -20,20 +21,22 @@ export function ResetPasswordForm() {
   const [emailAdd, setemailAdd] = useState('');
   const [emailError, setemailError] = useState(null);
 
+  const { t, i18n } = useTranslation();
+
   const handleSubmit = async (e) => {
     const redirect = true;
     e.preventDefault();
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (emailAdd == '') {
       setemailError('Email is Required');
-      return
+      return;
     } else if (!exptest.test(emailAdd)) {
       setemailError('Email is Invalid');
-      return
+      return;
     } else {
       setemailError(null);
     }
-    if (emailAdd !== '' || emailAdd !== null && !emailError) {
+    if (emailAdd !== '' || (emailAdd !== null && !emailError)) {
       await forgot_password(emailAdd, dispatch, navigate, redirect);
     }
   };
@@ -51,15 +54,14 @@ export function ResetPasswordForm() {
     }
   };
 
-
   return (
     <form className="authform">
       <Stack spacing={3}>
         <Stack spacing={2}>
           <FormControl>
-            <FormLabel>Email Address</FormLabel>
+            <FormLabel>{t('EmailAddr')}</FormLabel>
             <Input type="email" name="email" onChange={(e) => handleInputChange(e)} />
-          {emailError && <FormHelperText style={{ color: 'red' }}>{emailError}</FormHelperText>}
+            {emailError && <FormHelperText style={{ color: 'red' }}>{emailError}</FormHelperText>}
           </FormControl>
           <Button
             onClick={(e) => handleSubmit(e)}
@@ -67,7 +69,7 @@ export function ResetPasswordForm() {
             type="submit"
             style={{ padding: '10px 10px', background: '#0074be' }}
           >
-            Send Reset Link
+            {t('SendResetLink')}
           </Button>
         </Stack>
       </Stack>

@@ -3,15 +3,19 @@ import Avatar from '@mui/joy/Avatar';
 import Card from '@mui/joy/Card';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-
-import { Power as PowerIcon } from '@phosphor-icons/react/dist/ssr/Power';
 import { Drop as DropIcon } from '@phosphor-icons/react/dist/ssr/Drop';
 import { Lightning as LightningIcon } from '@phosphor-icons/react/dist/ssr/Lightning';
 import { Plugs as PlugsIcon } from '@phosphor-icons/react/dist/ssr/Plugs';
+import { Power as PowerIcon } from '@phosphor-icons/react/dist/ssr/Power';
+import { useTranslation } from 'react-i18next';
 
 export function DeviceSummary({ total, active, completed, canceled }) {
+  const { t } = useTranslation();
   return (
-    <Card sx={{display: 'grid', gridTemplateColumns: { sm: 'repeat(2, 1fr)',lg: 'repeat(4, 1fr)',},
+    <Card
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: { sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' },
         gap: 2,
         '& > *': {
           px: {
@@ -42,25 +46,25 @@ export function DeviceSummary({ total, active, completed, canceled }) {
       {[
         {
           id: 1,
-          label: 'Total Devices',
+          label: t('TotalDevices'),
           value: total,
           icon: PowerIcon,
         },
         {
           id: 2,
-          label: 'Water Meters',
+          label: t('WaterMeters'),
           value: active,
           icon: DropIcon,
         },
         {
           id: 3,
-          label: 'Electricity Meters',
+          label: t('ElectricityMeters'),
           value: completed,
-          icon: LightningIcon ,
+          icon: LightningIcon,
         },
         {
           id: 4,
-          label: 'Offline Devices',
+          label: t('OfflineDevices'),
           value: canceled,
           icon: PlugsIcon,
         },

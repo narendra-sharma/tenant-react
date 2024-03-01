@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { get_device_bySerialNumber, update_device_renaming } from '@/reduxData/devices/deviceAction';
 import { change_password, get_login_history } from '@/reduxData/user/userAction';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
@@ -11,18 +12,19 @@ import List from '@mui/joy/List';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import { config } from '@/config';
 import { SessionItem } from '@/components/dashboard/account/session-item';
-import { get_device_bySerialNumber, update_device_renaming } from '@/reduxData/devices/deviceAction';
 
 const metadata = {
   title: `Security | ${config.site.name}`,
 };
 
 export function Page() {
+  const { t } = useTranslation();
   const [formData, setformData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -35,21 +37,20 @@ export function Page() {
     confirmPassword: '',
   });
 
-  const [devicePassword, setDevicePassword]= useState(null)
-  const [deviceName, setDeviceName] = useState(null)
+  const [devicePassword, setDevicePassword] = useState(null);
+  const [deviceName, setDeviceName] = useState(null);
 
   React.useEffect(() => {
-    const serialNumber = localStorage.getItem('serial_number')
+    const serialNumber = localStorage.getItem('serial_number');
     const fetchData = async () => {
       try {
-        const data = await get_device_bySerialNumber(serialNumber,dispatch);
-        setDevicePassword(data.data.data.device_renaming)
-        setDeviceName(data.data.data.device_name)
+        const data = await get_device_bySerialNumber(serialNumber, dispatch);
+        setDevicePassword(data.data.data.device_renaming);
+        setDeviceName(data.data.data.device_name);
       } catch (error) {
-        console.error("Error in useEffect:", error);
       }
     };
-    if(serialNumber){
+    if (serialNumber) {
       fetchData();
     }
   }, []);
@@ -102,10 +103,14 @@ export function Page() {
     }));
   };
 
-  const updateDevicePassword=()=>{
-    const serialNumber = localStorage.getItem('serial_number')
-    update_device_renaming({device_renaming:devicePassword,serial_numer:serialNumber,device_name:deviceName},dispatch,true)
-  }
+  const updateDevicePassword = () => {
+    const serialNumber = localStorage.getItem('serial_number');
+    update_device_renaming(
+      { device_renaming: devicePassword, serial_numer: serialNumber, device_name: deviceName },
+      dispatch,
+      true
+    );
+  };
   return (
     <React.Fragment>
       <Helmet>
@@ -114,10 +119,10 @@ export function Page() {
       <Stack component="main" divider={<Divider />} spacing={5}>
         <Stack divider={<Divider />} spacing={5}>
           <Stack spacing={3}>
-            <Typography level="h4">Change Password</Typography>
+            <Typography level="h4">{t('ChangePassword')}</Typography>
             <Stack spacing={3} sx={{ maxWidth: 'sm' }}>
               <FormControl>
-                <FormLabel>Current password</FormLabel>
+                <FormLabel>{t('CurrentPassword')}</FormLabel>
                 <Input
                   name="oldPassword"
                   type="password"
@@ -125,11 +130,11 @@ export function Page() {
                   onChange={(e) => handleChange(e.target.value, 'oldPassword')}
                 />
                 {errors?.oldPassword ? (
-                  <FormHelperText style={{ color: 'red' }}>Current password is required.</FormHelperText>
+                  <FormHelperText style={{ color: 'red' }}>{t('CurrPassError')}</FormHelperText>
                 ) : null}
               </FormControl>
               <FormControl>
-                <FormLabel>New password</FormLabel>
+                <FormLabel>{t('NewPassword')}</FormLabel>
                 <Input
                   name="newPassword"
                   type="password"
@@ -138,13 +143,13 @@ export function Page() {
                 />
                 {errors.newPassword && (
                   <FormHelperText style={{ color: 'red' }}>
-                    {errors.newPassword === 'required' ? 'New password is required' : 'Your new password must be more than 12 characters including 1 uppercase letter, 1 lowercase letter, 1 number, 1 symbol.'}
+                    {errors.newPassword === 'required' ? t('NewPassError') : t('PassRegexError')}
                   </FormHelperText>
                 )}
               </FormControl>
 
               <FormControl>
-                <FormLabel>Confirm new password</FormLabel>
+                <FormLabel>{t('ConfirmNewPassword')}</FormLabel>
                 <Input
                   name="confirmPassword"
                   type="password"
@@ -153,26 +158,24 @@ export function Page() {
                 />
                 {errors?.confirmPassword && (
                   <FormHelperText style={{ color: 'red' }}>
-                    {errors?.confirmPassword === 'required'
-                      ? 'Confirm password is required'
-                      : 'Password does not match'}
+                    {errors?.confirmPassword === 'required' ? t('ConfirmPassError') : t('PassworNotMathcError')}
                   </FormHelperText>
                 )}
               </FormControl>
             </Stack>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
               <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
-                Discard
+                {t('Discard')}
               </Button>
               <Button type="submit" onClick={(e) => handleSubmit(e)}>
-                Save Changes
+                {t('SaveChanges')}
               </Button>
             </Stack>
           </Stack>
         </Stack>
         <Stack spacing={3}>
           <Stack spacing={3} sx={{ maxWidth: 'sm' }}>
-            <Typography level="h4">Password Device Renaming</Typography>
+            <Typography level="h4">{t('PasswordDeviceRenaming')}</Typography>
             <FormControl>
               <FormLabel>Password</FormLabel>
               <Input
@@ -187,16 +190,18 @@ export function Page() {
 
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
             <Button color="neutral" variant="outlined" onClick={(e) => navigate('../')}>
-              Discard
+              {t('Discard')}
             </Button>
-            <Button type="submit" onClick={()=>updateDevicePassword()}>Save Changes</Button>
+            <Button type="submit" onClick={() => updateDevicePassword()}>
+              {t('SaveChanges')}
+            </Button>
           </Stack>
         </Stack>
 
         <Stack spacing={3}>
           <div>
-            <Typography level="h4">Login History</Typography>
-            <Typography level="body-sm">Your recent login activity</Typography>
+            <Typography level="h4">{t('LoginHistory')}</Typography>
+            <Typography level="body-sm">{t('YourRecentLoginActivity')}</Typography>
           </div>
           <List sx={{ '--List-gap': '24px' }}>
             {loginHistory.map((session) => (

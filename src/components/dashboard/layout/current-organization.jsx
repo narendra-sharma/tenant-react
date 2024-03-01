@@ -1,41 +1,39 @@
 'use client';
 
 import * as React from 'react';
+import { get_tenants } from '@/reduxData/rootAction';
 import Box from '@mui/joy/Box';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { CaretUpDown as CaretUpDownIcon } from '@phosphor-icons/react/dist/ssr/CaretUpDown';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { usePopover } from '@/hooks/use-popover';
 import { Image } from '@/components/core/image';
 
 import { OrganizationsPopover } from './organizations-popover';
-import {  useDispatch, useSelector } from 'react-redux';
-import { get_tenants } from '@/reduxData/rootAction';
 
 export function CurrentOrganization() {
-  const [tenants, setTenants] = React.useState()
-  const dispatch= useDispatch()
+  const [tenants, setTenants] = React.useState();
+  const dispatch = useDispatch();
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await get_tenants(dispatch);
-        setTenants(data)
-      } catch (error) {
-      }
+        setTenants(data);
+      } catch (error) {}
     };
-  
+
     fetchData();
   }, []);
-  const select = useSelector((state)=>state)
+  const select = useSelector((state) => state);
   const [organizationId, setOrganizationId] = React.useState('ORG-002');
   const popover = usePopover();
 
-
   const [dataFromChild, setDataFromChild] = React.useState(null);
-const handleDataFromChild = (data) => {
-  setDataFromChild(data);
-};
+  const handleDataFromChild = (data) => {
+    setDataFromChild(data);
+  };
 
   return (
     <React.Fragment>
@@ -62,13 +60,12 @@ const handleDataFromChild = (data) => {
               height: '40px',
               p: '8px',
               width: '40px',
-              display:'none',
+              display: 'none',
             }}
-          >
-          </Box>
+          ></Box>
           <Box sx={{ flexGrow: 1 }}>
             <Typography fontSize="xs" textColor="neutral.400">
-              {dataFromChild ? dataFromChild?.tenant_name:"Select Tenant" }
+              {dataFromChild ? dataFromChild?.tenant_name : 'Select Tenant'}
             </Typography>
             <Typography fontSize="sm" fontWeight="md" textColor="inherit">
               {/* {organization?.name} */}
@@ -88,4 +85,3 @@ const handleDataFromChild = (data) => {
     </React.Fragment>
   );
 }
-

@@ -10,6 +10,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { z as zod } from 'zod';
 
@@ -35,6 +36,7 @@ export function UpdatePasswordForm() {
   const [supabaseClient] = React.useState(createSupabaseClient());
   const navigate = useNavigate();
   const [isPending, setIsPending] = React.useState(false);
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -72,18 +74,18 @@ export function UpdatePasswordForm() {
       <Stack spacing={3}>
         <Stack spacing={2}>
           <FormControl color={errors.password ? 'danger' : undefined}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t('Password')}</FormLabel>
             <Input type="password" {...register('password')} />
             {errors.password ? <FormHelperText>{errors.password.message}</FormHelperText> : null}
           </FormControl>
           <FormControl color={errors.confirm ? 'danger' : undefined}>
-            <FormLabel>Confirm Password</FormLabel>
+            <FormLabel>{t('ConfirmPass')}</FormLabel>
             <Input type="password" {...register('confirm')} />
             {errors.confirm ? <FormHelperText>{errors.confirm.message}</FormHelperText> : null}
           </FormControl>
           {errors.root ? <Alert color="danger">{errors.root.message}</Alert> : null}
           <Button disabled={isPending} fullWidth type="submit">
-            Update Password
+            {t('UpdatePass')}
           </Button>
         </Stack>
       </Stack>

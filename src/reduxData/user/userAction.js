@@ -254,13 +254,14 @@ export const get_user_profile_details = async (dispatch) => {
   }
 };
 
-export const create_user = async (data, dispatch) => {
+export const create_user = async (data, dispatch,navigate) => {
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
     const res = await axios.post(`${url}admin/add_user`, data, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
+      navigate('../')
       return res.data;
     } else {
       toast.error(res?.data?.message);
@@ -272,13 +273,14 @@ export const create_user = async (data, dispatch) => {
   }
 };
 
-export const update_user = async (data, dispatch) => {
+export const update_user = async (data, dispatch,navigate) => {
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
     const res = await axios.put(`${url}admin/edit_user`, data, headers);
     if (res?.data?.status) {
       toast.success(res?.data?.message);
+      navigate('../')
       // get_tenants(dispatch)
     } else {
       toast.error(res?.data?.message);

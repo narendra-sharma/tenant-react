@@ -8,14 +8,14 @@ import {
 import { FormControl } from '@mui/base';
 import { Avatar, Button, Divider, FormHelperText, FormLabel, Grid, Table, Typography } from '@mui/joy';
 import Input from '@mui/joy/Input';
-import { Box, Stack } from '@mui/system';
+import { Box, Stack, textTransform } from '@mui/system';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import { MeterGraph } from './meterGraph';
 
 const DeviceData = ({ deviceData, todaysReading }) => {
-
+  console.log("deviceData?.meter_type",todaysReading)
   const dispatch = useDispatch();
   const { tenantId } = useParams();
   const serialNumber = tenantId;
@@ -24,7 +24,6 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       get_device_bySerialNumber(serialNumber, dispatch);
       get_today_device_reading(serialNumber, dispatch);
     }
-
   }, [serialNumber]);
   const [device, setDevice] = React.useState({
     device_name: deviceData?.device_name,
@@ -35,7 +34,7 @@ const DeviceData = ({ deviceData, todaysReading }) => {
     electricity_reading: deviceData?.meter_type == 'electricity' ? deviceData?.last_reading : '',
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     setDevice({
       device_name: deviceData?.device_name,
       client_first_name: deviceData?.client_firstname,
@@ -43,15 +42,15 @@ const DeviceData = ({ deviceData, todaysReading }) => {
       serial_number: deviceData?.serial_number,
       water_reading: deviceData?.meter_type == 'water' ? deviceData?.last_reading : '',
       electricity_reading: deviceData?.meter_type == 'electricity' ? deviceData?.last_reading : '',
-    })
-  },[deviceData])
+    });
+  }, [deviceData]);
 
   const [errors, setErrors] = React.useState({
     device_name: '',
     client_first_name: '',
     client_last_name: '',
   });
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleElementChange = (value, label) => {
     setDevice((prev) => ({ ...prev, [label]: value }));
     setErrors((prev) => ({
@@ -79,18 +78,24 @@ const navigate = useNavigate()
       return;
     }
     let data = deviceData;
-    data.client_first_name = device.client_first_name;
-    data.client_last_name = device.client_last_name;
+    data.client_firstname = device.client_first_name;
+    data.client_lastname = device.client_last_name;
     data.device_name = device.device_name;
-    data.device_id= deviceData?._id
-    delete data.key2
-    update_device(data, dispatch);
+    data.serial_number = serialNumber;
+    delete data.key2;
+    update_device(data, dispatch, navigate);
+    // navigate('/devices')
   };
+
+  const convertDateFormat= (data)=>{
+    const originalDate = new Date(data);
+    return `${originalDate.getDate()}/${originalDate.getMonth() + 1}/${originalDate.getFullYear()} - ${originalDate.getHours()}:${originalDate.getMinutes()}`;
+  }
 
   return (
     <Box padding={3}>
       <Stack direction="row" padding={3} sx={{ alignItems: 'center' }}>
-        <Box sx={{ '--Avatar-size': '120px', position: 'relative' }}>
+        <Box sx={{ '--Avatar-size': '120px', position: 'relative', marginRight: '10px' }}>
           <Avatar src="">{`${deviceData && deviceData?.client_firstname[0]}${
             deviceData && deviceData?.client_lastname[0]
           }`}</Avatar>
@@ -102,15 +107,13 @@ const navigate = useNavigate()
       </Stack>
 
       <Stack component="main" divider={<Divider />} padding={3}>
-        <Typography level="h4">My details</Typography>
+        {/* <Typography level="h4">My details</Typography> */}
         <Box sx={{ maxWidth: 'lg', alignItems: 'center' }}>
           <form>
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl value={device?.device_name || ''}>
-                  <FormLabel>
-                    Device Name <sup>*</sup>
-                  </FormLabel>
+                  <FormLabel>Device Name</FormLabel>
                   <Input
                     name="device_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
@@ -123,9 +126,7 @@ const navigate = useNavigate()
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl disabled={true} value={deviceData?.serial_number || ''}>
-                  <FormLabel>
-                    Serial Number <sup>*</sup>
-                  </FormLabel>
+                  <FormLabel>Serial Number</FormLabel>
                   <Input
                     value={deviceData?.serial_number}
                     name="serial_number"
@@ -134,10 +135,8 @@ const navigate = useNavigate()
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl value={device?.client_first_name}>
-                  <FormLabel>
-                    Client First Name <sup>*</sup>
-                  </FormLabel>
+                <FormControl value={device?.client_first_name || ''}>
+                  <FormLabel>Client First Name</FormLabel>
                   <Input
                     name="client_first_name"
                     type="text"
@@ -152,10 +151,8 @@ const navigate = useNavigate()
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl value={device?.client_last_name}>
-                  <FormLabel>
-                    Client Last Name <sup>*</sup>
-                  </FormLabel>
+                <FormControl value={device?.client_last_name || ''}>
+                  <FormLabel>Client Last Name</FormLabel>
                   <Input
                     name="client_last_name"
                     type="text"
@@ -170,25 +167,15 @@ const navigate = useNavigate()
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel>
-                    Last Reading Water (Liters) <sup>*</sup>
-                  </FormLabel>
-                  <Input
-                    disabled={true}
-                    value={device.water_reading}
-                    name="water_reading"
-                    type="text"
-                    style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                  />
+                <FormControl disabled={true} value={device.water_reading || ''}>
+                  <FormLabel>Last Reading Water (Liters)</FormLabel>
+                  <Input name="water_reading" type="text" style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />
                 </FormControl>
               </Grid>
 
               <Grid md={6} xs={12}>
-                <FormControl>
-                  <FormLabel value={device.electricity_reading} disabled>
-                    Last Reading Electricity (kWh) <sup>*</sup>
-                  </FormLabel>
+                <FormControl disabled={true} value={device.electricity_reading || ''}>
+                  <FormLabel>Last Reading Electricity (kWh)</FormLabel>
                   <Input name="" type="text" disabled={true} style={{ borderColor: '#EAEEF6', fontSize: '14px' }} />
                 </FormControl>
               </Grid>
@@ -203,49 +190,52 @@ const navigate = useNavigate()
         <Button onClick={(event) => handleSubmit(event)}>Save Changes</Button>
       </Stack>
 
-      <Grid container spacing={3}>
+      <h3>
+        Overview <span style={{ textTransform: 'capitalize' }}>{deviceData?.meter_type}</span> Usage
+      </h3>
+      <Grid container spacing={3} mt={3}>
         <Grid md={6} xs={12}>
-        <Typography level="4">Overview {deviceData?.meter_type} Usage</Typography>
-        <Table>
-          <thead>
-            <tr>
-              <th>Date Reading {deviceData?.meter_type}</th>
-              <th>Reading {deviceData?.meter_type} {deviceData?.meter_type=='electricity'?'(kWh)':'(Liters)'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {todaysReading && todaysReading.length > 0 ? (
-              todaysReading.map((reading) => (
-                <tr key={reading?._id}>
-                  <td>{new Date(reading?.updatedAt).toLocaleDateString()}</td>
-                  <td>{reading?.last_reading}</td>
-                </tr>
-              ))
-            ) : (
+          <table style={{border:'1px solid white', padding:'12px',borderRadius:'10px'}}>
+            <thead>
               <tr>
-                <td colSpan="2">No readings available for today</td>
+                <th>
+                  Date Reading <span style={{ textTransform: 'capitalize' }}>{deviceData?.meter_type}</span>
+                </th>
+                <th>
+                  Reading <span style={{ textTransform: 'capitalize' }}>{deviceData?.meter_type}</span>{' '}
+                  {deviceData?.meter_type == 'electricity' ? '(kWh)' : '(Liters)'}
+                </th>
               </tr>
-            )}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {todaysReading && todaysReading.length > 0 ? (
+                todaysReading.map((reading) => (
+                  <tr key={reading?._id}>
+                    <td>{convertDateFormat(reading?.updatedAt)}</td>
+                    <td>{reading?.last_reading}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="2">No readings available for today</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </Grid>
         <Grid md={6} xs={12}>
-        <MeterGraph
-        data={[
-          todaysReading[0]
-        ]}
-        expenses="$57,139"
-        expensesDiff="11"
-        expensesTrend="down"
-        income="$309,761"
-        incomeDiff="14"
-        incomeTrend="up"
-        label={`Overview ${deviceData?.meter_type} Usage`}
-      />
+          <MeterGraph
+            data={todaysReading}
+            expenses="$57,139"
+            expensesDiff="11"
+            expensesTrend="down"
+            income="$309,761"
+            incomeDiff="14"
+            incomeTrend="up"
+            label={`${deviceData?.meter_type.charAt(0).toUpperCase() + deviceData?.meter_type.slice(1)} Usage ${deviceData?.meter_type=='water'?'(Liters)': '(kWh)'}`}
+          />
         </Grid>
       </Grid>
-
-    
     </Box>
   );
 };

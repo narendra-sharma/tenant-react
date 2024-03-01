@@ -6,6 +6,7 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { ArrowLeft as ArrowLeftIcon } from '@phosphor-icons/react/dist/ssr/ArrowLeft';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { config } from '@/config';
 import { paths } from '@/paths';
@@ -19,6 +20,7 @@ const metadata = {
 };
 
 export function CreateUser() {
+  const { t } = useTranslation();
   const [dataFromChild, setDataFromChild] = React.useState(null);
   const handleDataFromChild = (data) => {
     setDataFromChild(data);
@@ -34,17 +36,19 @@ export function CreateUser() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                {dataFromChild==='edit'?'Update':'Create'} User
+                  {dataFromChild === 'edit' ? t('Update') : t('Create')} {t('User')}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
-                  <BreadcrumbsItem  type="end">Admin</BreadcrumbsItem>
-                  <BreadcrumbsItem  href={paths['dashboard.admin.user']}>user</BreadcrumbsItem>
-                  <BreadcrumbsItem type="end">{dataFromChild==='edit'?'Update':'Create'} User</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">{t('Admin')}</BreadcrumbsItem>
+                  <BreadcrumbsItem href={paths['dashboard.admin.user']}>{t('User')}</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">
+                    {dataFromChild === 'edit' ? 'Update' : 'Create'} {t('User')}
+                  </BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
             </Stack>
-            <UserCreateForm onDataFromChild={handleDataFromChild}/>
+            <UserCreateForm onDataFromChild={handleDataFromChild} />
           </Stack>
         </Container>
       </main>

@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
+import { Trans, useTranslation } from 'react-i18next';
 
 import { paths } from '@/paths';
 import { SplitLayout } from '@/components/auth/split-layout';
@@ -14,6 +15,7 @@ export const metadata = {
 };
 
 export function Page() {
+  const { t } = useTranslation();
   return (
     <SplitLayout>
       <Stack spacing={3}>
@@ -23,7 +25,7 @@ export function Page() {
           </Box>
         </Stack>
         <Typography level="h3" textAlign="center">
-          Update Password
+          {t('UpdatePass')}
         </Typography>
         <UpdatePasswordForm />
       </Stack>

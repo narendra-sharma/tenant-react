@@ -3,8 +3,8 @@ import { paths } from '@/paths';
 export const layoutConfig = {
   navItems: [
     {
-      key: 'dashboards',
-      title: 'Dashboard',
+      key: 'dashboard',
+      title: 'dashboard',
       items: [
         {
           key: 'dashboard:overview',
@@ -26,12 +26,12 @@ export const layoutConfig = {
         },
         {
           key: 'dashboard:admin',
-          title: 'ADMIN',
+          title: 'Admin',
           icon: 'buildings',
           items: [
             {
               key: 'dashboard:admin:tennats',
-              title: 'Tenant',
+              title: 'Tenants',
               href: paths['dashboard.admin.tennats'],
             },
             {
@@ -51,7 +51,6 @@ export const layoutConfig = {
             },
           ],
         },
-
       ],
     },
   ],

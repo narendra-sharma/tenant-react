@@ -3,6 +3,7 @@ import Box from '@mui/joy/Box';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 import { config } from '@/config';
 import { paths } from '@/paths';
@@ -16,6 +17,7 @@ const metadata = {
 };
 
 export function Page() {
+  const { t } = useTranslation();
   return (
     <React.Fragment>
       <Helmet>
@@ -24,7 +26,7 @@ export function Page() {
       <SplitLayout>
         <Stack spacing={3}>
           <Typography level="h3" textAlign="center">
-            Reset Password
+            {t('ResetPass')}
           </Typography>
           <ResetPasswordForm />
         </Stack>

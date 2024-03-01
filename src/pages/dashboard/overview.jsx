@@ -12,6 +12,7 @@ import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
 
 import { config } from '@/config';
@@ -24,14 +25,14 @@ const metadata = {
   title: `Dashboard | ${config.site.name}`,
 };
 
-export function Page() {
+export function Page({ devices }) {
   const dispatch = useDispatch();
   const [device, setDevices] = React.useState(null);
   const [client, setClient] = React.useState(null);
   const [status, setStatus] = React.useState('');
   const [page, setPage] = React.useState(1);
   const [limit, setLimit] = React.useState(50);
-
+  const { t } = useTranslation();
   React.useEffect(() => {
     // get_dashboard_devices(dispatch, page, limit,device,client, status);
     get_dashboard_devices_reading(dispatch);
@@ -44,10 +45,58 @@ export function Page() {
   const [dashboardDevices, setDashboardDevices] = React.useState(null);
   const [graphData, setGraphData] = React.useState(null);
   const select = useSelector((state) => state);
+
+  const [device, setDevices] = React.useState(null);
+  const [client, setClient] = React.useState(null);
+  const [status, setStatus] = React.useState('');
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(50);
+  const [filteredData, setFilteredData] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await get_devices(dispatch, page, limit, device, client, status);
+        setFilteredData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, [page, limit, device, client, status]);
+
   React.useEffect(() => {
     setDashboardDevices(select?.device?.dashboardDevices);
     setGraphData(select?.device?.dashboard_devices);
-  }, [select]);
+  }, [select?.device?.dashboard_devices]);
+
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && total > devices.length) {
+      setPage(page + 1);
+      get_devices(dispatch, page + 1, limit, device, client, status);
+    }
+  };
+  const disableWindowScroll = () => {
+    document.body.style.overflow = 'hidden';
+    const elements = document.querySelectorAll('.body-pan');
+    elements.forEach((element) => {
+      element.style.overflow = 'hidden';
+    });
+  };
+  const enableWindowScroll = () => {
+    document.body.style.overflow = 'auto';
+    const elements = document.querySelectorAll('.body-pan');
+    elements.forEach((element) => {
+      element.style.overflow = 'auto';
+    });
+  };
+  React.useEffect(() => {
+    disableWindowScroll();
+    return () => {
+      enableWindowScroll();
+    };
+  }, []);
 
   const userPermissions = JSON.parse(localStorage.getItem('permissions'));
   const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
@@ -61,7 +110,7 @@ export function Page() {
           <Stack spacing={3}>
             <div>
               <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                DashBoard
+                {t('Dashboard')}
               </Typography>
             </div>
             <DeviceSummary
@@ -70,13 +119,12 @@ export function Page() {
               completed={dashboardDevices?.electric_meter_count}
               total={dashboardDevices?.device_data_total}
             />
-
             {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && (
             <Box>
               <Grid container spacing={3}>
                 <Grid lg={4} xl={4} xs={12}>
                   <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                    <FormLabel>Device Name</FormLabel>
+                    <FormLabel>{t('DeviceName')}</FormLabel>
                     <Input
                       defaultValue={device}
                       name="device"
@@ -90,21 +138,21 @@ export function Page() {
                 </Grid>
                 <Grid lg={4} xl={4} xs={12}>
                   <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                    <FormLabel>Client Name</FormLabel>
+                    <FormLabel>{t('Tenant')}</FormLabel>
                     <Input
                       defaultValue={client}
+                      name="client"
                       onChange={(e) =>
                         window.setTimeout(() => {
                           setClient(e.target.value);
                         }, 1000)
                       }
-                      name="customer"
                     />
                   </FormControl>
                 </Grid>
                 <Grid lg={4} xl={4} xs={12}>
                   <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
-                    <FormLabel>Status</FormLabel>
+                    <FormLabel>{t('Status')}</FormLabel>
                     <select
                       defaultValue={status}
                       name="status"
@@ -120,10 +168,15 @@ export function Page() {
               </Grid>
 
               <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-                <DeviceTable rows={dashboardDevices?.device_data} />
+                <div className="scroll-table-container device-table" onScroll={handleScroll}>
+                  {filteredData && filteredData?.length ? (
+                    <DeviceTable rows={filteredData} />
+                  ) : (
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>No Dashboard Devices Found</div>
+                  )}
+                </div>
               </Card>
             </Box>
-     )} 
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <PowerUsageToday data={graphData?.readingHpurlyResponse} />
@@ -138,3 +191,12 @@ export function Page() {
     </React.Fragment>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    devices: state.device.devices,
+    total: state.device.total,
+  };
+};
+
+export default connect(mapStateToProps)(Page);
