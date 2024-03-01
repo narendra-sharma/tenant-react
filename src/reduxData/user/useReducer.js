@@ -156,7 +156,7 @@ export const userReducer = (state = initialState, action) => {
         user: action.payload,
       };
     case USER_PERMISSIONS:
-      localStorage.setItem('permissions',JSON.stringify(state?.usersPermissions))
+      localStorage.setItem('permissions',JSON.stringify(action.payload.a))
       return {
         ...state,
         permissions: action.payload?.b,

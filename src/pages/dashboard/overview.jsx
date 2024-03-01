@@ -27,11 +27,21 @@ const metadata = {
 
 export function Page({ devices }) {
   const dispatch = useDispatch();
+  const [device, setDevices] = React.useState(null);
+  const [client, setClient] = React.useState(null);
+  const [status, setStatus] = React.useState('');
+  const [page, setPage] = React.useState(1);
+  const [limit, setLimit] = React.useState(50);
   const { t } = useTranslation();
   React.useEffect(() => {
-    get_dashboard_devices(dispatch);
+    // get_dashboard_devices(dispatch, page, limit,device,client, status);
     get_dashboard_devices_reading(dispatch);
   }, []);
+
+  React.useEffect(() => {
+    get_dashboard_devices(dispatch, page, limit, device, client, status);
+  }, [page, limit, device, client, status]);
+
   const [dashboardDevices, setDashboardDevices] = React.useState(null);
   const [graphData, setGraphData] = React.useState(null);
   const select = useSelector((state) => state);
@@ -109,8 +119,7 @@ export function Page({ devices }) {
               completed={dashboardDevices?.electric_meter_count}
               total={dashboardDevices?.device_data_total}
             />
-
-            {/* {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && ( */}
+            {(userRole == 'admin' || userPermissions && userPermissions['Tenant Management']?.can_view_devices) && (
             <Box>
               <Grid container spacing={3}>
                 <Grid lg={4} xl={4} xs={12}>
@@ -148,7 +157,7 @@ export function Page({ devices }) {
                       defaultValue={status}
                       name="status"
                       onChange={(e) => setStatus(e.target.value)}
-                      className="form-control "
+                      className="form-control"
                     >
                       <option value="">All</option>
                       <option value="online">Online</option>
@@ -168,7 +177,6 @@ export function Page({ devices }) {
                 </div>
               </Card>
             </Box>
-            {/* )} */}
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <PowerUsageToday data={graphData?.readingHpurlyResponse} />

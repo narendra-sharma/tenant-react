@@ -74,6 +74,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
       });
   }, []);
 
+  const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role
+  const permissions = JSON.parse(localStorage.getItem('permissions'))
+
   const [errors, setErrors] = React.useState({
     device_name: '',
     serial_number: '',
@@ -240,9 +243,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.devices']} variant="outlined">
             {t('Cancel')}
           </Button>
-          <Button type="submit">
-            {id?.deviceId ? t('Update') : t('Create')} {t('Device')}
-          </Button>
+          <Button type="submit" disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_device_detail} >{id?.deviceId ? 'Update' : 'Create'} {t('Device')}</Button>
         </Stack>
       </Stack>
     </form>

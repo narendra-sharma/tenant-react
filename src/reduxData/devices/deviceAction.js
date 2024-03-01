@@ -36,7 +36,7 @@ export const get_devices = async (dispatch, page, limit, device, client, status)
     const res = await axios.get(
       `${url}admin/device_list?page=${page}&limit=${limit}${device ? '&device=' + device : ''}${
         client ? '&client=' + client : ''
-      }${'&status='+status}`,
+      }${status ?'&status=' + status :''}`,
       headers
     );
     if (res?.data?.status) {
@@ -147,11 +147,13 @@ export const get_single_device = async (id, dispatch) => {
   }
 };
 
-export const get_dashboard_devices = async (dispatch)=>{
+export const get_dashboard_devices = async (dispatch, page, limit, device, client, status)=>{
   dispatch(start_loading());
   try{
     headers.headers['x-access-token'] = token();
-    const res = await axios.get(`${url}admin/dashboard`,headers);
+    const res = await axios.get(`${url}admin/dashboard?page=${page}&limit=${limit}${device ? '&device=' + device : ''}${
+      client ? '&client=' + client : ''
+    }${status ?'&status=' + status :''}`,headers);
     if(res?.data?.status){
       // toast.success(res?.data?.message);
       dispatch({type:DASHBOARD_DEVICES , payload:res?.data})

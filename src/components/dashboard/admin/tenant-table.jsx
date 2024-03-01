@@ -12,6 +12,7 @@ import { paths } from '@/paths';
 import { DataTable } from '@/components/core/data-table';
 import { RouterLink } from '@/components/core/link';
 
+
 export function DeviceTable({ rows }) {
   const { t } = useTranslation();
   const columns = [

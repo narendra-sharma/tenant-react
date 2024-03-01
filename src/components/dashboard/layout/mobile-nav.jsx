@@ -106,7 +106,7 @@ export function MobileNav({ items, onClose, open }) {
         <NoSSR>
           <ColorSchemeSwitch />
         </NoSSR>
-        {/* <CurrentUser onNavigate={onClose} /> */}
+        <CurrentUser onNavigate={onClose} />
       </Stack>
     </Drawer>
   );

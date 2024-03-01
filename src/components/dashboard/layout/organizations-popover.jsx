@@ -32,6 +32,7 @@ export function OrganizationsPopover({ anchorEl, onChange, onClose, open,onDataF
   const handleTenant = (data)=>{
     onDataFromChild(data)
   }
+
   return (
     <Popup
       anchorEl={anchorEl}
