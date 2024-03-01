@@ -134,7 +134,7 @@ const Tenants = ({ tenants, total }) => {
             {tenants && tenants.length ? (
               <DeviceTable rows={tenants} />
             ) : (
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Tenants Found</div>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Tenant Found</div>
             )}
           </div>
         </Card>

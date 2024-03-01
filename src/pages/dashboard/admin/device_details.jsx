@@ -21,20 +21,11 @@ const metadata = {
 };
 
 export function Device_details({ deviceData }) {
-  const [meterStatus, setMeterStatus] = React.useState(
-    deviceData?.data?.device_status == 'online'
-      ? 'success'
-      : deviceData?.data?.device_status == 'offline'
-        ? 'danger'
-        : ''
-  );
-
-  const [particularDeviceData, setParticularDeviceData] = React.useState(null);
-
   const { tenantId } = useParams();
   const serialNumber = tenantId;
   const dispatch = useDispatch();
   const [deviceDetails, setDeviceDetails] = React.useState();
+
 
   React.useEffect(() => {
     if (serialNumber) {
@@ -60,8 +51,8 @@ export function Device_details({ deviceData }) {
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
                   {t('DeviceDetails')}
-                  {deviceDetails && deviceDetails?.device_name}
-                  <Chip variant="success" color={meterStatus}>
+                  {deviceDetails && deviceDetails?.device_name +"  "}
+                  <Chip color={deviceDetails?.device_status == 'online'?'success':deviceDetails?.device_status == 'offline'?'danger':''}>
                     {deviceDetails && deviceDetails.device_status}
                   </Chip>
                 </Typography>

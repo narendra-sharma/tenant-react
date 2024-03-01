@@ -106,7 +106,7 @@ const Users = ({ users, total }) => {
             {users && users.length ? (
               <UserTable rows={users} />
             ) : (
-              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Tenants Found</div>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>No User Found</div>
             )}
           </div>
         </Card>

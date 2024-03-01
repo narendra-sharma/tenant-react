@@ -31,7 +31,7 @@ export const layoutConfig = {
           items: [
             {
               key: 'dashboard:admin:tennats',
-              title: 'Tenants',
+              title: 'Tenant',
               href: paths['dashboard.admin.tennats'],
             },
             {

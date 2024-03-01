@@ -17,7 +17,7 @@ import { Plus } from '@phosphor-icons/react/dist/ssr/Plus';
 import Multiselect from 'multiselect-react-dropdown';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { paths } from '@/paths';
 import { RouterLink } from '@/components/core/link';
@@ -25,6 +25,7 @@ import { RouterLink } from '@/components/core/link';
 export function UserCreateForm({ onDataFromChild }) {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const { t } = useTranslation();
+  const navigate = useNavigate()
   const [cuser, setCuser] = React.useState({
     first_name: '',
     last_name: '',
@@ -123,10 +124,10 @@ export function UserCreateForm({ onDataFromChild }) {
     cuser.tenant_ids = cuser.tenant_ids.map((tenant) => tenant._id);
     if (id?.userId) {
       cuser.user_id = id?.userId;
-      update_user(cuser, dispatch);
+      update_user(cuser, dispatch,navigate);
       cuser.tenant_ids = tempData;
     } else {
-      create_user(cuser, dispatch);
+      create_user(cuser, dispatch,navigate);
       cuser.tenant_ids = tempData;
     }
   };
@@ -134,6 +135,10 @@ export function UserCreateForm({ onDataFromChild }) {
   const onSelect = (selectedList, selectedItem) => {
     handleElementChange(selectedList, 'tenant_ids');
   };
+
+  const onRemove = (selectedList, removedItem)=>{
+    handleElementChange(selectedList, 'tenant_ids');
+  }
   return (
     <form
       onSubmit={(event) => {
@@ -204,6 +209,7 @@ export function UserCreateForm({ onDataFromChild }) {
                       options={tenatntList.data}
                       selectedValues={cuser.tenant_ids}
                       onSelect={onSelect}
+                      onRemove={onRemove}
                       displayValue="tenant_name"
                     />
                   )}
@@ -213,16 +219,16 @@ export function UserCreateForm({ onDataFromChild }) {
               <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>{t('Permission')}</FormLabel>
-                  <Select
+                  <select
                     placeholder="Select a permission"
-                    defaultValue={cuser.permission_profile}
+                    defaultValue={cuser?.permission_profile}
                     // sx={{ width: 240 }}
-                    onChange={(value) => value && handleElementChange(value.target.textContent, 'permission_profile')}
+                    onChange={(value) => value && handleElementChange(value.target.value, 'permission_profile')}
                   >
-                    <Option value="tenant_manager">Tenant Manager</Option>
-                    <Option value="tenant_user">Tenant User</Option>
-                    <Option value="tenant">Tenant</Option>
-                  </Select>
+                    <option value="tenant_manager">Tenant Manager</option>
+                    <option value="tenant_user">Tenant User</option>
+                    <option value="tenant">Tenant</option>
+                  </select>
                   {errors.permission_profile && (
                     <FormHelperText style={{ color: 'red' }}>{t('PermissionError')}</FormHelperText>
                   )}
@@ -230,6 +236,7 @@ export function UserCreateForm({ onDataFromChild }) {
               </Grid>
             </Grid>
           </Box>
+          <span>
           <Link
             component={RouterLink}
             fontSize="sm"
@@ -240,6 +247,7 @@ export function UserCreateForm({ onDataFromChild }) {
             <Plus size={20} style={{ marginRight: '10px' }} />
             {t('AddAnotherTenant')}
           </Link>
+          </span>
         </Stack>
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
