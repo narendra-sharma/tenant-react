@@ -115,7 +115,7 @@ const Tenants = ({ tenants, total }) => {
               />
             </FormControl>
           </Grid>
-          <Grid lg={4} xl={4} xs={12}>
+          {/* <Grid lg={4} xl={4} xs={12}>
             <FormControl sx={{ maxWidth: '100%', width: '100%' }}>
               <FormLabel>{t('Status')}</FormLabel>
               <select
@@ -129,7 +129,7 @@ const Tenants = ({ tenants, total }) => {
                 <option value="offline">Offline</option>
               </select>
             </FormControl>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container" onScroll={handleScroll}>
