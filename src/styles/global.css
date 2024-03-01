@@ -150,6 +150,12 @@ nav ul li ul li ul li {
   width:15px;
   height: 15px;
 }
+
+.user_popover{
+ box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+ z-index: 999;
+}
+
 @media(max-width:1250px){
   .scroll-table-container{
     height:calc(100vh - 450px);

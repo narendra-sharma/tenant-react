@@ -24,6 +24,7 @@ import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
 
 export function SideNav({ items }) {
+  // console.log("^^^^^^^^",items)
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
 
@@ -139,11 +140,12 @@ function renderNavGroups({ items, pathname }) {
         <ListItemContent>
           {curr.title ? (
             <Box sx={{ py: '12px' }}>
-              <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">
+              <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">  
                 {t(curr.title)}
               </Typography>
             </Box>
           ) : null}
+          {console.log(curr.items)}
           {renderNavItems({ depth: 0, pathname, items: curr.items })}
         </ListItemContent>
       </ListItem>

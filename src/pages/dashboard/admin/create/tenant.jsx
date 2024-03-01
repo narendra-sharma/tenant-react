@@ -41,9 +41,9 @@ export function CreateTennant() {
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
                   <BreadcrumbsItem type="end">{t('Admin')}</BreadcrumbsItem>
-                  <BreadcrumbsItem href={paths['dashboard.admin.tennats']}>{t('Tenants')}</BreadcrumbsItem>
+                  <BreadcrumbsItem href={paths['dashboard.admin.tennats']}>{t('Tenant')}</BreadcrumbsItem>
                   <BreadcrumbsItem type="end">
-                    {dataFromChild === 'edit' ? 'Update' : 'Create'}
+                    {dataFromChild === 'edit' ? 'Update ' : 'Create '}
                     {t('Tenant')}
                   </BreadcrumbsItem>
                 </Breadcrumbs>

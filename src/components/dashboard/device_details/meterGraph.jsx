@@ -49,7 +49,7 @@ export function MeterGraph({
               <XAxis
                 axisLine={false}
                 dataKey="meter_type"
-                interval={0}
+                interval={5}
                 tick={{
                   fill: 'var(--joy-palette-text-secondary)',
                   fontSize: 'var(--joy-fontSize-xs)',

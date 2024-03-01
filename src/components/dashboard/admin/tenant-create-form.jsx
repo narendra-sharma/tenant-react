@@ -61,7 +61,8 @@ export function TenantCreateForm({ onDataFromChild }) {
     address: '',
     connection_string: '',
     db_name: '',
-    device_renaming: '',
+    account_key: '',
+    device_renaming: ''
   });
   const navigate = useNavigate()
   const id = useParams();
@@ -398,7 +399,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.connection_string}
                     onChange={(e) => handleElementChange(e.target.value, 'connection_string')}
                   />
-                  {errors.azure_cosmos && (
+                  {errors.connection_string && (
                     <FormHelperText style={{ color: 'red' }}>{t('AzureCompassDbError')}</FormHelperText>
                   )}
                 </FormControl>
@@ -413,7 +414,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     value={cuser.db_name}
                     onChange={(e) => handleElementChange(e.target.value, 'db_name')}
                   />
-                  {errors.database_name && (
+                  {errors.db_name && (
                     <FormHelperText style={{ color: 'red' }}>{t('AzureCompassDbNameError')}</FormHelperText>
                   )}
                 </FormControl>

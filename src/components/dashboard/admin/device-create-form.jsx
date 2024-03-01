@@ -160,6 +160,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
                   <FormLabel>{t('SerialNumber')}</FormLabel>
                   <Input
                     value={devices?.serial_number}
+                    disabled={devices?.serial_number ? true :false}
                     name="serial_number"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
