@@ -300,7 +300,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'device_renaming')}
                   />
-                  {errors.p_renaming && (
+                  {errors.device_renaming && (
                     <FormHelperText style={{ color: 'red' }}>{t('PasswordrenamingError')}</FormHelperText>
                   )}
                 </FormControl>

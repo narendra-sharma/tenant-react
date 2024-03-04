@@ -23,8 +23,9 @@ import { ColorSchemeSwitch } from './color-scheme-switch';
 import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
 
+
+
 export function SideNav({ items }) {
-  // console.log("^^^^^^^^",items)
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
 
@@ -140,12 +141,11 @@ function renderNavGroups({ items, pathname }) {
         <ListItemContent>
           {curr.title ? (
             <Box sx={{ py: '12px' }}>
-              <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">  
+              <Typography fontSize="xs" fontWeight="lg" textColor="neutral.500">
                 {t(curr.title)}
               </Typography>
             </Box>
           ) : null}
-          {console.log(curr.items)}
           {renderNavItems({ depth: 0, pathname, items: curr.items })}
         </ListItemContent>
       </ListItem>
@@ -158,9 +158,6 @@ function renderNavGroups({ items, pathname }) {
 }
 
 function renderNavItems({ depth = 0, pathname, items = [] }) {
-  const select = useSelector((state) => state);
-  const permissions = select?.user?.permissions;
-  const userRole = select?.user?.user.role;
   const children = items.reduce((acc, curr) => {
     const { items: childItems, key, ...item } = curr;
 
@@ -185,9 +182,6 @@ function renderNavItems({ depth = 0, pathname, items = [] }) {
 }
 
 function NavItem({ children, depth, disabled, external, forceOpen = false, href, icon, matcher, pathname, title }) {
-  const select = useSelector((state) => state);
-  const permissions = select?.user?.permissions;
-  const userRole = select?.user?.user.role;
   const [open, setOpen] = React.useState(forceOpen);
   const active = isNavItemActive({ disabled, external, href, matcher, pathname });
   const Icon = icon ? icons[icon] : null;
@@ -201,81 +195,93 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
     throw new Error('Children or href required');
   }
 
+  const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+  const permissions = JSON.parse(localStorage.getItem('permissions'));
   return (
-    <ListItem
-      data-depth={depth}
-      sx={{
-        '--ListItem-paddingRight': 0,
-        '--ListItem-paddingLeft': 0,
-        '--ListItem-paddingY': 0,
-        userSelect: 'none',
-      }}
-    >
-      <ListItemContent>
-        <Box
-          {...(isBranch
-            ? {
-                component: 'a',
-                onClick: () => {
-                  setOpen(!open);
-                },
-              }
-            : {
-                component: RouterLink,
-                href,
-                target: external ? '_blank' : '',
-                rel: external ? 'noreferrer' : '',
-              })}
+    <>
+      {(currentUserRole == 'admin' ||
+        (title == 'User' && permissions['ADMIN Management']?.can_create_new_user) ||
+        (title == 'Devices' && permissions['Tenant Management']?.can_view_device_detail) || 
+        (title == 'Dashboard' && permissions['Tenant Management']?.can_view_device_detail) ||
+        (title == 'Settings' && permissions['Tenant Management']?.can_change_own_detail) ||
+        (title == 'Tenant' && permissions['ADMIN Management']?.can_create_tenants) ||
+        (title == 'ADMIN' && permissions['ADMIN Management']?.can_create_tenants)) && (
+        <ListItem
+          data-depth={depth}
           sx={{
-            alignItems: 'center',
-            borderRadius: 'var(--joy-radius-sm)',
-            color: 'var(--NavItem-color)',
-            cursor: 'pointer',
-            display: 'flex',
-            p: '12px',
-            textDecoration: 'none',
-            ...(disabled && {
-              bgcolor: 'var(--NavItem-disabled-background)',
-              color: 'var(--NavItem-disabled-color)',
-              cursor: 'not-allowed',
-            }),
-            ...(active && {
-              bgcolor: 'var(--NavItem-active-background)',
-              color: 'var(--NavItem-active-color)',
-            }),
-            ...(open && {
-              color: 'var(--NavItem-open-color)',
-            }),
-            '&:hover': {
-              ...(!active && {
-                bgcolor: 'var(--NavItem-hover-background)',
-                color: 'var(--NavItem-hover-color)',
-              }),
-            },
+            '--ListItem-paddingRight': 0,
+            '--ListItem-paddingLeft': 0,
+            '--ListItem-paddingY': 0,
+            userSelect: 'none',
           }}
         >
-          {Icon ? (
-            <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', mr: 1 }}>
-              <Icon
-                fill={active ? 'var(--NavItem-active-icon-color)' : 'var(--NavItem-icon-color)'}
-                fontSize="var(--joy-fontSize-xl)"
-                weight={forceOpen || active ? 'fill' : 'bold'}
-              />
+          <ListItemContent>
+            <Box
+              {...(isBranch
+                ? {
+                    component: 'a',
+                    onClick: () => {
+                      setOpen(!open);
+                    },
+                  }
+                : {
+                    component: RouterLink,
+                    href,
+                    target: external ? '_blank' : '',
+                    rel: external ? 'noreferrer' : '',
+                  })}
+              sx={{
+                alignItems: 'center',
+                borderRadius: 'var(--joy-radius-sm)',
+                color: 'var(--NavItem-color)',
+                cursor: 'pointer',
+                display: 'flex',
+                p: '12px',
+                textDecoration: 'none',
+                ...(disabled && {
+                  bgcolor: 'var(--NavItem-disabled-background)',
+                  color: 'var(--NavItem-disabled-color)',
+                  cursor: 'not-allowed',
+                }),
+                ...(active && {
+                  bgcolor: 'var(--NavItem-active-background)',
+                  color: 'var(--NavItem-active-color)',
+                }),
+                ...(open && {
+                  color: 'var(--NavItem-open-color)',
+                }),
+                '&:hover': {
+                  ...(!active && {
+                    bgcolor: 'var(--NavItem-hover-background)',
+                    color: 'var(--NavItem-hover-color)',
+                  }),
+                },
+              }}
+            >
+              {Icon ? (
+                <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', mr: 1 }}>
+                  <Icon
+                    fill={active ? 'var(--NavItem-active-icon-color)' : 'var(--NavItem-icon-color)'}
+                    fontSize="var(--joy-fontSize-xl)"
+                    weight={forceOpen || active ? 'fill' : 'bold'}
+                  />
+                </Box>
+              ) : null}
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography component="span" fontSize="sm" fontWeight="md" textColor="inherit">
+                  {t(title)}
+                </Typography>
+              </Box>
+              {isBranch ? <ExpandIcon style={{ fontSize: 'var(--joy-fontSize-sm)' }} weight="bold" /> : null}
             </Box>
-          ) : null}
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography component="span" fontSize="sm" fontWeight="md" textColor="inherit">
-              {t(title)}
-            </Typography>
-          </Box>
-          {isBranch ? <ExpandIcon style={{ fontSize: 'var(--joy-fontSize-sm)' }} weight="bold" /> : null}
-        </Box>
-        {showChildren ? (
-          <Box sx={{ pl: '20px' }}>
-            <Box sx={{ borderLeft: '1px solid var(--joy-palette-neutral-700)', pl: '12px' }}>{children}</Box>
-          </Box>
-        ) : null}
-      </ListItemContent>
-    </ListItem>
+            {showChildren ? (
+              <Box sx={{ pl: '20px' }}>
+                <Box sx={{ borderLeft: '1px solid var(--joy-palette-neutral-700)', pl: '12px' }}>{children} </Box>
+              </Box>
+            ) : null}
+          </ListItemContent>
+        </ListItem>
+      )}
+    </>
   );
 }

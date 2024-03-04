@@ -15,7 +15,6 @@ import { useNavigate, useParams } from 'react-router';
 import { MeterGraph } from './meterGraph';
 
 const DeviceData = ({ deviceData, todaysReading }) => {
-  console.log("deviceData?.meter_type",todaysReading)
   const dispatch = useDispatch();
   const { tenantId } = useParams();
   const serialNumber = tenantId;
