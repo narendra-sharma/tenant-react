@@ -10,7 +10,7 @@ import { SideNav } from '@/components/dashboard/layout/side-nav';
 
 const metadata = {
   title: `Dashboard | ${config.site.name}`,
-};
+};layoutConfig
 export function Layout({ children }) {
   return (
     <React.Fragment>

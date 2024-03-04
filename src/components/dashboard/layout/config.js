@@ -1,5 +1,5 @@
 import { paths } from '@/paths';
-
+const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role;
 export const layoutConfig = {
   navItems: [
     {

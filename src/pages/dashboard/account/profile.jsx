@@ -39,22 +39,22 @@ const Page = ({ userData }) => {
   const [countries, setCountries] = React.useState([]);
   const [imagePath, setimagePath] = useState('');
   const [cuser, setCuser] = React.useState({
-    profile_pic: '',
     first_name: '',
     last_name: '',
     email: '',
     phone_number: '',
-    website: '',
-    country: '',
-    state: '',
-    city: '',
-    zipcode: '',
-    address: '',
-    company_first_name: '',
-    company_last_name: '',
-    company_email: '',
+    company_name: '',
+    tenant_name:'',
     company_phone_number: '',
-    vat_number: '',
+    comapny_email:'',
+    address:'',
+    city:'',
+    country:'',
+    state:'',
+    tax_id:'',
+    website:'',
+    zipcode:'',
+
   });
   const [errors, setErrors] = React.useState({
     first_name: '',
@@ -64,31 +64,30 @@ const Page = ({ userData }) => {
     city: '',
     zipcode: '',
     address: '',
-    company_first_name: '',
-    company_last_name: '',
-    company_email: '',
-    vat_number: '',
+    company_name: '',
+    tenant_name: '',
+    comapny_email: '',
+    tax_id: '',
   });
   const navigate = useNavigate();
   React.useEffect(() => {
     if (userData) {
       setCuser({
-        profile_pic: userData?.profile_pic,
         first_name: userData?.first_name,
         last_name: userData?.last_name,
         email: userData?.email,
-        phone_number: userData?.company_phone_number,
+        phone_number: userData?.phone_number,
         website: userData?.company_website,
-        country: userData?.country,
+        country: userData?.company_country,
         state: userData?.company_state,
-        city: userData?.city,
-        zipcode: userData?.zipcode,
-        address: userData?.address,
-        company_first_name: userData?.company_first_name,
-        company_last_name: userData?.company_last_name,
-        company_email: userData?.comapny_email,
+        city: userData?.company_city,
+        zipcode: userData?.company_zip_code,
+        address: userData?.company_address,
+        company_name: userData?.company_name,
+        tenant_name: userData?.tenant_name,
+        company_email: userData?.company_email,
         company_phone_number: userData?.company_phone_number,
-        vat_number: userData?.vat_number,
+        tax_id: userData?.company_tax_id,
       });
     }
   }, [userData]);
@@ -108,10 +107,10 @@ const Page = ({ userData }) => {
         !value &&
         label !== 'phone_number' &&
         label !== 'company_phone_number' &&
-        label !== 'state' &&
-        label !== 'website'
+        label !== 'website'&&
+        label !== 'state'
           ? 'required'
-          : (label === 'email' || label === 'comapnyEmail') && !emailRegex.test(value)
+          : (label === 'email' || label === 'company_email') && !emailRegex.test(value)
             ? 'invalid'
             : '',
     }));
@@ -120,7 +119,7 @@ const Page = ({ userData }) => {
     let err = false;
     let output = Object.entries(cuser);
     output.forEach(([key, value]) => {
-      if (!value && key !== 'phone_number' && key !== 'company_phone_number' && key !== 'state' && key !== 'website') {
+      if (!value && key !== 'phone_number' && key !== 'state' && key !== 'company_phone_number' && key !== 'state' && key !== 'website') {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       } else if (value && (key === 'email' || key === 'companyEmail') && !emailRegex.test(value)) {
@@ -131,29 +130,27 @@ const Page = ({ userData }) => {
     return err;
   };
   const handleSubmit = (event) => {
-    console.log("We have user data",cuser)
-
     event.preventDefault();
     if (checkAllErrors()) {
       return;
     }
-    const formData = new FormData();
-    formData.append('first_name', cuser?.first_name);
-    formData.append('last_name', cuser?.last_name);
-    formData.append('email', cuser?.email);
-    formData.append('phone_number', cuser?.phone_number);
-    formData.append('website', cuser?.website);
-    formData.append('country', cuser?.country);
-    formData.append('state', cuser?.state);
-    formData.append('city', cuser?.city);
-    formData.append('zipcode', cuser?.zipcode);
-    formData.append('address', cuser?.address);
-    formData.append('company_first_name', cuser?.company_first_name);
-    formData.append('company_last_name', cuser?.company_last_name);
-    formData.append('comapny_email', cuser?.company_email);
-    formData.append('company_phone_number', cuser?.company_phone_number);
-    formData.append('vat_number', cuser?.vat_number);
-    update_profile_detail(formData, dispatch);
+    // const formData = new FormData();
+    // formData.append('first_name', cuser?.first_name);
+    // formData.append('last_name', cuser?.last_name);
+    // formData.append('email', cuser?.email);
+    // formData.append('phone_number', cuser?.phone_number);
+    // formData.append('website', cuser?.website);
+    // formData.append('country', cuser?.country);
+    // formData.append('state', cuser?.state);
+    // formData.append('city', cuser?.city);
+    // formData.append('zipcode', cuser?.zipcode);
+    // formData.append('address', cuser?.address);
+    // formData.append('company_name', cuser?.company_name);
+    // formData.append('tenant_name', cuser?.tenant_name);
+    // formData.append('comapny_email', cuser?.company_email);
+    // formData.append('company_phone_number', cuser?.company_phone_number);
+    // formData.append('zipcode', cuser?.zipcode);
+    update_profile_detail(cuser, dispatch);
   };
   return (
     <React.Fragment>
@@ -171,10 +168,10 @@ const Page = ({ userData }) => {
             <Typography level="h4">
               {cuser.first_name} {cuser.last_name}
             </Typography>
-            <Typography level="body-sm">{cuser.company_first_name}</Typography>
+            <Typography level="body-sm">{cuser.company_name}</Typography>
           </div>
         </Stack>
-        {errors.profile_pic && <FormHelperText style={{ color: 'red' }}>{errors?.profile_pic}</FormHelperText>}
+        {/* {errors.profile_pic && <FormHelperText style={{ color: 'red' }}>{errors?.profile_pic}</FormHelperText>} */}
         <Stack spacing={3}>
           <Typography level="h4">{t('MyDetails')}</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
@@ -268,13 +265,13 @@ const Page = ({ userData }) => {
                     {t('CompanyName')} <sup>*</sup>
                   </FormLabel>
                   <Input
-                    value={cuser?.company_first_name}
-                    name="companyFirstName"
+                    value={cuser?.company_name}
+                    name="company_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'company_first_name')}
+                    onChange={(e) => handleElementChange(e.target.value, 'company_name')}
                     disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
-                  {errors.company_first_name && (
+                  {errors.company_name && (
                     <FormHelperText style={{ color: 'red' }}>{t('CompanyNameError')}</FormHelperText>
                   )}
                 </FormControl>
@@ -285,13 +282,13 @@ const Page = ({ userData }) => {
                     {t('TenantName')} <sup>*</sup>
                   </FormLabel>
                   <Input
-                    value={cuser?.company_last_name}
-                    name="company_last_name"
+                    value={cuser?.tenant_name}
+                    name="tenant_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'company_last_name')}
+                    onChange={(e) => handleElementChange(e.target.value, 'tenant_name')}
                     disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
-                  {errors.company_last_name && (
+                  {errors.tenant_name && (
                     <FormHelperText style={{ color: 'red' }}>{t('TenantNameError')}</FormHelperText>
                   )}
                 </FormControl>
@@ -339,14 +336,14 @@ const Page = ({ userData }) => {
                     <sup>*</sup>
                   </FormLabel>
                   <Input
-                    value={cuser?.vat_number}
-                    name="vat_number"
+                    value={cuser?.tax_id}
+                    name="tax_id"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
-                    onChange={(e) => handleElementChange(e.target.value, 'vat_number')}
+                    onChange={(e) => handleElementChange(e.target.value, 'tax_id')}
                     disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
                   />
-                  {errors.vat_number && <FormHelperText style={{ color: 'red' }}>{t('VatIdError')}</FormHelperText>}
+                  {errors.tax_id && <FormHelperText style={{ color: 'red' }}>{t('VatIdError')}</FormHelperText>}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
@@ -432,7 +429,7 @@ const Page = ({ userData }) => {
                     </FormLabel>
                     <Input
                       value={cuser?.zipcode}
-                      name="zip"
+                      name="zipcode"
                       style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                       onChange={(e) => handleElementChange(e.target.value, 'zipcode')}
                     />

@@ -42,7 +42,7 @@ export function Page({ devices,total }) {
     get_dashboard_devices(dispatch, page, limit, device, client, status);
   }, [page, limit, device, client, status]);
 
-  const [dashboardDevices, setDashboardDevices] = React.useState(null);
+  // const [dashboardDevices, setDashboardDevices] = React.useState(null);
   const [graphData, setGraphData] = React.useState(null);
   const select = useSelector((state) => state);
 
@@ -61,7 +61,7 @@ export function Page({ devices,total }) {
   }, [page, limit, device, client, status]);
 
   React.useEffect(() => {
-    setDashboardDevices(select?.device?.dashboardDevices);
+    // setDashboardDevices(select?.device?.dashboardDevices);
     setGraphData(select?.device?.dashboard_devices);
   }, [select?.device?.dashboard_devices]);
 
@@ -109,10 +109,10 @@ export function Page({ devices,total }) {
               </Typography>
             </div>
             <DeviceSummary
-              active={dashboardDevices?.water_meter_count}
-              canceled={dashboardDevices?.offline_devices}
-              completed={dashboardDevices?.electric_meter_count}
-              total={dashboardDevices?.device_data_total}
+              active={select?.device?.dashboardDevices?.water_meter_count}
+              canceled={select?.device?.dashboardDevices?.offline_devices}
+              completed={select?.device?.dashboardDevices?.electric_meter_count}
+              total={select?.device?.dashboardDevices?.device_data_total}
             />
             {(userRole == 'admin' || (userPermissions && userPermissions['Tenant Management']?.can_view_devices)) && (
               <>
@@ -163,15 +163,15 @@ export function Page({ devices,total }) {
                     </Grid>
                   </Grid>
 
+                    <div className="scroll-table-container device-table" onScroll={handleScroll} style={{marginTop:'20px'}}>
                   <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
-                    <div className="scroll-table-container device-table" onScroll={handleScroll}>
                       {filteredData && filteredData?.length ? (
                         <DeviceTable rows={filteredData} />
                       ) : (
                         <div style={{ textAlign: 'center', marginTop: '20px' }}>No Dashboard Devices Found</div>
                       )}
-                    </div>
                   </Card>
+                    </div>
                 </Box>
                 <Grid container spacing={3}>
                   <Grid md={6} xs={12}>

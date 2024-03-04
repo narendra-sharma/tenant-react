@@ -61,8 +61,7 @@ export function UserTable({ rows }) {
         <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
           <div>
             <Typography>{row.company_name}</Typography>
-            <Typography level="body-xs">{row.company_name}</Typography>
-            <Typography level="body-xs">{row.company_name}</Typography>
+            
           </div>
         </Stack>
       ),
