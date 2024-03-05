@@ -77,7 +77,7 @@ export function UserCreateForm({ onDataFromChild }) {
             email: res?.email,
             phone_number: res?.phone_number,
             tenant_ids: res?.tenant_ids,
-            permission_profile: 'tenant_manager',
+            permission_profile: res?.role ? res?.role:'tenant_read_only',
           });
         }
       });
@@ -90,7 +90,7 @@ export function UserCreateForm({ onDataFromChild }) {
     } else if (value == 'Tenant User' && label == 'permission_profile') {
       value = 'tenant_user';
     } else if (value == 'Tenant' && label == 'permission_profile') {
-      value = 'tenant';
+      value = 'tenant_read_only';
     }
     let ids = cuser?.tenant_ids || [];
     setCuser((prev) => ({ ...prev, [label]: value }));
@@ -221,14 +221,14 @@ export function UserCreateForm({ onDataFromChild }) {
                   <FormLabel>{t('Permission')}</FormLabel>
                   <select
                     placeholder="Select a permission"
-                    defaultValue={cuser?.permission_profile}
+                    value={cuser?.permission_profile}
                     className="form-control"
                     // sx={{ width: 240 }}
                     onChange={(value) => value && handleElementChange(value.target.value, 'permission_profile')}
                   >
                     <option value="tenant_manager">Tenant Manager</option>
                     <option value="tenant_user">Tenant User</option>
-                    <option value="tenant">Tenant</option>
+                    <option value="tenant_read_only">Tenant</option>
                   </select>
                   {errors.permission_profile && (
                     <FormHelperText style={{ color: 'red' }}>{t('PermissionError')}</FormHelperText>

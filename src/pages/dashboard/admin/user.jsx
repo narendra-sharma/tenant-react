@@ -28,6 +28,9 @@ const Users = ({ users, total }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
 
+  const permissions = JSON.parse(localStorage.getItem('permissions'));
+  const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+
   const dispatch = useDispatch();
   useEffect(() => {
     get_users(dispatch, page, limit, user, company, status);
@@ -76,13 +79,13 @@ const Users = ({ users, total }) => {
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            <Button
+          {(userRole == 'admin' || permissions['ADMIN Management']?.can_create_new_user) &&  <Button
               component={RouterLink}
               href={paths['dashboard.admin.create.user']}
               startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
             >
               {t('Create')}
-            </Button>
+            </Button>}
           </Stack>
         </Stack>
         <Grid container spacing={3}>

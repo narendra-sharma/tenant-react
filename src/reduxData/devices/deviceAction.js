@@ -209,3 +209,25 @@ export const get_dashboard_devices_reading = async (dispatch)=>{
     dispatch(stop_loading());
   }
 }
+
+export const delete_devices = async (id,dispatch)=>{
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(
+      `${url}admin/remove_device?device_id=${id}`,
+      headers
+    );
+    if (res?.data?.status) {
+      // dispatch({ type: GET_DASHBOARD_DEVICES, payload: res?.data });
+      get_devices(dispatch)
+    } else {
+      toast.error(res?.data?.message);
+    }
+    return res.data.data;
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+}

@@ -33,6 +33,9 @@ const Devices = ({ devices, total }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
 
+  const permissions = JSON.parse(localStorage.getItem('permissions'));
+  const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+
   useEffect(() => {
     get_devices(dispatch, page, limit, device, client, status);
   }, [page, limit, device, client, status]);
@@ -80,13 +83,15 @@ const Devices = ({ devices, total }) => {
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            <Button
-              component={RouterLink}
-              href={paths['dashboard.admin.create.device']}
-              startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
-            >
-              {t('Create')}
-            </Button>
+            {(userRole == 'admin' || permissions['ADMIN Management']?.can_create_new_device) && (
+              <Button
+                component={RouterLink}
+                href={paths['dashboard.admin.create.device']}
+                startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
+              >
+                {t('Create')}
+              </Button>
+            )}
           </Stack>
         </Stack>
         <Grid container spacing={3}>

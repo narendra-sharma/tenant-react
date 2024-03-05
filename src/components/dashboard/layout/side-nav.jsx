@@ -23,8 +23,6 @@ import { ColorSchemeSwitch } from './color-scheme-switch';
 import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
 
-
-
 export function SideNav({ items }) {
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
@@ -199,13 +197,14 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
   const permissions = JSON.parse(localStorage.getItem('permissions'));
   return (
     <>
+    {console.log()}
       {(currentUserRole == 'admin' ||
         (title == 'User' && permissions['ADMIN Management']?.can_create_new_user) ||
-        (title == 'Devices' && permissions['Tenant Management']?.can_view_device_detail) || 
-        (title == 'Dashboard' && permissions['Tenant Management']?.can_view_device_detail) ||
+        (title == 'Devices' && permissions['Tenant Management']?.can_view_devices) ||
+        (title == 'Dashboard' && false) ||
         (title == 'Settings' && permissions['Tenant Management']?.can_change_own_detail) ||
         (title == 'Tenant' && permissions['ADMIN Management']?.can_create_tenants) ||
-        (title == 'ADMIN' && permissions['ADMIN Management']?.can_create_tenants)) && (
+        (title == 'ADMIN' && (permissions['ADMIN Management']?.can_create_new_device || permissions['ADMIN Management']?.can_create_tenants || permissions['ADMIN Management']?.can_create_new_user))) && (
         <ListItem
           data-depth={depth}
           sx={{
