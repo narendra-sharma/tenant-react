@@ -163,7 +163,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
                   <FormLabel>{t('SerialNumber')}</FormLabel>
                   <Input
                     value={devices?.serial_number}
-                    disabled={devices?.serial_number ? true :false}
+                    disabled={devices?.serial_number && id?.deviceId ? true :false}
                     name="serial_number"
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
@@ -243,7 +243,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.devices']} variant="outlined">
             {t('Cancel')}
           </Button>
-          <Button type="submit" disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_device_detail} >{id?.deviceId ? 'Update' : 'Create'} {t('Device')}</Button>
+          <Button type="submit" disabled={currentUserRole=='admin'?false: !permissions['ADMIN Management']?.can_create_new_device} >{id?.deviceId ? 'Update' : 'Create'} {t('Device')}</Button>
         </Stack>
       </Stack>
     </form>

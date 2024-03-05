@@ -291,3 +291,25 @@ export const update_user = async (data, dispatch,navigate) => {
     dispatch(stop_loading());
   }
 };
+
+export const delete_user = async (id,dispatch)=>{
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.get(
+      `${url}admin/remove_user?user_id=${id}`,
+      headers
+    );
+    if (res?.data?.status) {
+      // dispatch({ type: GET_DASHBOARD_DEVICES, payload: res?.data });
+      get_users(dispatch)
+    } else {
+      toast.error(res?.data?.message);
+    }
+    return res.data.data;
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+}

@@ -30,10 +30,12 @@ const Tenants = ({ tenants, total }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(50);
 
+  const permissions = JSON.parse(localStorage.getItem('permissions'));
+  const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+
   useEffect(() => {
     get_tenants(dispatch, page, limit, tenant, company, status);
   }, [page, limit, tenant, company, status]);
-
 
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -77,13 +79,15 @@ const Tenants = ({ tenants, total }) => {
             </Breadcrumbs>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            <Button
-              component={RouterLink}
-              href={paths['dashboard.admin.create.tenant']}
-              startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
-            >
-              {t('Create')}
-            </Button>
+            {(userRole == 'admin' || permissions['ADMIN Management']?.can_create_tenants) && (
+              <Button
+                component={RouterLink}
+                href={paths['dashboard.admin.create.tenant']}
+                startDecorator={<PlusIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />}
+              >
+                {t('Create')}
+              </Button>
+            )}
           </Stack>
         </Stack>
         <Grid container spacing={3} sx={{ alignvatId: 'BE0487248925start' }}>

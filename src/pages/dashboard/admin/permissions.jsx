@@ -5,7 +5,7 @@ import Container from '@mui/joy/Container';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { useTranslation } from 'react-i18next';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { paths } from '@/paths';
 import { BreadcrumbsItem } from '@/components/core/breadcrumbs-item';
@@ -15,10 +15,7 @@ import { Permissions } from '@/components/dashboard/admin/permissions';
 const permissions = ({ permissions }) => {
   const [groups, setGroups] = useState([]);
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    get_permissions(dispatch);
-  }, []);
+
   useEffect(() => {
     setGroups([...permissions]);
   }, [permissions]);
