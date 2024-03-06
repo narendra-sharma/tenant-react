@@ -77,7 +77,7 @@ export function DeviceSummary({ total, active, completed, canceled }) {
               <Icon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
             </Avatar>
             <div>
-              <Typography level="body-sm">{entry.label}</Typography>
+              <Typography level="body-sm" style={{whiteSpace:'nowrap'}}>{entry.label}</Typography>
               <Typography level="h2">{entry.value}</Typography>
             </div>
           </Stack>

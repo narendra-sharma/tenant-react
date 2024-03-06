@@ -6,7 +6,7 @@ const initialState = {
     device:null,
     dashboardDevices:null,
     deviceTodayReading:[],
-    dashboard_devices:null
+    dashboard_devices:[]
   };
 
 export const deviceReducer = (state = initialState, action) => {

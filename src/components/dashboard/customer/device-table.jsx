@@ -68,7 +68,7 @@ export function DeviceTable({ rows }) {
       width: '120px',
     },
     {
-      formatter: (row) => (row?.meter_type == 'water' ? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : ''),
+      formatter: (row) => (row?.meter_type == 'water' ?row?.last_reading_date? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : 'Meter not installed':''),
       name: t('DateLastReadingWater'),
       width: '200px',
     },
@@ -78,7 +78,7 @@ export function DeviceTable({ rows }) {
       width: '220px',
     },
     {
-      formatter: (row) => (row?.meter_type == 'electricity' ? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : ''),
+      formatter: (row) => (row?.meter_type == 'electricity' ?row?.last_reading_date? dayjs(row?.last_reading_date).format('YYYY-MM-DD') : 'Meter not installed':''),
       name: t('DateLastReadingElectricity'),
       width: '230px',
     },

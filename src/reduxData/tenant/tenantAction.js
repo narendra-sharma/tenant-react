@@ -87,11 +87,12 @@ export const catch_errors_handle = (error, dispatch) => {
     dispatch(start_loading());
     try {
       headers.headers['x-access-token'] = token();
-      const res = await axios.get(
-        `${url}admin/remove_tenant?tenant_id=${id}`,
+      const res = await axios.delete(
+        `${url}admin/remove_tenant/${id}`,
         headers
       );
       if (res?.data?.status) {
+        toast.success(res?.data?.message)
         // dispatch({ type: GET_DASHBOARD_DEVICES, payload: res?.data });
         get_tenants(dispatch)
       } else {
