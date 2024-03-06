@@ -197,7 +197,6 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
   const permissions = JSON.parse(localStorage.getItem('permissions'));
   return (
     <>
-    {console.log()}
       {(currentUserRole == 'admin' ||
         (title == 'User' && permissions['ADMIN Management']?.can_create_new_user) ||
         (title == 'Devices' && permissions['Tenant Management']?.can_view_devices) ||

@@ -7,14 +7,12 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Grid from '@mui/joy/Grid';
 import Input from '@mui/joy/Input';
-import Option from '@mui/joy/Option';
-import Select from '@mui/joy/Select';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch, useSelector } from 'react-redux';
-
+import { jwtDecode } from "jwt-decode";
 import { config } from '@/config';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
 import { DeviceSummary } from '@/components/dashboard/overview/device-summary';
@@ -34,15 +32,17 @@ export function Page({ devices,total }) {
   const [limit, setLimit] = React.useState(50);
   const { t } = useTranslation();
   React.useEffect(() => {
-    // get_dashboard_devices(dispatch, page, limit,device,client, status);
+    const token = localStorage.getItem('custom-auth-token');
+    const decoded = jwtDecode(token);
+    if(decoded.exp < Date.now() / 1000){
+      localStorage.clear()
+      window.location.reload();
+    }
+    console.log(decoded);
+
     get_dashboard_devices_reading(dispatch);
   }, []);
 
-  React.useEffect(() => {
-    get_dashboard_devices(dispatch, page, limit, device, client, status);
-  }, [page, limit, device, client, status]);
-
-  // const [dashboardDevices, setDashboardDevices] = React.useState(null);
   const [graphData, setGraphData] = React.useState(null);
   const select = useSelector((state) => state);
 
@@ -51,17 +51,17 @@ export function Page({ devices,total }) {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await get_devices(dispatch, page, limit, device, client, status);
-        setFilteredData(data);
+        const apiResponse = await get_dashboard_devices(dispatch, page, limit, device, client, status);
+        setFilteredData(apiResponse);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error calling get_dashboard_devices:', error);
       }
     };
+
     fetchData();
   }, [page, limit, device, client, status]);
 
   React.useEffect(() => {
-    // setDashboardDevices(select?.device?.dashboardDevices);
     setGraphData(select?.device?.dashboard_devices);
   }, [select?.device?.dashboard_devices]);
 

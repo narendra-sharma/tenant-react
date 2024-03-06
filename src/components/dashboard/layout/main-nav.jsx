@@ -74,7 +74,7 @@ export function MainNav({ items }) {
             </IconButton>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexGrow: 1, justifyContent: 'flex-end' }}>
-            <Badge
+            {/* <Badge
               color="danger"
               sx={{
                 '& .MuiBadge-badge': {
@@ -91,7 +91,7 @@ export function MainNav({ items }) {
               >
                 <BellIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
               </IconButton>
-            </Badge>
+            </Badge> */}
             <Badge
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               color="success"
@@ -119,11 +119,11 @@ export function MainNav({ items }) {
         }}
         open={openNav}
       />
-      <NotificationsPopover
+      {/* <NotificationsPopover
         anchorEl={notificationsPopover.anchorRef.current}
         onClose={notificationsPopover.handleClose}
         open={notificationsPopover.open}
-      />
+      /> */}
       <UserPopover anchorEl={userPopover.anchorRef.current} onClose={userPopover.handleClose} open={userPopover.open} />
     </React.Fragment>
   );

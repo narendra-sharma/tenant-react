@@ -38,6 +38,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
   const navigate = useNavigate()
   React.useEffect(() => {
     if (id.deviceId) {
+      console.log(state.device)
       let data = state.device.devices.filter((res) => {
         if (res.serial_number === id.deviceId) {
           onDataFromChild('edit');

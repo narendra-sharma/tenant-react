@@ -296,11 +296,12 @@ export const delete_user = async (id,dispatch)=>{
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
-    const res = await axios.get(
-      `${url}admin/remove_user?user_id=${id}`,
+    const res = await axios.delete(
+      `${url}admin/remove_user/${id}`,
       headers
     );
     if (res?.data?.status) {
+      toast.success(res?.data?.message)
       // dispatch({ type: GET_DASHBOARD_DEVICES, payload: res?.data });
       get_users(dispatch)
     } else {

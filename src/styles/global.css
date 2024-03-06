@@ -156,6 +156,16 @@ nav ul li ul li ul li {
  z-index: 999;
 }
 
+table {
+  table-layout: unset; /* or unset */
+}
+td{
+  max-width: 100%;
+}
+.css-m0gryy-JoyTable-root {
+  table-layout: auto!important
+}
+
 @media(max-width:1250px){
   .scroll-table-container{
     height:calc(100vh - 450px);

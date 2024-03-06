@@ -160,6 +160,7 @@ export const get_dashboard_devices = async (dispatch, page, limit, device, clien
     }else {
       toast.error(res?.data?.message)
     }
+    return res?.data?.device_data;
   }catch (error){
     dispatch(catch_errors_handle(error, dispatch));
   }finally{
@@ -167,6 +168,7 @@ export const get_dashboard_devices = async (dispatch, page, limit, device, clien
   }
 
 }
+
 
 export const get_today_device_reading = async (id, dispatch)=>{
   dispatch(start_loading());
@@ -214,12 +216,12 @@ export const delete_devices = async (id,dispatch)=>{
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
-    const res = await axios.get(
-      `${url}admin/remove_device?device_id=${id}`,
+    const res = await axios.delete(
+      `${url}admin/remove_device/${id}`,
       headers
     );
     if (res?.data?.status) {
-      // dispatch({ type: GET_DASHBOARD_DEVICES, payload: res?.data });
+      toast.success(res?.data?.message)
       get_devices(dispatch)
     } else {
       toast.error(res?.data?.message);
