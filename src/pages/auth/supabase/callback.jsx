@@ -1,79 +1,79 @@
-'use client';
+// 'use client';
 
-import * as React from 'react';
-import Alert from '@mui/joy/Alert';
-import { useNavigate } from 'react-router-dom';
+// import * as React from 'react';
+// import Alert from '@mui/joy/Alert';
+// import { useNavigate } from 'react-router-dom';
 
-import { paths } from '@/paths';
-import { logger } from '@/lib/default-logger';
-import { createClient as createSupabaseClient } from '@/lib/supabase/client';
-import { useUser } from '@/hooks/use-user';
-import { toast } from '@/components/core/toaster';
+// import { paths } from '@/paths';
+// import { logger } from '@/lib/default-logger';
+// import { createClient as createSupabaseClient } from '@/lib/supabase/client';
+// import { useUser } from '@/hooks/use-user';
+// import { toast } from '@/components/core/toaster';
 
-export function Page() {
-  const [supabaseClient] = React.useState(createSupabaseClient());
-  const navigate = useNavigate();
-  const { checkSession } = useUser();
-  const executedRef = React.useRef(false);
-  const [displayError, setDisplayError] = React.useState(null);
+// export function Page() {
+//   const [supabaseClient] = React.useState(createSupabaseClient());
+//   const navigate = useNavigate();
+//   const { checkSession } = useUser();
+//   const executedRef = React.useRef(false);
+//   const [displayError, setDisplayError] = React.useState(null);
 
-  const handle = React.useCallback(async () => {
-    // Prevent rerun on DEV mode
-    if (executedRef.current) {
-      return;
-    }
+//   const handle = React.useCallback(async () => {
+//     // Prevent rerun on DEV mode
+//     if (executedRef.current) {
+//       return;
+//     }
 
-    executedRef.current = true;
+//     executedRef.current = true;
 
-    // Callback `error` is received as a URL hash `#error=value`
-    // Callback `access_token` is received as a URL hash `#access_token=value`
+//     // Callback `error` is received as a URL hash `#error=value`
+//     // Callback `access_token` is received as a URL hash `#access_token=value`
 
-    const hash = window.location.hash || '#';
-    const hashParams = new URLSearchParams(hash.split('#')[1]);
-    const searchParams = new URLSearchParams(window.location.search);
+//     const hash = window.location.hash || '#';
+//     const hashParams = new URLSearchParams(hash.split('#')[1]);
+//     const searchParams = new URLSearchParams(window.location.search);
 
-    if (hashParams.get('error')) {
-      logger.debug(hashParams.get('error_description'));
-      setDisplayError('Something went wrong');
-      return;
-    }
+//     if (hashParams.get('error')) {
+//       logger.debug(hashParams.get('error_description'));
+//       setDisplayError('Something went wrong');
+//       return;
+//     }
 
-    const accessToken = hashParams.get('access_token');
-    const refreshToken = hashParams.get('refresh_token');
+//     const accessToken = hashParams.get('access_token');
+//     const refreshToken = hashParams.get('refresh_token');
 
-    if (!accessToken || !refreshToken) {
-      setDisplayError('Access token or refresh token is missing');
-      return;
-    }
+//     if (!accessToken || !refreshToken) {
+//       setDisplayError('Access token or refresh token is missing');
+//       return;
+//     }
 
-    const { error } = await supabaseClient.auth.setSession({
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    });
+//     const { error } = await supabaseClient.auth.setSession({
+//       access_token: accessToken,
+//       refresh_token: refreshToken,
+//     });
 
-    if (error) {
-      logger.debug(error.message);
-      toast.error('Something went wrong');
-      navigate(paths['auth.supabase.sign-in']);
-      return;
-    }
+//     if (error) {
+//       logger.debug(error.message);
+//       toast.error('Something went wrong');
+//       navigate(paths['auth.supabase.sign-in']);
+//       return;
+//     }
 
-    // Update the user context state
-    await checkSession();
+//     // Update the user context state
+//     await checkSession();
 
-    const next = searchParams.get('next') || paths['dashboard'];
+//     const next = searchParams.get('next') || paths['dashboard'];
 
-    navigate(next);
-  }, [supabaseClient, navigate, checkSession]);
+//     navigate(next);
+//   }, [supabaseClient, navigate, checkSession]);
 
-  React.useEffect(() => {
-    handle().catch(logger.error);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
-  }, []);
+//   React.useEffect(() => {
+//     handle().catch(logger.error);
+//     // eslint-disable-next-line react-hooks/exhaustive-deps -- Expected
+//   }, []);
 
-  if (displayError) {
-    return <Alert color="danger">{displayError}</Alert>;
-  }
+//   if (displayError) {
+//     return <Alert color="danger">{displayError}</Alert>;
+//   }
 
-  return null;
-}
+//   return null;
+// }

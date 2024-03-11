@@ -16,12 +16,12 @@ export function Orders({ data = [] }) {
   const { t } = useTranslation();
   const bars = [
     {
-      name: t('Water'),
+      name: t('Electricity'),
       dataKey: 'electricityReading',
       color: 'var(--joy-palette-primary-solidBg)',
     },
     {
-      name: t('Electricity'),
+      name: t('Water'),
       dataKey: 'waterReading',
       color: 'var(--joy-palette-primary-200)',
     },

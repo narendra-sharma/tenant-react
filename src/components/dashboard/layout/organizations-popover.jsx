@@ -81,7 +81,7 @@ export function OrganizationsPopover({ anchorEl, onChange, onClose, open,onDataF
                   }}
                 >
                   <Typography level="title-sm" textColor="inherit" onClick={()=>handleTenant(organization)}>
-                    {organization.tenant_name}
+                    {organization.tenant_name} 
                   </Typography>
                 </Box>
               );
