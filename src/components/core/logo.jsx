@@ -14,7 +14,6 @@ export function Logo({ color = 'dark', height = HEIGHT, width = WIDTH }) {
 
   return (
     <>
-      <h1>Heloo</h1>
       <img alt="logo" height={height} src={url} width={width} />
     </>
   );

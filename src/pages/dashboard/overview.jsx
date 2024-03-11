@@ -38,7 +38,6 @@ export function Page({ devices,total }) {
       localStorage.clear()
       window.location.reload();
     }
-    console.log(decoded);
 
     get_dashboard_devices_reading(dispatch);
   }, []);

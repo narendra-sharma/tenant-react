@@ -134,22 +134,6 @@ const Page = ({ userData }) => {
     if (checkAllErrors()) {
       return;
     }
-    // const formData = new FormData();
-    // formData.append('first_name', cuser?.first_name);
-    // formData.append('last_name', cuser?.last_name);
-    // formData.append('email', cuser?.email);
-    // formData.append('phone_number', cuser?.phone_number);
-    // formData.append('website', cuser?.website);
-    // formData.append('country', cuser?.country);
-    // formData.append('state', cuser?.state);
-    // formData.append('city', cuser?.city);
-    // formData.append('zipcode', cuser?.zipcode);
-    // formData.append('address', cuser?.address);
-    // formData.append('company_name', cuser?.company_name);
-    // formData.append('tenant_name', cuser?.tenant_name);
-    // formData.append('comapny_email', cuser?.company_email);
-    // formData.append('company_phone_number', cuser?.company_phone_number);
-    // formData.append('zipcode', cuser?.zipcode);
     update_profile_detail(cuser, dispatch);
   };
   return (

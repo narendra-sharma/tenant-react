@@ -15,9 +15,9 @@ import Device_details from '@/pages/dashboard/admin/device_details';
 
 // Account pages
 
-const AccountBillingPage = React.lazy(() =>
-  import('@/pages/dashboard/account/billing').then((m) => ({ default: m.Page }))
-);
+// const AccountBillingPage = React.lazy(() =>
+//   import('@/pages/dashboard/account/billing').then((m) => ({ default: m.Page }))
+// );
 const AccountProfilePage = React.lazy(() => import('@/pages/dashboard/account/profile'));
 const AccountSecurityPage = React.lazy(() =>
   import('@/pages/dashboard/account/security').then((m) => ({ default: m.Page }))
@@ -27,20 +27,20 @@ const AccountSecurityPage = React.lazy(() =>
 
 const OverviewPage = React.lazy(() => import('@/pages/dashboard/overview').then((m) => ({ default: m.Page })));
 const DevicesPage = React.lazy(() => import('@/pages/dashboard/devices'));
-const SmartHomePage = React.lazy(() => import('@/pages/dashboard/smart-home').then((m) => ({ default: m.Page })));
-const LogisticsPage = React.lazy(() => import('@/pages/dashboard/logistics').then((m) => ({ default: m.Page })));
-const AnalyticsPage = React.lazy(() => import('@/pages/dashboard/analytics').then((m) => ({ default: m.Page })));
-const CryptoPage = React.lazy(() => import('@/pages/dashboard/crypto').then((m) => ({ default: m.Page })));
+// const SmartHomePage = React.lazy(() => import('@/pages/dashboard/smart-home').then((m) => ({ default: m.Page })));
+// const LogisticsPage = React.lazy(() => import('@/pages/dashboard/logistics').then((m) => ({ default: m.Page })));
+// const AnalyticsPage = React.lazy(() => import('@/pages/dashboard/analytics').then((m) => ({ default: m.Page })));
+// const CryptoPage = React.lazy(() => import('@/pages/dashboard/crypto').then((m) => ({ default: m.Page })));
 // Customer pages
-const CustomerCreatePage = React.lazy(() =>
-  import('@/pages/dashboard/customers/create').then((m) => ({ default: m.Page }))
-);
-const CustomerDetailsPage = React.lazy(() =>
-  import('@/pages/dashboard/customers/details').then((m) => ({ default: m.Page }))
-);
-const CustomerListPage = React.lazy(() =>
-  import('@/pages/dashboard/customers/list').then((m) => ({ default: m.Page }))
-);
+// const CustomerCreatePage = React.lazy(() =>
+//   import('@/pages/dashboard/customers/create').then((m) => ({ default: m.Page }))
+// );
+// const CustomerDetailsPage = React.lazy(() =>
+//   import('@/pages/dashboard/customers/details').then((m) => ({ default: m.Page }))
+// );
+// const CustomerListPage = React.lazy(() =>
+//   import('@/pages/dashboard/customers/list').then((m) => ({ default: m.Page }))
+// );
 
 // admin pages
 const PermissionsPage = React.lazy(() => import('@/pages/dashboard/admin/permissions'));
@@ -50,35 +50,35 @@ const DevicesPages = React.lazy(() => import('@/pages/dashboard/admin/devices'))
 
 // Invoice pages
 
-const InvoiceCreatePage = React.lazy(() =>
-  import('@/pages/dashboard/invoices/create').then((m) => ({ default: m.Page }))
-);
-const InvoiceDetailsPage = React.lazy(() =>
-  import('@/pages/dashboard/invoices/details').then((m) => ({ default: m.Page }))
-);
-const InvoiceListPage = React.lazy(() => import('@/pages/dashboard/invoices/list').then((m) => ({ default: m.Page })));
+// const InvoiceCreatePage = React.lazy(() =>
+//   import('@/pages/dashboard/invoices/create').then((m) => ({ default: m.Page }))
+// );
+// const InvoiceDetailsPage = React.lazy(() =>
+//   import('@/pages/dashboard/invoices/details').then((m) => ({ default: m.Page }))
+// );
+// const InvoiceListPage = React.lazy(() => import('@/pages/dashboard/invoices/list').then((m) => ({ default: m.Page })));
 
 // Order pages
 
-const OrderCreatePage = React.lazy(() => import('@/pages/dashboard/orders/create').then((m) => ({ default: m.Page })));
-const OrderDetailsPage = React.lazy(() =>
-  import('@/pages/dashboard/orders/details').then((m) => ({ default: m.Page }))
-);
-const OrderListPage = React.lazy(() => import('@/pages/dashboard/orders/list').then((m) => ({ default: m.Page })));
+// const OrderCreatePage = React.lazy(() => import('@/pages/dashboard/orders/create').then((m) => ({ default: m.Page })));
+// const OrderDetailsPage = React.lazy(() =>
+//   import('@/pages/dashboard/orders/details').then((m) => ({ default: m.Page }))
+// );
+// const OrderListPage = React.lazy(() => import('@/pages/dashboard/orders/list').then((m) => ({ default: m.Page })));
 
 // Product pages
 
-const ProductCreatePage = React.lazy(() =>
-  import('@/pages/dashboard/products/create').then((m) => ({ default: m.Page }))
-);
-const ProductDetailsPage = React.lazy(() =>
-  import('@/pages/dashboard/products/details').then((m) => ({ default: m.Page }))
-);
-const ProductListPage = React.lazy(() => import('@/pages/dashboard/products/list').then((m) => ({ default: m.Page })));
+// const ProductCreatePage = React.lazy(() =>
+//   import('@/pages/dashboard/products/create').then((m) => ({ default: m.Page }))
+// );
+// const ProductDetailsPage = React.lazy(() =>
+//   import('@/pages/dashboard/products/details').then((m) => ({ default: m.Page }))
+// );
+// const ProductListPage = React.lazy(() => import('@/pages/dashboard/products/list').then((m) => ({ default: m.Page })));
 
 // Tasks pages
 
-const TasksPage = React.lazy(() => import('@/pages/dashboard/tasks').then((m) => ({ default: m.Page })));
+// const TasksPage = React.lazy(() => import('@/pages/dashboard/tasks').then((m) => ({ default: m.Page })));
 
 // Team pages
 
@@ -89,7 +89,7 @@ const TeamPermissionsPage = React.lazy(() =>
 
 // Other pages
 
-const BlankPage = React.lazy(() => import('@/pages/dashboard/blank').then((m) => ({ default: m.Page })));
+// const BlankPage = React.lazy(() => import('@/pages/dashboard/blank').then((m) => ({ default: m.Page })));
 
 export const routes = [
   {
@@ -122,18 +122,10 @@ export const routes = [
             element: <AccountProfilePage />,
           },
           {
-            path: 'billing',
-            element: <AccountBillingPage />,
-          },
-          {
             path: 'security',
             element: <AccountSecurityPage />,
           },
         ],
-      },
-      {
-        path: 'analytics',
-        element: <AnalyticsPage />,
       },
       {
         path: 'devices',
@@ -148,94 +140,6 @@ export const routes = [
           },
           
         ],
-      },
-      {
-        path: 'blank',
-        element: <BlankPage />,
-      },
-      {
-        path: 'crypto',
-        element: <CryptoPage />,
-      },
-      {
-        path: 'customers',
-        children: [
-          {
-            index: true,
-            element: <CustomerListPage />,
-          },
-          {
-            path: 'create',
-            element: <CustomerCreatePage />,
-          },
-          {
-            path: ':customerId',
-            element: <CustomerDetailsPage />,
-          },
-        ],
-      },
-      {
-        path: 'invoices',
-        children: [
-          {
-            index: true,
-            element: <InvoiceListPage />,
-          },
-          {
-            path: 'create',
-            element: <InvoiceCreatePage />,
-          },
-          {
-            path: ':invoiceId',
-            element: <InvoiceDetailsPage />,
-          },
-        ],
-      },
-      {
-        path: 'logistics',
-        element: <LogisticsPage />,
-      },
-      {
-        path: 'orders',
-        children: [
-          {
-            index: true,
-            element: <OrderListPage />,
-          },
-          {
-            path: 'create',
-            element: <OrderCreatePage />,
-          },
-          {
-            path: ':orderId',
-            element: <OrderDetailsPage />,
-          },
-        ],
-      },
-      {
-        path: 'products',
-        children: [
-          {
-            index: true,
-            element: <ProductListPage />,
-          },
-          {
-            path: 'create',
-            element: <ProductCreatePage />,
-          },
-          {
-            path: ':productId',
-            element: <ProductDetailsPage />,
-          },
-        ],
-      },
-      {
-        path: 'smart-home',
-        element: <SmartHomePage />,
-      },
-      {
-        path: 'tasks',
-        element: <TasksPage />,
       },
       {
         path: 'team',

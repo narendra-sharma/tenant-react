@@ -2,11 +2,6 @@ import * as React from 'react';
 import Box from '@mui/joy/Box';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Stack from '@mui/joy/Stack';
-import Tooltip from '@mui/joy/Tooltip';
-import Typography from '@mui/joy/Typography';
-
-import { config } from '@/config';
-import { AuthStrategy } from '@/lib/auth/strategy';
 import { Image } from '@/components/core/image';
 
 export function SplitLayout({ children, strategy }) {
