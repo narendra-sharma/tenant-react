@@ -18,7 +18,7 @@ import { usePathname } from '@/hooks/use-pathname';
 import { RouterLink } from '@/components/core/link';
 import { Logo } from '@/components/core/logo';
 import { NoSSR } from '@/components/core/no-ssr';
-
+import { CurrentOrganization } from './current-organization';
 import { ColorSchemeSwitch } from './color-scheme-switch';
 import { CurrentUser } from './current-user';
 import { icons } from './nav-icons';
@@ -60,6 +60,7 @@ export function SideNav({ items }) {
         zIndex: 'var(--SideNav-zIndex)',
       }}
     >
+      
       <Box
         sx={{
           height: '100%',
@@ -68,6 +69,7 @@ export function SideNav({ items }) {
           pt: '185px', // header height
         }}
       >
+        
         {/* <button onClick={() => changeLanguage('es')}>es</button>
         <button onClick={() => changeLanguage('en')}>en</button> */}
         {/* <h1 className="text-white">{t('dashboard')}</h1> */}
@@ -77,7 +79,9 @@ export function SideNav({ items }) {
               <Logo color="light" height={78} width={253} />
             </Box>
           </div>
+          <CurrentOrganization />
         </Stack>
+       
         <Box
           component="nav"
           sx={{
