@@ -22,6 +22,8 @@ const Popup = styled(Popper)({
   maxWidth: '288px',
   width: '100%',
   zIndex: 'var(--joy-zIndex-popup)',
+  height:'170px',
+  overflowY:'scroll',
 });
 
 

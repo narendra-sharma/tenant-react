@@ -25,4 +25,5 @@ export const config = {
   gtm: {
     id: import.meta.env.VITE_GOOGLE_TAG_MANAGER_ID,
   },
+
 };
