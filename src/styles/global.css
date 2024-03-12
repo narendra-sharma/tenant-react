@@ -170,7 +170,5 @@ td{
   .scroll-table-container{
     height:calc(100vh - 450px);
   }
-  .scroll-table-container {
-    height: calc(100vh - 390px);
-  }
+ 
 }
