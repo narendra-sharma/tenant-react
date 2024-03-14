@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import { login } from '@/reduxData/rootAction';
+import { login_user } from '@/reduxData/rootAction';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/joy/Alert';
 import Button from '@mui/joy/Button';
@@ -46,7 +46,7 @@ export function SignInForm() {
     password: '',
   });
   const { t, i18n } = useTranslation();
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const exptest = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     if (formData.email === '') {
@@ -65,7 +65,7 @@ export function SignInForm() {
     }
 
     if (formData.email !== '' && formData.password !== '' && !emailerror) {
-      await login(formData, dispatch, navigate);
+      login_user(formData, dispatch, navigate);
     }
   };
 
