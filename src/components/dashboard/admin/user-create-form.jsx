@@ -228,7 +228,7 @@ export function UserCreateForm({ onDataFromChild }) {
                   >
                     <option value="tenant_manager">Tenant Manager</option>
                     <option value="tenant_user">Tenant User</option>
-                    <option value="tenant_read_only">Tenant</option>
+                    <option value="tenant_read_only">Tenant Read Only</option>
                   </select>
                   {errors.permission_profile && (
                     <FormHelperText style={{ color: 'red' }}>{t('PermissionError')}</FormHelperText>

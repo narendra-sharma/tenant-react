@@ -29,7 +29,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     client_firstname: '',
     client_lastname: '',
     tenant_ids: null,
-    device_status: 'pt',
+    device_status: '',
   });
   const state = useSelector((state) => state);
   const [tenatntList, setTenantList] = React.useState();
@@ -229,8 +229,9 @@ export function DeviceCreateForm({ onDataFromChild }) {
                     onChange={(e) => handleElementChange(e?.target.value, 'device_status')}
                     className="form-control"
                   >
+                    <option value="" selected disabled>Select</option>
+                    <option value="concept">Concept</option>
                     <option value="pt">Publish to Tenant</option>
-                    {/* <option value="pu">Publish to user</option> */}
                   </select>
                   {errors.device_status && <FormHelperText style={{ color: 'red' }}>{t('StatusError')}</FormHelperText>}
                 </FormControl>
@@ -243,7 +244,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.devices']} variant="outlined">
             {t('Cancel')}
           </Button>
-          <Button type="submit" disabled={currentUserRole=='admin'?false: !permissions['ADMIN Management']?.can_create_new_device} >{id?.deviceId ? 'Update' : 'Create'} {t('Device')}</Button>
+          <Button type="submit" disabled={currentUserRole=='admin'?false: !permissions['ADMIN Management']?.can_create_new_device} >{id?.deviceId ? t('Update') : t('Create')} {t('Device')}</Button>
         </Stack>
       </Stack>
     </form>

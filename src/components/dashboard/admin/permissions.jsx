@@ -24,8 +24,6 @@ export function Permissions({ groups = [] }) {
     setPermissions([...groups]);
   }, [groups]);
   const saveCahnges = () => {
-    permissions[0].name = 'tenant_management';
-    permissions[1].name = 'admin_manangement';
     update_permissions(permissions, dispatch);
   };
   const changeCheck = (gindex, pindex, role) => {

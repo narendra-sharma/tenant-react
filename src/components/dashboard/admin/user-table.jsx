@@ -33,7 +33,7 @@ export function UserTable({ rows }) {
           component={RouterLink}
           fontSize="sm"
           fontWeight="md"
-          href={paths['dashboard.orders.details']}
+          href={paths['dashboard.admin.update.user'](`${row._id}`)}
           underline="none"
         >
           {row.first_name}
