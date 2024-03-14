@@ -143,7 +143,7 @@ const Devices = ({ devices, total }) => {
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container device-table" onScroll={handleScroll}>
             {devices && devices.length ? (
-              <DeviceTable rows={devices} />
+              <DeviceTable rows={devices} isAdmin={true}/>
             ) : (
               <div style={{ textAlign: 'center', marginTop: '20px' }}>No Devices Found</div>
             )}

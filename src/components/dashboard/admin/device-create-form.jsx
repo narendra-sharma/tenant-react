@@ -29,7 +29,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     client_firstname: '',
     client_lastname: '',
     tenant_ids: null,
-    device_status: '',
+    device_publish: '',
   });
   const state = useSelector((state) => state);
   const [tenatntList, setTenantList] = React.useState();
@@ -50,7 +50,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
             client_firstname: res?.client_firstname,
             client_lastname: res?.client_lastname,
             tenant_ids: res?.tenant_ids,
-            device_status: res?.device_status,
+            device_publish: res?.device_publish,
           });
         }
       });
@@ -83,7 +83,7 @@ export function DeviceCreateForm({ onDataFromChild }) {
     client_firstname: '',
     client_lastname: '',
     tenant_ids: null,
-    device_status: '',
+    device_publish: '',
   });
 
   const handleElementChange = (value, label) => {
@@ -224,16 +224,16 @@ export function DeviceCreateForm({ onDataFromChild }) {
                 <FormControl>
                   <FormLabel>{t('Status')}</FormLabel>
                   <select
-                    name="device_status"
-                    value={devices?.device_status}
-                    onChange={(e) => handleElementChange(e?.target.value, 'device_status')}
+                    name="device_publish"
+                    value={devices?.device_publish}
+                    onChange={(e) => handleElementChange(e?.target.value, 'device_publish')}
                     className="form-control"
                   >
                     <option value="" selected disabled>Select</option>
                     <option value="concept">Concept</option>
                     <option value="pt">Publish to Tenant</option>
                   </select>
-                  {errors.device_status && <FormHelperText style={{ color: 'red' }}>{t('StatusError')}</FormHelperText>}
+                  {errors.device_publish && <FormHelperText style={{ color: 'red' }}>{t('StatusError')}</FormHelperText>}
                 </FormControl>
               </Grid>
             </Grid>

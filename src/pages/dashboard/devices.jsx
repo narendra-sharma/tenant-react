@@ -28,13 +28,13 @@ const devices = ({ devices, total }) => {
   const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role
   const permissions = JSON.parse(localStorage.getItem('permissions'))
   useEffect(() => {
-    get_devices(dispatch, page, limit, device, client, status);
+    get_devices(dispatch, page, limit, device, client, status,true);
   }, [page, limit, device, client, status]);
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
     if (bottom && total > devices.length) {
       setPage(page + 1);
-      get_devices(dispatch, page + 1, limit, device, client, status);
+      get_devices(dispatch, page + 1, limit, device, client, status,true);
     }
   };
   const disableWindowScroll = () => {

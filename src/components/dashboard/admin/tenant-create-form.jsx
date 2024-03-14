@@ -100,7 +100,13 @@ export function TenantCreateForm({ onDataFromChild }) {
             connection_string: res?.setting_endpoint_uri,
             db_name: res?.setting_database_name,
             account_key: res?.setting_key,
-            device_renaming:res?.device_renaming
+            device_renaming:res?.device_renaming,
+            ac_db_water: res?.ac_db_water,
+            ac_db_water_key: res?.ac_db_water_key,
+            ac_db_electricity: res?.ac_db_electricity,
+            ac_db_electricity_key: res?.ac_db_electricity_key,
+            watermeter_timeframes: res?.watermeter_timeframes,
+            electricity_timeframes: res?.electricity_timeframes,
           });
         }
       });
@@ -146,7 +152,13 @@ export function TenantCreateForm({ onDataFromChild }) {
     formData.append('connection_string', cuser?.connection_string);
     formData.append('db_name', cuser?.db_name);
     formData.append('account_key', cuser?.account_key);
-    formData.append('device_renaming',cuser?.device_renaming)
+    formData.append('device_renaming',cuser?.device_renaming);
+    formData.append('ac_db_water',cuser?.ac_db_water);
+    formData.append('ac_db_water_key',cuser?.ac_db_water_key);
+    formData.append('ac_db_electricity',cuser?.ac_db_electricity);
+    formData.append('ac_db_electricity_key',cuser?.ac_db_electricity_key);
+    formData.append('watermeter_timeframes',cuser?.watermeter_timeframes);
+    formData.append('electricity_timeframes',cuser?.electricity_timeframes);
     // formData.app
     if (id?.tenantId) {
       formData.append('tenant_id', id?.tenantId);
@@ -177,6 +189,12 @@ export function TenantCreateForm({ onDataFromChild }) {
       db_name: '',
       account_key: '',
       device_renaming: '',
+      ac_db_water: '',
+      ac_db_water_key: '',
+      ac_db_electricity: '',
+      ac_db_electricity_key: '',
+      watermeter_timeframes: '',
+      electricity_timeframes: '',
     });
   };
 
@@ -191,7 +209,8 @@ export function TenantCreateForm({ onDataFromChild }) {
         label !== 'state' &&
         label !== 'website'
           ? 'required'
-          : (label === 'email' || label === 'company_email') && !emailRegex.test(value)
+          : (((label === 'email' || label === 'company_email') && !emailRegex.test(value)) 
+            || (label === 'watermeter_timeframes' || label === 'electricity_timeframes') && (value<30))
             ? 'invalid'
             : '',
     }));
@@ -519,35 +538,39 @@ export function TenantCreateForm({ onDataFromChild }) {
             <Grid container spacing={3}>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Watermeters Timeframe (Seconds)</FormLabel>
+                  <FormLabel>Watermeters Timeframe (Minutes)</FormLabel>
                   <Input
                     value={cuser.watermeter_timeframes}
-                    maxRows={3}
-                    minRows={1}
+                    min="30"
                     name="watermeter_timeframes"
-                    type="text"
+                    type="number"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'watermeter_timeframes')}
                   />
-                  {errors.watermeter_timeframes && (
-                    <FormHelperText style={{ color: 'red' }}>Watermeters Timeframe (Seconds) is required.</FormHelperText>
+                  {errors.watermeter_timeframes && !cuser.watermeter_timeframes && (
+                    <FormHelperText style={{ color: 'red' }}>Watermeters Timeframe (Minutes) is required.</FormHelperText>
+                  )}
+                  {errors.watermeter_timeframes && (+cuser.watermeter_timeframes<30) && (
+                    <FormHelperText style={{ color: 'red' }}>Watermeters Timeframe (Minutes) is not less than 30 Minutes.</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
               <Grid md={6} xs={12}>
                 <FormControl>
-                  <FormLabel>Electricitymeters Timeframe (Seconds)</FormLabel>
+                  <FormLabel>Electricitymeters Timeframe (Minutes)</FormLabel>
                   <Input
                     value={cuser.electricity_timeframes}
-                    maxRows={3}
-                    minRows={1}
+                    min="30"
                     name="electricity_timeframes"
-                    type="text"
+                    type="number"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'electricity_timeframes')}
                   />
-                    {errors.electricity_timeframes && (
-                    <FormHelperText style={{ color: 'red' }}>Electricitymeters Timeframe (Seconds) is required.</FormHelperText>
+                    {errors.electricity_timeframes && !cuser.electricity_timeframes &&(
+                    <FormHelperText style={{ color: 'red' }}>Electricitymeters Timeframe (Minutes) is required.</FormHelperText>
+                  )}
+                   {errors.electricity_timeframes && (+cuser.electricity_timeframes<30) && (
+                    <FormHelperText style={{ color: 'red' }}>Electricitymeters Timeframe (Minutes) is not less than 30 Minutes.</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
