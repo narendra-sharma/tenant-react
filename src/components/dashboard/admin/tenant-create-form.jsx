@@ -44,15 +44,16 @@ export function TenantCreateForm({ onDataFromChild }) {
     connection_string: '',
     db_name: '',
     account_key: '',
-    device_renaming: ''
+    device_renaming: '',
+    ac_db_water: '',
+    ac_db_water_key: '',
+    ac_db_electricity: '',
+    ac_db_electricity_key: '',
+    watermeter_timeframes: '',
+    electricity_timeframes: '',
   });
 
-  // ac_db_water: '',
-  // ac_db_water_key: '',
-  // ac_db_electricity: '',
-  // ac_db_electricity_key: '',
-  // watermeter_timeframes: '',
-  // electricity_timeframes: '',
+  
   const [countries, setCountries] = React.useState([]);
   const [errors, setErrors] = React.useState({
     company_name: '',
@@ -69,7 +70,13 @@ export function TenantCreateForm({ onDataFromChild }) {
     connection_string: '',
     db_name: '',
     account_key: '',
-    device_renaming: ''
+    device_renaming: '',
+    ac_db_water: '',
+    ac_db_water_key: '',
+    ac_db_electricity: '',
+    ac_db_electricity_key: '',
+    watermeter_timeframes: '',
+    electricity_timeframes: '',
   });
   const navigate = useNavigate()
   const id = useParams();
@@ -442,7 +449,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                 </FormControl>
               </Grid>
 
-              {/* <Grid md={6} xs={12}>
+              <Grid md={6} xs={12}>
                 <FormControl>
                   <FormLabel>Azure Cosmos DB Container Name Water</FormLabel>
                   <Input
@@ -501,12 +508,12 @@ export function TenantCreateForm({ onDataFromChild }) {
                     <FormHelperText style={{ color: 'red' }}>Azure Cosmos DB Partion Key Path Electricity is required.</FormHelperText>
                   )}
                 </FormControl>
-              </Grid> */}
+              </Grid>
             </Grid>
           </Box>
         </Stack>
 
-        {/* <Stack spacing={3}>
+        <Stack spacing={3}>
           <Typography level="h4">Settings Timeframe Meters</Typography>
           <Box sx={{ maxWidth: 'lg' }}>
             <Grid container spacing={3}>
@@ -546,7 +553,7 @@ export function TenantCreateForm({ onDataFromChild }) {
               </Grid>
             </Grid>
           </Box>
-        </Stack> */}
+        </Stack>
 
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center', justifyContent: 'flex-end' }}>
           <Button color="neutral" component={RouterLink} href={paths['dashboard.admin.tennats']} variant="outlined">
