@@ -125,11 +125,9 @@ select.form-control {
   border-radius: 5px;
   margin: 0 5px;
 }
-.scroll-table-container{
+
+.device-table.scroll-table-container , .scroll-table-container{
   height:calc(100vh - 400px);
-}
-.device-table.scroll-table-container{
-  height: 200px;
   overflow: auto;
 }
 .scroll-table-container tr th{
@@ -166,9 +164,12 @@ td{
   table-layout: auto!important
 }
 
-@media(max-width:1250px){
+@media(max-width:1400px){
   .scroll-table-container{
-    height:calc(100vh - 450px);
+    height:calc(100vh - 400px);
+  }
+  .device-table.scroll-table-container{
+    height:calc(100vh - 380px);
   }
  
 }
