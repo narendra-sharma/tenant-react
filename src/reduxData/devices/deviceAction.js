@@ -29,14 +29,14 @@ export const catch_errors_handle = (error, dispatch) => {
   }
 };
 
-export const get_devices = async (dispatch, page, limit, device, client, status) => {
+export const get_devices = async (dispatch, page, limit, device, client, status,is_for_admin) => {
   dispatch(start_loading());
   try {
     headers.headers['x-access-token'] = token();
     const res = await axios.get(
       `${url}admin/device_list?page=${page}&limit=${limit}${device ? '&device=' + device : ''}${
         client ? '&client=' + client : ''
-      }${status ?'&status=' + status :''}`,
+      }${status ?'&status=' + status :''}${is_for_admin?'&is_for_admin=' + false:true}`,
       headers
     );
     if (res?.data?.status) {

@@ -30,7 +30,7 @@ const statusMapping = {
 
 const permissions = JSON.parse(localStorage.getItem('permissions'));
 const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
-export function DeviceTable({ rows }) {
+export function DeviceTable({ rows,isAdmin }) {
   const { t } = useTranslation();
   const dispatch = useDispatch()
   const deleteDevice=(data)=>{
@@ -124,5 +124,71 @@ export function DeviceTable({ rows }) {
       width: '100px',
     },
   ];
-  return <DataTable columns={columns} rows={rows} stripe="even" />;
+  const cols=[
+    {
+      formatter: (row) => (
+        <Link
+          disabled={userRole=='admin'?false: !permissions['Tenant Management']?.can_view_device_detail}
+          component={RouterLink}
+          fontSize="sm"
+          fontWeight="md"
+          href={paths['dashboard.admin.device_details'](`${row.serial_number}`)}
+          underline="none"
+        >
+          {row.device_name}
+        </Link>
+      ),
+      name: t('DeviceName'),
+      width: '150px',
+    },
+    {
+      formatter: (row) => (
+        <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+          <div>
+            <Typography level="body-sm" textColor="text.primary">
+              {row?.tenant_ids[0]?.tenant_name}
+            </Typography>
+          </div>
+        </Stack>
+      ),
+      name: t('Tenant'),
+      width: '120px',
+    },
+    {
+      formatter: (row) => {
+        const { label, color } = statusMapping[row?.device_status] ?? {
+          label: t('Online'),
+          color: 'green',
+        };
+
+        return (
+          <Chip color={color} size="sm" variant="soft">
+            {label}
+          </Chip>
+        );
+      },
+      name: t('Status'),
+      width: '120px',
+    },
+    {
+      formatter: (row) => (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Link
+            component={RouterLink}
+            fontSize="sm"
+            fontWeight="md"
+            href={paths['dashboard.admin.update.devices'](`${row.serial_number}`)}
+            underline="none"
+          >
+            <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
+          </Link>
+            {(userRole=='admin' || permissions['ADMIN Management']?.can_delete_devices) && <Trash style={{ fontSize: '17px', color:'red', marginLeft:'10px', cursor:'pointer' }} onClick={()=>deleteDevice(row)} disabled={true} />}
+        </Box>
+      ),
+      hideName: true,
+      name: 'Actions',
+      width: '100px',
+    },
+  ];
+  return <DataTable columns={isAdmin?cols:columns} rows={rows} stripe="even" />;
 }

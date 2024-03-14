@@ -34,7 +34,7 @@ export function DeviceTable({ rows }) {
           component={RouterLink}
           fontSize="sm"
           fontWeight="md"
-          href={paths['dashboard.admin.create.tenant']}
+          href={paths['dashboard.admin.update.tenant'](`${row._id}`)}
           underline="none"
         >
           {row.tenant_name}
