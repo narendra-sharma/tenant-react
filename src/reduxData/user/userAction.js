@@ -180,6 +180,8 @@ export const update_permissions = async (data, dispatch) => {
   try {
     dispatch(start_loading());
     headers.headers['x-access-token'] = token();
+    data[0].name = 'tenant_management';
+    data[1].name = 'admin_manangement';
     const res = await axios.put(url + 'admin/edit-permission', { permission: data }, headers);
     if (res.data && res.data.status) {
       toast.success('Successfully updated permissions!');

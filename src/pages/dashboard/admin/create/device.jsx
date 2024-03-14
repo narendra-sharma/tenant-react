@@ -35,15 +35,14 @@ export function CreateDevice() {
             <Stack direction={{ sm: 'row' }} spacing={3} sx={{ alignItems: 'flex-start' }}>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
                 <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">
-                  {dataFromChild === 'edit' ? 'Update' : 'Create'} {t('Device')}
+                  {dataFromChild === 'edit' ? t('Update') : t('Create')} {t('Device')}
                 </Typography>
                 <Breadcrumbs separator={<BreadcrumbsSeparator />}>
                   <BreadcrumbsItem href={paths['dashboard']} type="start" />
-                  <BreadcrumbsItem type="end">Admin</BreadcrumbsItem>
+                  <BreadcrumbsItem type="end">{t('Admin')}</BreadcrumbsItem>
                   <BreadcrumbsItem href={paths['dashboard.admin.devices']}>{t('Devices')}</BreadcrumbsItem>
                   <BreadcrumbsItem type="end">
-                    {dataFromChild === 'edit' ? 'Update' : 'Create'}
-                    {t('Device')}
+                    {dataFromChild === 'edit' ? t('Update') : t('Create')} {t('Device')}
                   </BreadcrumbsItem>
                 </Breadcrumbs>
               </Stack>
