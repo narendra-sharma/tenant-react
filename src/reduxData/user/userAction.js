@@ -28,7 +28,7 @@ export const catch_errors_handle = (error, dispatch) => {
   }
 };
 
-export const login = async (user, dispatch, navigate) => {
+export const login_user = async (user, dispatch, navigate) => {
   dispatch(start_loading());
   try {
     const res = await axios.post(url + 'auth/login', user, headers);
@@ -36,14 +36,13 @@ export const login = async (user, dispatch, navigate) => {
       toast.success('Successfully user logged-in!');
       localStorage.setItem('custom-auth-token', res?.data?.token);
       dispatch(set_update_user({ ...res?.data?.data, token: res?.data?.token }));
-      dispatch(get_permissions(dispatch,res?.data?.data?.role))
+      get_permissions(dispatch,res?.data?.data?.role);
       navigate('/dashboard');
     } else {
       toast.error(res.data.message);
     }
   } catch (error) {
-    navigate('/dashboard'); // code is coming in error block
-    // dispatch(catch_errors_handle(error, dispatch));
+    dispatch(catch_errors_handle(error, dispatch));
   } finally {
     dispatch(stop_loading());
   }
