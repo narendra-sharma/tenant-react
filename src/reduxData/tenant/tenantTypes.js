@@ -1,1 +1,3 @@
 export const GET_TENANTS = 'GET_TENANTS';
+export const GET_TENANT_DEVICES = 'GET_TENANT_DEVICES';
+

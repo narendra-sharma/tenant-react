@@ -11,6 +11,8 @@ import Stack from '@mui/joy/Stack';
 import { styled } from '@mui/joy/styles';
 import Typography from '@mui/joy/Typography';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { get_tenant_devices } from '@/reduxData/tenant/tenantAction';
+import { useDispatch } from 'react-redux';
 
 const environmentMapping = {
   dev: 'Development',
@@ -31,8 +33,12 @@ const Popup = styled(Popper)({
 
 
 export function OrganizationsPopover({ anchorEl, onChange, onClose, open,onDataFromChild, organizations = [] }) {
+
+  const dispatch = useDispatch()
+
   const handleTenant = (data)=>{
     onDataFromChild(data)
+    get_tenant_devices(dispatch,data?._id)
   }
 
   return (

@@ -166,9 +166,9 @@ export function TenantCreateForm({ onDataFromChild }) {
       clearForm();
       navigate("../../../admin/tennants")
     } else {
-      create_tenant(cuser, dispatch);
+      create_tenant(cuser, dispatch,navigate);
       clearForm();
-      navigate("../../../admin/tennants")
+      // navigate("../../../admin/tennants")
     }
   });
 
@@ -550,7 +550,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                   {errors.watermeter_timeframes && !cuser.watermeter_timeframes && (
                     <FormHelperText style={{ color: 'red' }}>Watermeters Timeframe (Minutes) is required.</FormHelperText>
                   )}
-                  {errors.watermeter_timeframes && (+cuser.watermeter_timeframes<30) && (
+                  {errors.watermeter_timeframes && cuser.watermeter_timeframes && (+cuser.watermeter_timeframes<30) && (
                     <FormHelperText style={{ color: 'red' }}>Watermeters Timeframe (Minutes) is not less than 30 Minutes.</FormHelperText>
                   )}
                 </FormControl>
@@ -569,7 +569,7 @@ export function TenantCreateForm({ onDataFromChild }) {
                     {errors.electricity_timeframes && !cuser.electricity_timeframes &&(
                     <FormHelperText style={{ color: 'red' }}>Electricitymeters Timeframe (Minutes) is required.</FormHelperText>
                   )}
-                   {errors.electricity_timeframes && (+cuser.electricity_timeframes<30) && (
+                   {errors.electricity_timeframes && cuser.electricity_timeframes && (+cuser.electricity_timeframes<30) && (
                     <FormHelperText style={{ color: 'red' }}>Electricitymeters Timeframe (Minutes) is not less than 30 Minutes.</FormHelperText>
                   )}
                 </FormControl>
