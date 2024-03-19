@@ -24,7 +24,7 @@ import { RouterLink } from '@/components/core/link';
 import { Pagination } from '@/components/core/pagination';
 import { DeviceTable } from '@/components/dashboard/customer/device-table';
 
-const Devices = ({ devices, total }) => {
+const Devices = ({ devices, total, a }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [device, setDevices] = useState(null);
@@ -142,8 +142,16 @@ const Devices = ({ devices, total }) => {
 
         <Card sx={{ '--Card-padding': 0, overflowX: 'auto' }}>
           <div className="scroll-table-container device-table" onScroll={handleScroll}>
-            {devices && devices.length ? (
+            {/* {devices && devices.length ? (
               <DeviceTable rows={devices} isAdmin={true}/>
+            ) : (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>No Devices Found</div>
+            )} */}
+
+            {a?.tenant?.selectedTenantDevices !== null && a?.tenant?.selectedTenantDevices !== undefined ? (
+              <DeviceTable rows={a.tenant.selectedTenantDevices} isAdmin={true} />
+            ) : devices && devices.length ? (
+              <DeviceTable rows={devices} isAdmin={true} />
             ) : (
               <div style={{ textAlign: 'center', marginTop: '20px' }}>No Devices Found</div>
             )}
@@ -157,6 +165,7 @@ const mapStateToProps = (state) => {
   return {
     devices: state.device.devices,
     total: state.device.total,
+    a: state,
   };
 };
 

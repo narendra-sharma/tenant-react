@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from '@/components/core/toaster';
 
 import { start_loading, stop_loading } from '../rootAction';
-import { GET_TENANTS} from './tenantTypes';
+import { GET_TENANTS, GET_TENANT_DEVICES} from './tenantTypes';
 
 const url = import.meta.env.VITE_API_URL;
 const headers = {
@@ -48,13 +48,14 @@ export const catch_errors_handle = (error, dispatch) => {
     }
   };
 
-  export const create_tenant = async (data,dispatch) => {
+  export const create_tenant = async (data,dispatch,navigate) => {
     dispatch(start_loading());
     try {
       headers.headers['x-access-token'] =token();
       const res = await axios.post(`${url}admin/add_tenant`,data, headers);
       if (res?.data?.status) {
         toast.success(res?.data?.message);
+        navigate("../../../admin/tennants")
       } else {
         toast.error(res?.data?.message);
       }
@@ -105,3 +106,22 @@ export const catch_errors_handle = (error, dispatch) => {
       dispatch(stop_loading());
     }
   }
+
+  export const get_tenant_devices = async (dispatch,id) => {
+    dispatch(start_loading());
+    try {
+      headers.headers['x-access-token'] =token();
+      const res = await axios.get(`${url}admin/tenant_devices/${id}`, headers);
+      if (res?.data?.status) {
+        dispatch({ type: GET_TENANT_DEVICES, payload: res?.data?.data });
+        // dispatch({ type: GET_TENANTS, payload: res?.data });
+      } else {
+        toast.error(res?.data?.message);
+      }
+      return res.data.data
+    } catch (error) {
+      dispatch(catch_errors_handle(error, dispatch));
+    } finally {
+      dispatch(stop_loading());
+    }
+  };

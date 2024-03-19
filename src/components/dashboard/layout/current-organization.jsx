@@ -64,12 +64,13 @@ export function CurrentOrganization() {
             }}
           ></Box>
           <Box sx={{ flexGrow: 1 }}>
+          
             <Typography fontSize="xs" textColor="neutral.400">
               {dataFromChild ? dataFromChild?.tenant_name : 'Select Tenant'}
             </Typography>
-            <Typography fontSize="sm" fontWeight="md" textColor="inherit">
-              {/* {organization?.name} */}
-            </Typography>
+            {/* <Typography fontSize="sm" fontWeight="sm" textColor="inherit">
+            Select Tenant
+            </Typography> */}
           </Box>
           <CaretUpDownIcon fill="var(--joy-palette-neutral-400)" fontSize="var(--joy-fontSize-lg)" />
         </Stack>
