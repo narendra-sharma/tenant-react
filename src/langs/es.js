@@ -16,6 +16,7 @@ export default {
         "ConfirmPass": "Password Confirm",
         "TotalDevices": "Devices Total",
         "WaterMeters": "Meter Waters",
-        "DeviceName": "NAMEE DEVICE"
+        "DeviceName": "NAMEE DEVICE",
+        "Published": "Publicada",
     }
 }

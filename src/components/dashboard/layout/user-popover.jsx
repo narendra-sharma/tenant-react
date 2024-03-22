@@ -97,7 +97,7 @@ export function UserPopover({ anchorEl, onClose, open }) {
           <Stack spacing={2}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
               <Avatar src={null}>
-                {`${userData?.first_name[0]}${userData?.last_name[0]}`}
+                {(userData && userData?.first_name) && `${userData?.first_name[0]}${userData?.last_name[0]}`}
               </Avatar>
               <div>
                 <Typography fontWeight="lg" textColor="inherit">

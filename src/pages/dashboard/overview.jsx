@@ -111,9 +111,9 @@ export function Page({ devices,total }) {
               active={select?.device?.dashboardDevices?.water_meter_count}
               canceled={select?.device?.dashboardDevices?.offline_devices}
               completed={select?.device?.dashboardDevices?.electric_meter_count}
-              total={select?.device?.dashboardDevices?.device_data_total}
+              total={select?.device?.dashboardDevices?.total_devices_count}
             />
-            {(userRole == 'admin' || (userPermissions && userPermissions['Tenant Management']?.can_view_devices)) && (
+            {(userRole == 'admin' || (userPermissions && userPermissions['Tenant Management']?.can_view_devices) || userRole == 'tenant') && (
               <>
                 <Box>
                   <Grid container spacing={3}>

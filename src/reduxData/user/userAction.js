@@ -21,7 +21,9 @@ export const catch_errors_handle = (error, dispatch) => {
     if (error.response.status === 401) {
       localStorage.removeItem('authUser');
       localStorage.removeItem('custom-auth-token');
+      localStorage.removeItem('permissions');
       dispatch(set_update_user(''));
+      window.location.reload();
     }
   } else {
     toast.error(error.message);
@@ -315,3 +317,49 @@ export const delete_user = async (id,dispatch)=>{
     dispatch(stop_loading());
   }
 }
+
+export const switch_to_tenant = async (id, dispatch, navigate) => {
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.post(url + `switchToTenant?id=${id}`,{}, headers);
+    console.log("Switched user data", res)
+    if (res?.data?.token && res?.data?.data) {
+      toast.success('Successfully Switched to Tenant');
+      localStorage.setItem('custom-auth-token', res?.data?.token);
+      dispatch(set_update_user({ ...res?.data?.data, token: res?.data?.token }));
+      get_permissions(dispatch,res?.data?.data?.role);
+      navigate('/');
+      window.location.reload()
+    } else {
+      toast.error(res.data.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};
+
+export const switch_to_original_account = async (dispatch,navigate) => {
+  dispatch(start_loading());
+  try {
+    headers.headers['x-access-token'] = token();
+    const res = await axios.post(url + `switchToUser`,{}, headers);
+    console.log("Switched tenant to Admin", res)
+    if (res?.data?.token && res?.data?.data) {
+      toast.success('Successfully Switched to Tenant');
+      localStorage.setItem('custom-auth-token', res?.data?.token);
+      dispatch(set_update_user({ ...res?.data?.data, token: res?.data?.token }));
+      get_permissions(dispatch,res?.data?.data?.role);
+      navigate('/');
+      window.location.reload()
+    } else {
+      toast.error(res.data.message);
+    }
+  } catch (error) {
+    dispatch(catch_errors_handle(error, dispatch));
+  } finally {
+    dispatch(stop_loading());
+  }
+};

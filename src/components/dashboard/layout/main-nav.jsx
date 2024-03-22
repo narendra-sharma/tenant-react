@@ -106,7 +106,7 @@ export function MainNav({ items }) {
               }}
             >
               <Avatar src={null}>
-                {`${userData?.first_name[0]}${userData?.last_name[0]}`}
+                { (userData && userData?.first_name) && `${userData?.first_name[0]}${userData?.last_name[0]}`}
               </Avatar>
             </Badge>
           </Stack>

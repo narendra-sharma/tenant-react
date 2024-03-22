@@ -20,10 +20,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-
 import { config } from '@/config';
-import { getInitials } from '@/lib/get-initials';
-
 import 'react-phone-number-input/style.css';
 
 import { PhoneInput } from '@/components/core/phone-input';
@@ -32,7 +29,7 @@ const url = import.meta.env.VITE_APP_ASSET_URL;
 const metadata = {
   title: `Profile | Account | Dashboard | ${config.site.name}`,
 };
-const Page = ({ userData }) => {
+const Page = ({ userData, a }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -44,17 +41,16 @@ const Page = ({ userData }) => {
     email: '',
     phone_number: '',
     company_name: '',
-    tenant_name:'',
+    tenant_name: '',
     company_phone_number: '',
-    comapny_email:'',
-    address:'',
-    city:'',
-    country:'',
-    state:'',
-    tax_id:'',
-    website:'',
-    zipcode:'',
-
+    comapny_email: '',
+    address: '',
+    city: '',
+    country: '',
+    state: '',
+    tax_id: '',
+    website: '',
+    zipcode: '',
   });
   const [errors, setErrors] = React.useState({
     first_name: '',
@@ -71,7 +67,26 @@ const Page = ({ userData }) => {
   });
   const navigate = useNavigate();
   React.useEffect(() => {
-    if (userData) {
+    if (a?.tenant?.selectedTenantDevices) {
+      const data = a?.tenant?.selectedTenantDevices[0]?.tenant_ids[0];
+      setCuser({
+        first_name: data?.tenant_name,
+        last_name: '',
+        email: data?.client_email,
+        phone_number: data?.client_phone_number,
+        website: '',
+        country: data?.company_country,
+        state: data?.company_state,
+        city: data?.company_city,
+        zipcode: data?.company_zip_code,
+        address: data?.company_address,
+        company_name: data?.company_name,
+        tenant_name: data?.tenant_name,
+        company_email: data?.company_email,
+        company_phone_number: data?.company_phone_number,
+        tax_id: data?.company_tax_id,
+      });
+    } else if (userData) {
       setCuser({
         first_name: userData?.first_name,
         last_name: userData?.last_name,
@@ -96,8 +111,8 @@ const Page = ({ userData }) => {
     setCountries(cArr);
   }, []);
 
-  const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role
-  const permissions = JSON.parse(localStorage.getItem('permissions'))
+  const currentUserRole = JSON.parse(localStorage.getItem('authUser'))?.role;
+  const permissions = JSON.parse(localStorage.getItem('permissions'));
 
   const handleElementChange = (value, label) => {
     setCuser((prev) => ({ ...prev, [label]: value }));
@@ -107,7 +122,7 @@ const Page = ({ userData }) => {
         !value &&
         label !== 'phone_number' &&
         label !== 'company_phone_number' &&
-        label !== 'website'&&
+        label !== 'website' &&
         label !== 'state'
           ? 'required'
           : (label === 'email' || label === 'company_email') && !emailRegex.test(value)
@@ -119,7 +134,14 @@ const Page = ({ userData }) => {
     let err = false;
     let output = Object.entries(cuser);
     output.forEach(([key, value]) => {
-      if (!value && key !== 'phone_number' && key !== 'state' && key !== 'company_phone_number' && key !== 'state' && key !== 'website') {
+      if (
+        !value &&
+        key !== 'phone_number' &&
+        key !== 'state' &&
+        key !== 'company_phone_number' &&
+        key !== 'state' &&
+        key !== 'website'
+      ) {
         err = true;
         setErrors((prevErrors) => ({ ...prevErrors, [key]: 'required' }));
       } else if (value && (key === 'email' || key === 'companyEmail') && !emailRegex.test(value)) {
@@ -144,13 +166,13 @@ const Page = ({ userData }) => {
       <Stack component="main" divider={<Divider />} spacing={5}>
         <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
           <Box sx={{ '--Avatar-size': '120px', position: 'relative' }}>
-            <Avatar src={imagePath}>{`${cuser?.first_name && cuser?.first_name[0]}${
+            <Avatar src={imagePath}>{cuser.first_name ?`${cuser?.first_name && cuser?.first_name[0]}${
               cuser?.last_name && cuser?.last_name[0]
-            }`}</Avatar>
+            }`:cuser?.tenant_name[0]}</Avatar>
           </Box>
           <div style={{ textTransform: 'capitalize' }}>
             <Typography level="h4">
-              {cuser.first_name} {cuser.last_name}
+              {cuser.first_name ? `${cuser.first_name} ${cuser.last_name}` : cuser?.tenant_name}
             </Typography>
             <Typography level="body-sm">{cuser.company_name}</Typography>
           </div>
@@ -170,7 +192,9 @@ const Page = ({ userData }) => {
                     name="first_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'first_name')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_own_detail
+                    }
                   />
                   {errors.first_name && <FormHelperText style={{ color: 'red' }}>{t('FirstNameError')}</FormHelperText>}
                 </FormControl>
@@ -185,7 +209,9 @@ const Page = ({ userData }) => {
                     name="last_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'last_name')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_own_detail
+                    }
                   />
                   {errors.last_name && <FormHelperText style={{ color: 'red' }}>{t('LastNameError')}</FormHelperText>}
                 </FormControl>
@@ -201,7 +227,9 @@ const Page = ({ userData }) => {
                     type="email"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'email')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_own_detail
+                    }
                   />
                   {errors.email && (
                     <FormHelperText style={{ color: 'red' }}>
@@ -230,7 +258,9 @@ const Page = ({ userData }) => {
                         placeholder="Enter phone number"
                         value={cuser.phone_number}
                         onChange={(e) => handleElementChange(e, 'phone_number')}
-                        disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_own_detail}
+                        disabled={
+                          currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_own_detail
+                        }
                       />
                     </div>
                   </Box>
@@ -253,7 +283,9 @@ const Page = ({ userData }) => {
                     name="company_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_name')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_company_detail
+                    }
                   />
                   {errors.company_name && (
                     <FormHelperText style={{ color: 'red' }}>{t('CompanyNameError')}</FormHelperText>
@@ -270,7 +302,9 @@ const Page = ({ userData }) => {
                     name="tenant_name"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'tenant_name')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_company_detail
+                    }
                   />
                   {errors.tenant_name && (
                     <FormHelperText style={{ color: 'red' }}>{t('TenantNameError')}</FormHelperText>
@@ -288,7 +322,9 @@ const Page = ({ userData }) => {
                     type="email"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'company_email')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_company_detail
+                    }
                   />
                   {errors.company_email && (
                     <FormHelperText style={{ color: 'red' }}>
@@ -301,14 +337,27 @@ const Page = ({ userData }) => {
                 <FormControl>
                   <FormLabel>{t('CompanyPhoneNumber')}</FormLabel>
                   <Box component={'div'} display={'flex'} flexDirection={'row'}>
-                  <div className="phoneNumberContainer"  style={{borderRadius:'5px',boxShadow: 'var(--joy-shadow-xs)', border: 'solid 1px #EAEEF6', fontSize: '14px', width: '100%' }} >
-                  <PhoneInput
-                      maxLength="15"
-                      placeholder="Enter phone number"
-                      value={cuser.company_phone_number}
-                      onChange={(e) => handleElementChange(e, 'company_phone_number')}
-                      disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
-                    />
+                    <div
+                      className="phoneNumberContainer"
+                      style={{
+                        borderRadius: '5px',
+                        boxShadow: 'var(--joy-shadow-xs)',
+                        border: 'solid 1px #EAEEF6',
+                        fontSize: '14px',
+                        width: '100%',
+                      }}
+                    >
+                      <PhoneInput
+                        maxLength="15"
+                        placeholder="Enter phone number"
+                        value={cuser.company_phone_number}
+                        onChange={(e) => handleElementChange(e, 'company_phone_number')}
+                        disabled={
+                          currentUserRole == 'admin'
+                            ? false
+                            : !permissions['Tenant Management']?.can_change_company_detail
+                        }
+                      />
                     </div>
                   </Box>
                 </FormControl>
@@ -325,7 +374,9 @@ const Page = ({ userData }) => {
                     type="text"
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'tax_id')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_company_detail
+                    }
                   />
                   {errors.tax_id && <FormHelperText style={{ color: 'red' }}>{t('VatIdError')}</FormHelperText>}
                 </FormControl>
@@ -343,7 +394,9 @@ const Page = ({ userData }) => {
                     }
                     style={{ borderColor: '#EAEEF6', fontSize: '14px' }}
                     onChange={(e) => handleElementChange(e.target.value, 'website')}
-                    disabled={currentUserRole=='admin'?false: !permissions['Tenant Management']?.can_change_company_detail}
+                    disabled={
+                      currentUserRole == 'admin' ? false : !permissions['Tenant Management']?.can_change_company_detail
+                    }
                   />
                   {errors.website && <FormHelperText style={{ color: 'red' }}>{t('WebsiteError')}</FormHelperText>}
                 </FormControl>
@@ -453,6 +506,7 @@ const Page = ({ userData }) => {
 const mapStateToProps = (state) => {
   return {
     userData: state.user.user,
+    a: state,
   };
 };
 
