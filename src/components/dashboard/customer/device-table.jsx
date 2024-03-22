@@ -155,6 +155,19 @@ export function DeviceTable({ rows,isAdmin }) {
       width: '120px',
     },
     {
+      formatter: (row) => (
+        <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+          <div>
+            <Typography level="body-sm" textColor="text.primary">
+              {row?.device_publish=='pt'?"Publish to Tenant":row?.device_publish}
+            </Typography>
+          </div>
+        </Stack>
+      ),
+      name: t('Published'),
+      width: '120px',
+    },
+    {
       formatter: (row) => {
         const { label, color } = statusMapping[row?.device_status] ?? {
           label: t('Online'),

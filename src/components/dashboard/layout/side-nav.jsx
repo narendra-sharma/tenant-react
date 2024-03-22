@@ -284,6 +284,93 @@ function NavItem({ children, depth, disabled, external, forceOpen = false, href,
           </ListItemContent>
         </ListItem>
       )}
+
+
+      {/* Tenant account Switch */}
+      {(currentUserRole == 'tenant' ||
+        (title == 'User' && false && currentUserRole == 'tenant') ||
+        (title == 'Devices' && true && currentUserRole == 'tenant') ||
+        (title == 'Dashboard' && true && currentUserRole == 'tenant') ||
+        (title == 'Settings' && true && currentUserRole == 'tenant') ||
+        (title == 'Tenant' && false && currentUserRole == 'tenant') ||
+        (title == 'ADMIN' && false && currentUserRole != 'tenant')
+        ) && (
+        <ListItem
+          data-depth={depth}
+          sx={{
+            '--ListItem-paddingRight': 0,
+            '--ListItem-paddingLeft': 0,
+            '--ListItem-paddingY': 0,
+            userSelect: 'none',
+          }}
+        >
+          <ListItemContent>
+          {title != 'ADMIN' && <Box
+              {...(isBranch
+                ? {
+                    component: 'a',
+                    onClick: () => {
+                      setOpen(!open);
+                    },
+                  }
+                : {
+                    component: RouterLink,
+                    href,
+                    target: external ? '_blank' : '',
+                    rel: external ? 'noreferrer' : '',
+                  })}
+              sx={{
+                alignItems: 'center',
+                borderRadius: 'var(--joy-radius-sm)',
+                color: 'var(--NavItem-color)',
+                cursor: 'pointer',
+                display: 'flex',
+                p: '12px',
+                textDecoration: 'none',
+                ...(disabled && {
+                  bgcolor: 'var(--NavItem-disabled-background)',
+                  color: 'var(--NavItem-disabled-color)',
+                  cursor: 'not-allowed',
+                }),
+                ...(active && {
+                  bgcolor: 'var(--NavItem-active-background)',
+                  color: 'var(--NavItem-active-color)',
+                }),
+                ...(open && {
+                  color: 'var(--NavItem-open-color)',
+                }),
+                '&:hover': {
+                  ...(!active && {
+                    bgcolor: 'var(--NavItem-hover-background)',
+                    color: 'var(--NavItem-hover-color)',
+                  }),
+                },
+              }}
+            >
+              {Icon ? (
+                <Box sx={{ alignItems: 'center', display: 'flex', justifyContent: 'center', mr: 1 }}>
+                  <Icon
+                    fill={active ? 'var(--NavItem-active-icon-color)' : 'var(--NavItem-icon-color)'}
+                    fontSize="var(--joy-fontSize-xl)"
+                    weight={forceOpen || active ? 'fill' : 'bold'}
+                  />
+                </Box>
+              ) : null}
+              <Box sx={{ flexGrow: 1 }}>
+               <Typography component="span" fontSize="sm" fontWeight="md" textColor="inherit">
+                  {t(title)}
+                </Typography>
+              </Box>
+              {isBranch ? <ExpandIcon style={{ fontSize: 'var(--joy-fontSize-sm)' }} weight="bold" /> : null}
+            </Box>}
+            {showChildren ? (
+              <Box sx={{ pl: '20px' }}>
+                <Box sx={{ borderLeft: '1px solid var(--joy-palette-neutral-700)', pl: '12px' }}>{children} </Box>
+              </Box>
+            ) : null}
+          </ListItemContent>
+        </ListItem>
+      )}
     </>
   );
 }

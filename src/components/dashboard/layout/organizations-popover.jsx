@@ -4,15 +4,15 @@ import * as React from 'react';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { Popper } from '@mui/base/Popper';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import Sheet from '@mui/joy/Sheet';
 import Stack from '@mui/joy/Stack';
 import { styled } from '@mui/joy/styles';
 import Typography from '@mui/joy/Typography';
-import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { get_tenant_devices } from '@/reduxData/tenant/tenantAction';
 import { useDispatch } from 'react-redux';
+import { switch_to_original_account, switch_to_tenant } from '@/reduxData/user/userAction';
+import { useNavigate } from 'react-router';
 
 const environmentMapping = {
   dev: 'Development',
@@ -35,10 +35,17 @@ const Popup = styled(Popper)({
 export function OrganizationsPopover({ anchorEl, onChange, onClose, open,onDataFromChild, organizations = [] }) {
 
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const handleTenant = (data)=>{
     onDataFromChild(data)
     get_tenant_devices(dispatch,data?._id)
+    if(data?.tenant_name=='Select an Option'){
+      switch_to_original_account(dispatch,navigate)
+      return
+    }else{
+
+      switch_to_tenant(data?._id,dispatch,navigate)
+    }
   }
 
   return (

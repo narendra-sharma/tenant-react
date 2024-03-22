@@ -8,22 +8,26 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import { Pen as PenIcon } from '@phosphor-icons/react/dist/ssr/Pen';
 import { t } from 'i18next';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { Trash } from '@phosphor-icons/react/dist/ssr/Trash';
 import { paths } from '@/paths';
 import { DataTable } from '@/components/core/data-table';
 import { RouterLink } from '@/components/core/link';
 import { useDispatch } from 'react-redux';
 import { delete_user } from '@/reduxData/user/userAction';
+import { toast } from '@/components/core/toaster';
 
 export function UserTable({ rows }) {
   const permissions = JSON.parse(localStorage.getItem('permissions'));
   const userRole = JSON.parse(localStorage.getItem('authUser'))?.role;
-
   const dispatch = useDispatch()
 
   const deleteUser=(data)=>{
-    delete_user(data?._id,dispatch)
+    if(data.role=='admin'){
+      toast.error("Sorry you can not delete Admin");
+    }else{
+      delete_user(data?._id,dispatch)
+    }
   }
 
   const columns = [
@@ -101,7 +105,7 @@ export function UserTable({ rows }) {
           >
             <PenIcon style={{ fontSize: 'var(--Icon-fontSize)' }} weight="bold" />
           </Link>
-          {(userRole=='admin' || permissions['ADMIN Management']?.can_delete_users) && <Trash style={{ fontSize: '17px', color:'red', marginLeft:'10px', cursor:'pointer' }} onClick={()=>deleteUser(row)} disabled={true} />}
+          {(row.role!='admin' || userRole=='admin' || permissions['ADMIN Management']?.can_delete_users) && <Trash style={{ fontSize: '17px', color:'red', marginLeft:'10px', cursor:'pointer' }} onClick={()=>deleteUser(row)} disabled={true} />}
         </Box>
       ),
       hideName: true,

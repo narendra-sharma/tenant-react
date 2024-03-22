@@ -59,7 +59,7 @@ const devices = ({ devices, total }) => {
       };
     }, []);
   return ( 
-    (currentUserRole === 'admin' || permissions['Tenant Management']?.can_view_devices) && (
+    (currentUserRole === 'admin' || permissions['Tenant Management']?.can_view_devices || currentUserRole === 'tenant') && (
       <Container maxWidth={false} sx={{ py: 3 }}>
       <Stack spacing={3}>
         <Typography fontSize={{ xs: 'xl3', lg: 'xl4' }} level="h1">

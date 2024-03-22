@@ -25,7 +25,7 @@ import { RouterLink } from '@/components/core/link';
 export function UserCreateForm({ onDataFromChild }) {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const { t } = useTranslation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [cuser, setCuser] = React.useState({
     first_name: '',
     last_name: '',
@@ -48,6 +48,8 @@ export function UserCreateForm({ onDataFromChild }) {
   const state = useSelector((state) => state);
   const id = useParams();
   const dispatch = useDispatch();
+  const [tenant_list, set_tenant_list] = React.useState([]);
+  const [deleted_tenant_id, set_deleted_tenant_id] = React.useState([]);
 
   React.useEffect(() => {
     const url = import.meta.env.VITE_API_URL;
@@ -71,13 +73,18 @@ export function UserCreateForm({ onDataFromChild }) {
       let result = datas?.filter((res) => {
         if (res._id === id.userId) {
           onDataFromChild('edit');
+          console.log('TTTTTTTTTTT', res.tenant_ids);
+          const ids = res.tenant_ids.map((obj) => obj._id);
+          set_tenant_list(ids);
+          console.log('iiiiiiii', ids);
+
           setCuser({
             first_name: res?.first_name,
             last_name: res?.last_name,
             email: res?.email,
             phone_number: res?.phone_number,
             tenant_ids: res?.tenant_ids,
-            permission_profile: res?.role ? res?.role:'tenant_read_only',
+            permission_profile: res?.role ? res?.role : 'tenant_read_only',
           });
         }
       });
@@ -122,12 +129,19 @@ export function UserCreateForm({ onDataFromChild }) {
     }
     const tempData = cuser.tenant_ids;
     cuser.tenant_ids = cuser.tenant_ids.map((tenant) => tenant._id);
+
+    // Finding the deleted object IDs
+    const deletedIds = tenant_list.filter((id) => !cuser.tenant_ids.includes(id));
+
+    console.log('Deleted Object IDs', deletedIds);
+
     if (id?.userId) {
       cuser.user_id = id?.userId;
-      update_user(cuser, dispatch,navigate);
+      cuser.deleted_tenant_ids = deletedIds;
+      update_user(cuser, dispatch, navigate);
       cuser.tenant_ids = tempData;
     } else {
-      create_user(cuser, dispatch,navigate);
+      create_user(cuser, dispatch, navigate);
       cuser.tenant_ids = tempData;
     }
   };
@@ -136,9 +150,9 @@ export function UserCreateForm({ onDataFromChild }) {
     handleElementChange(selectedList, 'tenant_ids');
   };
 
-  const onRemove = (selectedList, removedItem)=>{
+  const onRemove = (selectedList, removedItem) => {
     handleElementChange(selectedList, 'tenant_ids');
-  }
+  };
   return (
     <form
       onSubmit={(event) => {
@@ -238,16 +252,16 @@ export function UserCreateForm({ onDataFromChild }) {
             </Grid>
           </Box>
           <span>
-          <Link
-            component={RouterLink}
-            fontSize="sm"
-            fontWeight="md"
-            href={paths['dashboard.admin.create.tenant']}
-            underline="none"
-          >
-            <Plus size={20} style={{ marginRight: '10px' }} />
-            {t('AddAnotherTenant')}
-          </Link>
+            <Link
+              component={RouterLink}
+              fontSize="sm"
+              fontWeight="md"
+              href={paths['dashboard.admin.create.tenant']}
+              underline="none"
+            >
+              <Plus size={20} style={{ marginRight: '10px' }} />
+              {t('AddAnotherTenant')}
+            </Link>
           </span>
         </Stack>
 

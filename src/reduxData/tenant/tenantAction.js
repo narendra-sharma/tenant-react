@@ -110,15 +110,20 @@ export const catch_errors_handle = (error, dispatch) => {
   export const get_tenant_devices = async (dispatch,id) => {
     dispatch(start_loading());
     try {
-      headers.headers['x-access-token'] =token();
-      const res = await axios.get(`${url}admin/tenant_devices/${id}`, headers);
-      if (res?.data?.status) {
-        dispatch({ type: GET_TENANT_DEVICES, payload: res?.data?.data });
-        // dispatch({ type: GET_TENANTS, payload: res?.data });
-      } else {
-        toast.error(res?.data?.message);
+      if(id){
+        headers.headers['x-access-token'] =token();
+        const res = await axios.get(`${url}admin/tenant_devices/${id}`, headers);
+        if (res?.data?.status) {
+          dispatch({ type: GET_TENANT_DEVICES, payload: res?.data?.data });
+          // dispatch({ type: GET_TENANTS, payload: res?.data });
+        } else {
+          toast.error(res?.data?.message);
+        }
+        return res.data.data
+      }else{
+        dispatch({ type: GET_TENANT_DEVICES, payload: null });
       }
-      return res.data.data
+    
     } catch (error) {
       dispatch(catch_errors_handle(error, dispatch));
     } finally {

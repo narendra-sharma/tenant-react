@@ -12,6 +12,7 @@ import { usePopover } from '@/hooks/use-popover';
 import { Image } from '@/components/core/image';
 
 import { OrganizationsPopover } from './organizations-popover';
+import { switch_to_original_account } from '@/reduxData/user/userAction';
 
 export function CurrentOrganization() {
   const [tenants, setTenants] = React.useState();
@@ -20,6 +21,7 @@ export function CurrentOrganization() {
     const fetchData = async () => {
       try {
         const data = await get_tenants(dispatch);
+        data.unshift({tenant_name:'Select an Option'})
         setTenants(data);
       } catch (error) {}
     };
@@ -32,6 +34,9 @@ export function CurrentOrganization() {
 
   const [dataFromChild, setDataFromChild] = React.useState(null);
   const handleDataFromChild = (data) => {
+    if(data?.tenant_name=='Select an Option'){
+      return
+    }
     setDataFromChild(data);
   };
 
